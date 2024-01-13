@@ -1,11 +1,10 @@
-// DoctorPage.js
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 const DoctorPage = () => {
   const { doctorType } = useParams();
-  // const doctorType = 'doctor';
   const [doctorData, setDoctorData] = useState([]);
 
   useEffect(() => {
@@ -20,18 +19,14 @@ const DoctorPage = () => {
     };
 
     fetchData();
-  }, []); // The empty dependency array ensures that this effect runs only once on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div>
       <h2>Doctors</h2>
-      {/* <ul>
-        {doctorData.map((doctor) => (
-          <li key={doctor.id}>{doctor.name}</li>
-        ))}
-      </ul> */}
     </div>
-  );  
+  );
 };
 
 export default DoctorPage;

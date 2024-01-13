@@ -17,6 +17,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import AdbIcon from '@mui/icons-material/Adb';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import { Link } from 'react-router-dom';
 
 const pages = ["Hospitals", "Doctor", "Therapist", "Clinical Doctor"];
 const settings = ["Profile", "Your Appointments", "Logout"];
@@ -173,7 +174,8 @@ const ResponsiveAppBar = () => {
                         {pages.map((page) => (
                             <Button
                                 key={page}
-                                onClick={handleCloseNavMenu}
+                                component={Link}
+                                to={page === 'Doctor' ? '/doctors/general' : `/${page.toLowerCase()}`}
                                 sx={{ my: { xs: 1, md: 2 }, color: 'white', display: 'block' }}
                             >
                                 {page}
