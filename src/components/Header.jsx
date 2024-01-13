@@ -17,9 +17,13 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import AdbIcon from '@mui/icons-material/Adb';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { Link } from 'react-router-dom';
 
-const pages = ["Hospitals", "Doctor", "Therapist", "Clinical Doctor"];
+const pages = [
+    { name: "Hospitals", path: "/hospitals" },
+    { name: "Doctor", path: "/doctors/doctor" },
+    { name: "Therapist", path: "/doctors/therapist" },
+    { name: "Clinical Doctor", path: "/doctors/clinicaldoctor" },
+];
 const settings = ["Profile", "Your Appointments", "Logout"];
 
 const Search = styled('div')(({ theme }) => ({
@@ -80,8 +84,12 @@ const ResponsiveAppBar = () => {
         setAnchorElNotifications(event.currentTarget);
     };
 
-    const handleCloseNavMenu = () => {
+    const handleCloseNavMenu = (page) => {
         setAnchorElNav(null);
+        const selectedPage = pages.find((p) => p.name === page);
+        if (selectedPage) {
+            window.location.href = selectedPage.path;
+        }
     };
 
     const handleCloseUserMenu = () => {
@@ -139,14 +147,14 @@ const ResponsiveAppBar = () => {
                                 horizontal: 'left',
                             }}
                             open={Boolean(anchorElNav)}
-                            onClose={handleCloseNavMenu}
+                            onClose={() => handleCloseNavMenu()}
                             sx={{
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
                             {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">{page}</Typography>
+                                <MenuItem key={page.name} onClick={() => handleCloseNavMenu(page.name)}>
+                                    <Typography textAlign="center">{page.name}</Typography>
                                 </MenuItem>
                             ))}
                         </Menu>
@@ -173,12 +181,11 @@ const ResponsiveAppBar = () => {
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page) => (
                             <Button
-                                key={page}
-                                component={Link}
-                                to={page === 'Doctor' ? '/doctors/general' : `/${page.toLowerCase()}`}
+                                key={page.name}
+                                onClick={() => handleCloseNavMenu(page.name)}
                                 sx={{ my: { xs: 1, md: 2 }, color: 'white', display: 'block' }}
                             >
-                                {page}
+                                {page.name}
                             </Button>
                         ))}
                     </Box>
