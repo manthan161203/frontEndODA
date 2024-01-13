@@ -5,16 +5,16 @@ import DoctorPage from './components/DoctorPage';
 
 
 function App() {
-  return (
-    <Router>
-      <div className="App">
-        <ResponsiveAppBar />
-        <Routes>
-          <Route path="/doctors/:doctorType" element={<DoctorPage />} />
-        </Routes>
-      </div>
-    </Router>
-  );
+	return (
+		<Router>
+			<div className="App">
+			<ResponsiveAppBar />
+				<Routes>
+					<Route path="/doctors/:doctorType" element={<DoctorPage />} />
+				</Routes>
+			</div>
+		</Router>
+	);
 }
 
 export default App;
