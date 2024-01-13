@@ -24,7 +24,15 @@ const DoctorPage = () => {
 
 	return (
 		<div>
-			<h2>Doctors</h2>
+			{/* Display doctor data */}
+			{doctorData.map((doctor) => (
+				<div key={doctor._id}>
+					<h2>{doctor.name}</h2>
+					<p>Specialization: {doctor.specialization}</p>
+					<p>Experience: {doctor.experience} years</p>
+					{/* Add more details based on your doctor data structure */}
+				</div>
+			))}
 		</div>
 	);
 };

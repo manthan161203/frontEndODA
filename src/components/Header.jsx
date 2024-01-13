@@ -291,7 +291,7 @@ const ResponsiveAppBar = () => {
                     </Toolbar>
                 </Container>
             </AppBar>
-            <Box sx={{ mb: 10 }} />
+            {/* <Box sx={{ mb: 10 }} /> */}
         </>
     );
 };
