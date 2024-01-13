@@ -6,19 +6,20 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
+import Badge from '@mui/material/Badge';
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import Menu from '@mui/material/Menu';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
-
-const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const pages = ["Hospitals", "Doctor", "Therapist", "Clinical Doctor"];
+const settings = ["Profile", "Your Appointments", "Logout"];
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -64,6 +65,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const ResponsiveAppBar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const [anchorElNotifications, setAnchorElNotifications] = React.useState(null);
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -71,6 +73,10 @@ const ResponsiveAppBar = () => {
 
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
+    };
+
+    const handleOpenNotifications = (event) => {
+        setAnchorElNotifications(event.currentTarget);
     };
 
     const handleCloseNavMenu = () => {
@@ -81,8 +87,12 @@ const ResponsiveAppBar = () => {
         setAnchorElUser(null);
     };
 
+    const handleCloseNotifications = () => {
+        setAnchorElNotifications(null);
+    };
+
     return (
-        <AppBar position="static">
+        <AppBar position="fixed">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -92,7 +102,7 @@ const ResponsiveAppBar = () => {
                         component="a"
                         href="#app-bar-with-responsive-menu"
                         sx={{
-                            mr: 2,
+                            mr: { xs: 1, md: 2 },
                             display: { xs: 'none', md: 'flex' },
                             fontFamily: 'monospace',
                             fontWeight: 700,
@@ -147,7 +157,7 @@ const ResponsiveAppBar = () => {
                         component="a"
                         href="#app-bar-with-responsive-menu"
                         sx={{
-                            mr: 4,
+                            mr: { xs: 2, md: 4 },
                             display: { xs: 'flex', md: 'none' },
                             flexGrow: 1,
                             fontFamily: 'monospace',
@@ -164,7 +174,7 @@ const ResponsiveAppBar = () => {
                             <Button
                                 key={page}
                                 onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
+                                sx={{ my: { xs: 1, md: 2 }, color: 'white', display: 'block' }}
                             >
                                 {page}
                             </Button>
@@ -182,6 +192,39 @@ const ResponsiveAppBar = () => {
                         />
                     </Search>
 
+                    <Box sx={{ flexGrow: 0, marginLeft: { xs: 0, md: 2 }, marginRight: 4 }}>
+                        <Tooltip title="Open notifications">
+                            <IconButton onClick={handleOpenNotifications} sx={{ p: 0 }}>
+                                <Badge badgeContent={4} color="error">
+                                    <NotificationsIcon />
+                                </Badge>
+                            </IconButton>
+                        </Tooltip>
+                        <Menu
+                            sx={{ mt: { xs: 2, md: '45px' } }}
+                            id="menu-notifications"
+                            anchorEl={anchorElNotifications}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            open={Boolean(anchorElNotifications)}
+                            onClose={handleCloseNotifications}
+                        >
+                            <MenuItem>
+                                <Typography textAlign="center">Messages</Typography>
+                            </MenuItem>
+                            <MenuItem>
+                                <Typography textAlign="center">Notifications</Typography>
+                            </MenuItem>
+                        </Menu>
+                    </Box>
+
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -189,7 +232,7 @@ const ResponsiveAppBar = () => {
                             </IconButton>
                         </Tooltip>
                         <Menu
-                            sx={{ mt: '45px' }}
+                            sx={{ mt: { xs: 2, md: '45px' } }}
                             id="menu-appbar"
                             anchorEl={anchorElUser}
                             anchorOrigin={{
