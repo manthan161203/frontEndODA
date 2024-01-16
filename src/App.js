@@ -2,7 +2,7 @@ import { createContext, useState } from 'react';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ResponsiveAppBar from './components/Navbar';
-import DoctorPage from './pages/DoctorPage';
+import DoctorPage from './components/Doctors';
 import { Grid, GridItem } from '@chakra-ui/react'; // Import Chakra UI Grid components
 
 export const AppContext = createContext();
