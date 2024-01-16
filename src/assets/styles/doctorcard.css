@@ -5,13 +5,12 @@
 /* Card Styles */
 .card-container {
   display: flex;
-  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 23px;
   overflow-x: auto;
   margin-top: 20px;
   padding: 10px;
-  flex-wrap: nowrap;
-  max-width: 100%;
-  overflow-y: hidden;
 }
 
 .card {
@@ -46,18 +45,16 @@
   margin: 1rem auto;
 }
 
-.card p {
-  width: 100%;
+.search-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 20px; /* Add margin to the top */
 }
 
-/* Pagination Styles */
-.pagination-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.pagination {
-  display: flex;
-  justify-content: center;
+.search-bar input {
+  width: 200px; /* Adjust the width as needed */
+  padding: 5px; /* Adjust the padding as needed */
+  margin-left: 10px;
+  margin-right: 10px;
 }

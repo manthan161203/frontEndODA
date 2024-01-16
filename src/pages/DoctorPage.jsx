@@ -1,15 +1,15 @@
+/* eslint-disable no-unused-vars */
+import '../assets/styles/doctorcard.css';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import DoctorCard from '../components/DoctorCard';
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
+import DoctorCard from '../components/DoctorCard'; // Assuming DoctorCard is in the same directory
 
 const DoctorPage = () => {
     const { doctorType } = useParams();
     const [doctorData, setDoctorData] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const doctorsPerPage = 3;
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -22,36 +22,33 @@ const DoctorPage = () => {
         };
 
         fetchData();
-    }, [doctorType]);
+    }, []);
 
-    const handleChange = (event, value) => {
-        setCurrentPage(value);
-    };
-
-    const indexOfLastDoctor = currentPage * doctorsPerPage;
-    const indexOfFirstDoctor = indexOfLastDoctor - doctorsPerPage;
-    const currentDoctors = doctorData.slice(indexOfFirstDoctor, indexOfLastDoctor);
+    // Filter doctors based on search term
+    const filteredDoctors = doctorData.filter(doctor =>
+        doctor.user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        doctor.user.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        doctor.doctorSpecialization.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
-        <>
+        <div>
+            <Box sx={{ mb : 4 }} />
+            <h2>Our Doctors</h2>
+            <div className="search-bar">
+                <input
+                    type="text"
+                    placeholder="Search by name or specialization"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+            </div>
             <div className="card-container">
-                {currentDoctors.map((doctor) => (
+                {filteredDoctors.map((doctor) => (
                     <DoctorCard key={doctor._id} doctor={doctor} />
                 ))}
             </div>
-            <div className="pagination-container">
-                <Stack spacing={2} className="pagination">
-                    <Pagination
-                        count={Math.ceil(doctorData.length / doctorsPerPage)}
-                        page={currentPage}
-                        onChange={handleChange}
-                        boundaryCount={2}
-                        showFirstButton
-                        showLastButton
-                    />
-                </Stack>
-            </div>
-        </>
+        </div>
     );
 };
 
