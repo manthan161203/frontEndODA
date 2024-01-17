@@ -1,5 +1,4 @@
 import { createContext, useState } from 'react';
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavBar from './components/Navbar';
 import Footer from './components/Footer';
@@ -17,11 +16,11 @@ function App() {
         <AppContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
             <Router>
                 <Grid
-                    templateAreas={`"header header"
-                                    "main main"
-                                    "footer footer"`}
+                    templateAreas={`"header"
+                                    "main"
+                                    "footer"`}
                     gridTemplateRows={'50px 1fr 30px'}
-                    gridTemplateColumns={'150px 1fr'}
+                    gridTemplateColumns={'1fr'}
                     h='100vh'
                     gap='1'
                     color='blackAlpha.700'
@@ -34,17 +33,7 @@ function App() {
                     <GridItem pl='2' bg='green.300' area={'main'}>
                         <Routes>
                             <Route path="/hospitals" element={<HospitalPage />} />
-                        </Routes>
-                    </GridItem>
-
-                    <GridItem pl='2' bg='green.300' area={'main'}>
-                        <Routes>
                             <Route path="/hospitals/doctors/:hospitalName" element={<HospitalDoctorPage />} />
-                        </Routes>
-                    </GridItem>
-
-                    <GridItem pl='2' bg='green.300' area={'main'}>
-                        <Routes>
                             <Route path="/doctors/:doctorType" element={<DoctorPage />} />
                         </Routes>
                     </GridItem>
