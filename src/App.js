@@ -1,7 +1,8 @@
 import { createContext, useState } from 'react';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import ResponsiveAppBar from './components/Navbar';
+import NavBar from './components/Navbar';
+import Footer from './components/Footer';
 import DoctorPage from './pages/DoctorPage';
 import { Grid, GridItem } from '@chakra-ui/react';
 
@@ -25,7 +26,7 @@ function App() {
                     fontWeight='bold'
                 >
                     <GridItem pl='2' bg='orange.300' area={'header'}>
-                        <ResponsiveAppBar />
+                        <NavBar />
                     </GridItem>
 
                     <GridItem pl='2' bg='green.300' area={'main'}>
@@ -35,7 +36,7 @@ function App() {
                     </GridItem>
 
                     <GridItem pl='2' bg='blue.300' area={'footer'}>
-                        Footer
+                        <Footer />
                     </GridItem>
 
                 </Grid>
