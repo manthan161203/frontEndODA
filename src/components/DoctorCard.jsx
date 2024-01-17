@@ -21,9 +21,9 @@ const DoctorCard = ({ doctor }) => {
             <p className="fees">
                 <strong>Fees per consultation: </strong>$ {doctor?.fee}
             </p>
-            <p className="experience">
+            <p className="description">
                 <strong>Description: </strong>
-                {doctor?.doctorBio}yrs
+                {doctor?.doctorBio}
             </p>
             <button className="btn appointment-btn" /*onClick={() => handleModal(doctor)}*/>
                 Book Appointment
