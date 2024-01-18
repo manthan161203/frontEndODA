@@ -3,13 +3,13 @@ import '../assets/styles/doctorcard.css';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import styled from 'styled-components'; // Import styled-components
+import styled from 'styled-components';
 import Box from '@mui/material/Box';
-import DoctorCard from '../components/DoctorCard'; // Assuming DoctorCard is in the same directory
+import DoctorCard from '../components/DoctorCard';
 
 const SearchInput = styled.input`
-    width: 400px; /* Increase the width as needed */
-    padding: 15px; /* Increase the padding as needed */
+    width: 400px;
+    padding: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-left: 10px;
@@ -34,7 +34,6 @@ const DoctorPage = () => {
         fetchData();
     }, []);
 
-    // Filter doctors based on search term
     const filteredDoctors = doctorData.filter(doctor =>
         doctor.user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         doctor.user.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -47,7 +46,7 @@ const DoctorPage = () => {
             <div className="search-bar">
                 <h1 className='h2-tag'>Our Doctors</h1>
                 <SearchInput
-                    style={{ width: '400px', padding: '15px' }}  // Adjust width and padding here
+                    style={{ width: '400px', padding: '15px' }}
                     type="text"
                     placeholder="Search Doctor"
                     value={searchTerm}
