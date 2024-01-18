@@ -1,4 +1,17 @@
-@import url(app.css);
+.search-bar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: 20px;
+  flex-direction: row;
+  margin-right: 12px;
+}
+
+.search-bar .h2-tag {
+  text-align: start;
+  margin-right: auto;
+  margin-left: 20px;
+}
 
 .card-container {
   display: flex;
@@ -40,18 +53,4 @@
   font-size: 0.8rem;
   padding: 1rem;
   margin: 1rem auto;
-}
-
-.search-bar {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin-top: 20px;
-}
-
-.search-bar input {
-  width: 200px;
-  padding: 5px;
-  margin-left: 10px;
-  margin-right: 10px;
 }

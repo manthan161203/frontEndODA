@@ -3,8 +3,18 @@ import '../assets/styles/doctorcard.css';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import styled from 'styled-components'; // Import styled-components
 import Box from '@mui/material/Box';
 import DoctorCard from '../components/DoctorCard'; // Assuming DoctorCard is in the same directory
+
+const SearchInput = styled.input`
+    width: 400px; /* Increase the width as needed */
+    padding: 15px; /* Increase the padding as needed */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-left: 10px;
+    outline: none;
+`;
 
 const DoctorPage = () => {
     const { doctorType } = useParams();
@@ -33,12 +43,13 @@ const DoctorPage = () => {
 
     return (
         <div>
-            <Box sx={{ mb : 4 }} />
-            <h2>Our Doctors</h2>
+            <Box sx={{ mb: 4 }} />
             <div className="search-bar">
-                <input
+                <h1 className='h2-tag'>Our Doctors</h1>
+                <SearchInput
+                    style={{ width: '400px', padding: '15px' }}  // Adjust width and padding here
                     type="text"
-                    placeholder="Search by name or specialization"
+                    placeholder="Search Doctor"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />

@@ -201,7 +201,7 @@ const ResponsiveAppBar = () => {
                         </Box>
 
                         {/* Search Bar */}
-                        <Search>
+                        {/* <Search>
                             <SearchIconWrapper>
                                 <SearchIcon />
                             </SearchIconWrapper>
@@ -209,7 +209,7 @@ const ResponsiveAppBar = () => {
                                 placeholder="Search…"
                                 inputProps={{ 'aria-label': 'search' }}
                             />
-                        </Search>
+                        </Search> */}
 
                         {isLoggedIn && (
                             <Box sx={{ flexGrow: 0, marginLeft: { xs: 0, md: 2 }, marginRight: 4 }}>
