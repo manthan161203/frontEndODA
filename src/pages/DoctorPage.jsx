@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import '../assets/styles/doctorcard.css';
 import React, { useEffect, useState } from 'react';

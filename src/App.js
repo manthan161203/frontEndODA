@@ -1,12 +1,13 @@
-import { createContext, useState } from 'react';
+import React, { createContext, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Grid, GridItem } from '@chakra-ui/react';
+
 import NavBar from './components/Navbar';
 import Footer from './components/Footer';
 import DoctorPage from './pages/DoctorPage';
 import HospitalPage from './pages/HospitalPage';
 import HospitalDoctorsPage from './pages/HospitalDoctorsPage';
 import ProfilePage from './pages/ProfilePage';
-import { Grid, GridItem } from '@chakra-ui/react';
 
 export const AppContext = createContext();
 
@@ -14,13 +15,12 @@ function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [role, setRole] = useState('Patient');
     const [userName, setUserName] = useState('rahulk');
+
     return (
         <AppContext.Provider value={{ isLoggedIn, setIsLoggedIn, role, setRole, userName, setUserName }}>
             <Router>
                 <Grid
-                    templateAreas={`"header"
-                                    "main"
-                                    "footer"`}
+                    templateAreas={`"header" "main" "footer"`}
                     gridTemplateRows={'50px 1fr 30px'}
                     gridTemplateColumns={'1fr'}
                     h='100vh'
