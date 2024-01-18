@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AppContext } from '../App';
@@ -10,17 +9,15 @@ import {
     CardContent,
     CircularProgress,
     Container,
-    Grid,
     IconButton,
     TextField,
-    Typography,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import CancelIcon from '@mui/icons-material/Cancel';
 import SaveIcon from '@mui/icons-material/Save';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
-const UserProfile = () => {
+const Profile = () => {
     const { userName } = useContext(AppContext);
     const [userDetails, setUserDetails] = useState({});
     const [isEditing, setIsEditing] = useState(false);
@@ -48,19 +45,17 @@ const UserProfile = () => {
 
     const handleCancelEdit = () => {
         setIsEditing(false);
-        setImageFile(null); // Reset the selected image file on cancel
+        setImageFile(null);
     };
 
     const handleSaveChanges = async () => {
         try {
-            // Perform the image upload here if imageFile is not null
             if (imageFile) {
                 const formData = new FormData();
                 formData.append('image', imageFile);
                 await axios.post(`http://localhost:8001/user/uploadImage/${userName}`, formData);
             }
 
-            // Update other user details
             await axios.put(`http://localhost:8001/user/updateUserDetails/${userName}`, userDetails);
             setIsEditing(false);
         } catch (error) {
@@ -154,4 +149,4 @@ const UserProfile = () => {
     );
 };
 
-export default UserProfile;
+export default Profile;
