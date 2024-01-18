@@ -1,4 +1,4 @@
-@import url(app.css);
+/* eslint-disable no-unused-vars */
 
 footer {
   background-color: var(--light-text-color);
@@ -6,12 +6,12 @@ footer {
 
 .footer {
   display: flex;
-  width: 50%;
+  width: 90%;
   align-items: flex-start;
   justify-content: space-between;
-  height: 100%;
+  height: 50%;
   margin: auto;
-  padding: 2rem 0;
+  padding: 3rem 0;
 }
 
 .footer h3 {
@@ -71,6 +71,14 @@ footer {
 
 .youtube {
   background-color: #ff0000;
+}
+
+.twitter {
+  background-color: #000000;
+}
+
+.linkedin {
+  background-color: #006195;
 }
 
 .footer-bottom {
