@@ -1,8 +1,8 @@
-import '../assets/styles/hospitalcard.css';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Box from '@mui/material/Box';
 import HospitalCard from '../components/HospitalCard';
+import '../assets/styles/hospitalcard.css';
 
 const HospitalPage = () => {
     const [hospitalData, setHospitalData] = useState([]);
@@ -22,7 +22,7 @@ const HospitalPage = () => {
         fetchData();
     }, []);
 
-    const filteredHospitals = hospitalData.filter(hospital =>
+    const filteredHospitals = hospitalData.filter((hospital) =>
         hospital.hospitalName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         hospital.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
         hospital.hasAmbulance.toLowerCase().includes(searchTerm.toLowerCase())
@@ -30,7 +30,7 @@ const HospitalPage = () => {
 
     return (
         <div>
-            <Box sx={{ mb : 4 }} />
+            <Box sx={{ mb: 4 }} />
             <h2>Our Hospitals</h2>
             <div className="search-bar">
                 <input

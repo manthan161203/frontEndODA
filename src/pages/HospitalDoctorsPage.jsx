@@ -8,6 +8,10 @@ const HospitalDoctorsPage = () => {
     const { hospitalName } = useParams();
     const [doctorData, setDoctorData] = useState([]);
 
+    const centeredHeadingStyle = {
+        textAlign: 'center',
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -24,8 +28,8 @@ const HospitalDoctorsPage = () => {
 
     return (
         <div>
-            <Box sx={{ mb : 4 }} />
-            <h2>Doctors at {hospitalName}</h2>
+            <Box sx={{ mb: 4 }} />
+            <h2 style={centeredHeadingStyle}>Doctors at {hospitalName}</h2>
             <div className="card-container">
                 {doctorData.map((doctor) => (
                     <DoctorCard key={doctor._id} doctor={doctor} />

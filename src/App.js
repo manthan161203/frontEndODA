@@ -4,8 +4,8 @@ import NavBar from './components/Navbar';
 import Footer from './components/Footer';
 import DoctorPage from './pages/DoctorPage';
 import HospitalPage from './pages/HospitalPage';
-import HospitalDoctorPage from './pages/HospitalDoctorPage';
-import BasicProfilePage from './pages/BasicProfilePage';
+import HospitalDoctorsPage from './pages/HospitalDoctorsPage';
+import ProfilePage from './pages/ProfilePage';
 import { Grid, GridItem } from '@chakra-ui/react';
 
 export const AppContext = createContext();
@@ -35,9 +35,9 @@ function App() {
                     <GridItem pl='2' bg='green.300' area={'main'}>
                         <Routes>
                             <Route path="/hospitals" element={<HospitalPage />} />
-                            <Route path="/hospitals/doctors/:hospitalName" element={<HospitalDoctorPage />} />
+                            <Route path="/hospitals/doctors/:hospitalName" element={<HospitalDoctorsPage />} />
                             <Route path="/doctors/:doctorType" element={<DoctorPage />} />
-                            <Route path="/profile/:userName" element={<BasicProfilePage />} />
+                            <Route path="/profile/:userName" element={<ProfilePage />} />
                         </Routes>
                     </GridItem>
 
