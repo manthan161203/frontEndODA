@@ -5,15 +5,17 @@ import Footer from './components/Footer';
 import DoctorPage from './pages/DoctorPage';
 import HospitalPage from './pages/HospitalPage';
 import HospitalDoctorPage from './pages/HospitalDoctorPage';
+import BasicProfilePage from './pages/BasicProfilePage';
 import { Grid, GridItem } from '@chakra-ui/react';
 
 export const AppContext = createContext();
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+    const [role, setRole] = useState('Patient');
+    const [userName, setUserName] = useState('rahulk');
     return (
-        <AppContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
+        <AppContext.Provider value={{ isLoggedIn, setIsLoggedIn, role, setRole, userName, setUserName }}>
             <Router>
                 <Grid
                     templateAreas={`"header"
@@ -35,13 +37,13 @@ function App() {
                             <Route path="/hospitals" element={<HospitalPage />} />
                             <Route path="/hospitals/doctors/:hospitalName" element={<HospitalDoctorPage />} />
                             <Route path="/doctors/:doctorType" element={<DoctorPage />} />
+                            <Route path="/profile/:userName" element={<BasicProfilePage />} />
                         </Routes>
                     </GridItem>
 
                     <GridItem pl='2' bg='blue.300' area={'footer'}>
                         <Footer />
                     </GridItem>
-
                 </Grid>
             </Router>
         </AppContext.Provider>

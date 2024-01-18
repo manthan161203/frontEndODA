@@ -24,6 +24,7 @@ const pages = [
     { name: "Doctor", path: "/doctors/doctor" },
     { name: "Therapist", path: "/doctors/therapist" },
     { name: "Clinical Doctor", path: "/doctors/clinicaldoctor" },
+    { name: "Profile", path: "/profile" },
 ];
 const settings = ["Profile", "Your Appointments", "Logout"];
 
@@ -69,7 +70,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const ResponsiveAppBar = () => {
-    const { isLoggedIn } = useContext(AppContext);
+    const { isLoggedIn, userName } = useContext(AppContext);
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
     const [anchorElNotifications, setAnchorElNotifications] = useState(null);
@@ -195,7 +196,13 @@ const ResponsiveAppBar = () => {
                                     onClick={() => handleCloseNavMenu(page.name)}
                                     sx={{ my: { xs: 1, md: 2 }, color: 'white', display: 'block' }}
                                 >
-                                    {page.name}
+                                    {page.name === 'Profile' ? (
+                                        <a href={`/profile/${userName}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                                            {page.name}
+                                        </a>
+                                    ) : (
+                                        page.name
+                                    )}
                                 </Button>
                             ))}
                         </Box>
@@ -290,7 +297,7 @@ const ResponsiveAppBar = () => {
                     </Toolbar>
                 </Container>
             </AppBar>
-            <Box sx={{ mb : 10 }} />
+            <Box sx={{ mb: 10 }} />
         </>
     );
 };
