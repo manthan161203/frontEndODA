@@ -1,6 +1,10 @@
 import React from "react";
 import "../assets/styles/footer.css";
-// import { MdFacebook, MdYouTube, MdInstagram } from "react-icons/md";
+import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
+import YouTubeIcon from '@mui/icons-material/YouTube';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import XIcon from '@mui/icons-material/X';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { HashLink } from "react-router-hash-link";
 import { NavLink } from "react-router-dom";
 
@@ -41,7 +45,7 @@ const Footer = () => {
                                     target={"_blank"}
                                     rel="noreferrer"
                                 >
-                                    {/* <MdFacebook /> */}
+                                    <FacebookOutlinedIcon />
                                 </a>
                             </li>
                             <li className="youtube">
@@ -50,7 +54,7 @@ const Footer = () => {
                                     target={"_blank"}
                                     rel="noreferrer"
                                 >
-                                    {/* <MdYouTube /> */}
+                                    <YouTubeIcon />
                                 </a>
                             </li>
                             <li className="instagram">
@@ -59,7 +63,25 @@ const Footer = () => {
                                     target={"_blank"}
                                     rel="noreferrer"
                                 >
-                                    {/* <MdInstagram /> */}
+                                    <InstagramIcon />
+                                </a>
+                            </li>
+                            <li className="twitter">
+                                <a
+                                    href="https://www.instagram.com/"
+                                    target={"_blank"}
+                                    rel="noreferrer"
+                                >
+                                    <XIcon />
+                                </a>
+                            </li>
+                            <li className="linkedin">
+                                <a
+                                    href="https://www.instagram.com/"
+                                    target={"_blank"}
+                                    rel="noreferrer"
+                                >
+                                    <LinkedInIcon />
                                 </a>
                             </li>
                         </ul>
@@ -68,11 +90,11 @@ const Footer = () => {
                 <div className="footer-bottom">
                     Made by{" "}
                     <a
-                        href="https://www.linkedin.com/in/dunna-avinash"
+                        href="https://github.com/"
                         target="_blank"
                         rel="noreferrer"
                     >
-                        Avinash
+                        MTM Brothers
                     </a>{" "}
                     © {new Date().getFullYear()}
                 </div>

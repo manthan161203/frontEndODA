@@ -2,7 +2,7 @@ import '../assets/styles/hospitalcard.css';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Box from '@mui/material/Box';
-import BasicProfile from '../components/BasicProfile';
+import BasicProfile from '../components/Profile';
 
 const BasicProfilePage = () => {
 
