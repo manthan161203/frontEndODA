@@ -27,6 +27,7 @@ const DoctorPage = () => {
             try {
                 const response = await axios.get(`http://localhost:8001/doctor/getDoctorsByType/${doctorType}`);
                 setDoctorData(response.data);
+                // console.log(response.data);
             } catch (error) {
                 console.error('Error fetching doctor data:', error);
             }

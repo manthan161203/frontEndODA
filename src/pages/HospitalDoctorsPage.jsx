@@ -17,7 +17,6 @@ const HospitalDoctorsPage = () => {
             try {
                 const response = await axios.get(`http://localhost:8001/doctor/getDoctorsByHospital/${hospitalName}`);
                 setDoctorData(response.data);
-                console.log(response.data);
             } catch (error) {
                 console.error('Error fetching doctors:', error);
             }
@@ -32,6 +31,7 @@ const HospitalDoctorsPage = () => {
             <h2 style={centeredHeadingStyle}>Doctors at {hospitalName}</h2>
             <div className="card-container">
                 {doctorData.map((doctor) => (
+                    doctor.user = doctor.user[0],
                     <DoctorCard key={doctor._id} doctor={doctor} />
                 ))}
             </div>
