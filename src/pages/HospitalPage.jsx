@@ -22,7 +22,7 @@ const HospitalPage = () => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(`http://localhost:8001/admin/getAllHospital`);
-                console.log(response.data);
+                // console.log(response.data);
                 setHospitalData(response.data);
             } catch (error) {
                 console.error('Error fetching hospital data:', error);

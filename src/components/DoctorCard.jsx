@@ -4,7 +4,6 @@ import '../assets/styles/doctorcard.css';
 
 const DoctorCard = ({ doctor }) => {
     const defaultProfilePic = "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg";
-
     return (
         <div className="card">
             <div className="card-img flex-center">
