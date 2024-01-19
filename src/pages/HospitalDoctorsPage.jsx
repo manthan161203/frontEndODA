@@ -17,14 +17,14 @@ const HospitalDoctorsPage = () => {
             try {
                 const response = await axios.get(`http://localhost:8001/doctor/getDoctorsByHospital/${hospitalName}`);
                 setDoctorData(response.data);
-                console.log(response.data);
             } catch (error) {
                 console.error('Error fetching doctors:', error);
             }
         };
-
+    
         fetchData();
     }, [hospitalName]);
+    
 
     return (
         <div>
