@@ -8,13 +8,14 @@ import DoctorPage from './pages/DoctorPage';
 import HospitalPage from './pages/HospitalPage';
 import HospitalDoctorsPage from './pages/HospitalDoctorsPage';
 import ProfilePage from './pages/ProfilePage';
+import RoleProfilePage from './pages/RoleProfilePage';
 
 export const AppContext = createContext();
 
 function App() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(true);
     const [role, setRole] = useState('Patient');
-    const [userName, setUserName] = useState('rahulk');
+    const [userName, setUserName] = useState('priya_d');
 
     return (
         <AppContext.Provider value={{ isLoggedIn, setIsLoggedIn, role, setRole, userName, setUserName }}>
@@ -38,6 +39,7 @@ function App() {
                             <Route path="/hospitals/doctors/:hospitalName" element={<HospitalDoctorsPage />} />
                             <Route path="/doctors/:doctorType" element={<DoctorPage />} />
                             <Route path="/profile/:userName" element={<ProfilePage />} />
+                            <Route path="/profile-role/:userName" element={<RoleProfilePage />} />
                         </Routes>
                     </GridItem>
 
