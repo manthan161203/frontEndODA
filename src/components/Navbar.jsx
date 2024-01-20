@@ -24,9 +24,10 @@ const pages = [
     { name: "Doctor", path: "/doctors/doctor" },
     { name: "Therapist", path: "/doctors/therapist" },
     { name: "Clinical Doctor", path: "/doctors/clinicaldoctor" },
-    { name: "Profile", path: "/profile" },
+
 ];
-const settings = ["Profile", "Your Appointments", "Logout"];
+
+
 
 // const Search = styled('div')(({ theme }) => ({
 //     position: 'relative',
@@ -70,6 +71,8 @@ const settings = ["Profile", "Your Appointments", "Logout"];
 // }));
 
 const ResponsiveAppBar = () => {
+    const { role } = useContext(AppContext);
+    const settings = ["User Profile", role + " Profile", "Your Appointments", "Logout"];
     const { isLoggedIn, userName } = useContext(AppContext);
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
@@ -96,6 +99,9 @@ const ResponsiveAppBar = () => {
     };
 
     const handleCloseUserMenu = () => {
+        // if (setting == "Profile"){
+
+        // }
         setAnchorElUser(null);
     };
 
@@ -196,13 +202,7 @@ const ResponsiveAppBar = () => {
                                     onClick={() => handleCloseNavMenu(page.name)}
                                     sx={{ my: { xs: 1, md: 2 }, color: 'white', display: 'block' }}
                                 >
-                                    {page.name === 'Profile' ? (
-                                        <a href={`/profile/${userName}`} style={{ color: 'inherit', textDecoration: 'none' }}>
-                                            {page.name}
-                                        </a>
-                                    ) : (
-                                        page.name
-                                    )}
+                                    {page.name}
                                 </Button>
                             ))}
                         </Box>
@@ -278,7 +278,21 @@ const ResponsiveAppBar = () => {
                                 >
                                     {settings.map((setting) => (
                                         <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                            <Typography textAlign="center">{setting}</Typography>
+                                            {setting === 'User Profile' && (
+                                                <a href={`/profile/${userName}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                                                    {setting}
+                                                </a>
+                                            )}
+                                            {setting === role + ' Profile' && (
+                                                <a href={`/profile-role/${userName}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                                                {setting}
+                                            </a>
+                                            )}
+                                            {/* {setting !== 'User Profile' && setting !== role + ' Profile' && (
+                                                setting
+                                            )
+                                            } */}
+                                            {/* <Typography textAlign="center">{setting}</Typography> */}
                                         </MenuItem>
                                     ))}
                                 </Menu>
