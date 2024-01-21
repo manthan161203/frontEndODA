@@ -114,7 +114,7 @@ const ResponsiveAppBar = () => {
     };
 
     const handleSignUp = () => {
-        window.location.href = "/signup";
+        window.location.href = "/register";
     };
 
     return (

@@ -10,6 +10,7 @@ import HospitalDoctorsPage from './pages/HospitalDoctorsPage';
 import ProfilePage from './pages/ProfilePage';
 import RoleProfilePage from './pages/RoleProfilePage';
 import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage'; // Adjust the import based on your project structure
 
 export const AppContext = createContext();
 
@@ -42,6 +43,7 @@ function App() {
                             <Route path="/profile/:userName" element={<ProfilePage />} />
                             <Route path="/profile-role/:userName" element={<RoleProfilePage />} />
                             <Route path="/login" element={<LoginPage />} />
+                            <Route path="/register" element={<RegisterPage />} />
                         </Routes>
                     </GridItem>
 
