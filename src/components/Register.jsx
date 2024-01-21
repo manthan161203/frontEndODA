@@ -19,6 +19,7 @@ const Register = () => {
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [userName, setUserName] = useState('');
+    const [userId, setUserId] = useState('');
     const [password, setPassword] = useState('');
     const [dateOfBirth, setDateOfBirth] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -34,6 +35,7 @@ const Register = () => {
         try {
             if (otpOption === 'sms') {
                 await axios.post(`http://localhost:8001/register/submit-info`, {
+                    userId,
                     firstName,
                     lastName,
                     email,
@@ -89,6 +91,16 @@ const Register = () => {
         <Container maxWidth="sm">
             <div>
                 <form>
+
+                    <TextField
+                        fullWidth
+                        label="user ID"
+                        variant="outlined"
+                        type="text"
+                        value={userId}
+                        onChange={(e) => setUserId(e.target.value)}
+                        sx={{ mb: 2 }}
+                    />
                     <TextField
                         fullWidth
                         label="First Name"
