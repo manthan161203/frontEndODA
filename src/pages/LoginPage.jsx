@@ -1,12 +1,12 @@
-import Box from '@mui/material/Box';
+import Box from '@mui/system/Box';
 import LoginForm from '../components/Login';
 
-const LoginPage = () => {
-    
-    const centeredHeadingStyle = {
-        textAlign: 'center',
-    };
+const centeredHeadingStyle = {
+    textAlign: 'center',
+    marginBottom: '20px',
+};
 
+const LoginPage = () => {
     return (
         <div>
             <Box sx={{ mb: 4 }} />
