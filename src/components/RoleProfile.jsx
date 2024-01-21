@@ -79,9 +79,9 @@ const RoleProfile = () => {
     const renderFields = (obj, parentKey = '') => {
         return Object.keys(obj).map((key) => {
             const currentKey = parentKey ? `${parentKey}.${key}` : key;
-            console.log("Key: " + key);
-            console.log("Parent: " + parentKey);
-            console.log("Current: " + currentKey);
+            // console.log("Key: " + key);
+            // console.log("Parent: " + parentKey);
+            // console.log("Current: " + currentKey);
             if (!isNaN(key) && typeof obj[key] !== 'object') {
                 return null;
             }
