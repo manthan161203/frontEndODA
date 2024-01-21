@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { AppContext } from '../App';
 import {
     Button,
     Container,
@@ -14,6 +15,7 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const Login = () => {
+    const { setIsLoggedIn } = useContext(AppContext);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [otpOption, setOtpOption] = useState('sms');
@@ -40,9 +42,12 @@ const Login = () => {
                 otp,
                 password,
             });
-
+            console.log(response);
             if (response.status === 200) {
-                console.log('Login successful', response.data);
+                localStorage.setItem('userName', username);
+                localStorage.setItem('role', response.data.role.charAt(0).toUpperCase()+response.data.role.slice(1));
+                setIsLoggedIn(true);
+                localStorage.setItem('isLoggedIn', true);
                 Swal.fire('Success', 'OTP and password verified successfully', 'success');
                 window.location.href = '/hospitals';
             }

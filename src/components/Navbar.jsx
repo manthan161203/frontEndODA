@@ -71,13 +71,13 @@ const pages = [
 // }));
 
 const ResponsiveAppBar = () => {
-    const { role } = useContext(AppContext);
+    const role = localStorage.getItem('role');
+    const { setIsLoggedIn, setRole, setUserName, isLoggedIn, userName } = useContext(AppContext);
     const settings = ["User Profile", role + " Profile", "Your Appointments", "Logout"];
-    const { isLoggedIn, userName } = useContext(AppContext);
+    // const { isLoggedIn, userName } = useContext(AppContext);
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
     const [anchorElNotifications, setAnchorElNotifications] = useState(null);
-
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -98,12 +98,24 @@ const ResponsiveAppBar = () => {
         }
     };
 
-    const handleCloseUserMenu = () => {
-        // if (setting == "Profile"){
-
-        // }
+    const handleCloseUserMenu = (setting) => {
         setAnchorElUser(null);
+
+        if (setting === 'User Profile') {
+            window.location.href = `/profile/${userName}`;
+        } else if (setting === `${role} Profile`) {
+            window.location.href = `/profile-role/${userName}`;
+        } else if (setting === 'Logout') {
+            localStorage.removeItem('userName');
+            localStorage.removeItem('role');
+            localStorage.removeItem('isLoggedIn');
+            setUserName(null);
+            setRole('Patient');
+            setIsLoggedIn(false);
+            window.location.href = '/login';
+        }
     };
+
 
     const handleCloseNotifications = () => {
         setAnchorElNotifications(null);
@@ -274,28 +286,30 @@ const ResponsiveAppBar = () => {
                                         horizontal: 'right',
                                     }}
                                     open={Boolean(anchorElUser)}
-                                    onClose={handleCloseUserMenu}
+                                    onClose={() => handleCloseUserMenu()}
                                 >
                                     {settings.map((setting) => (
-                                        <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                                        <MenuItem key={setting} onClick={() => handleCloseUserMenu(setting)}>
+                                            {/* Use a conditional rendering approach based on the selected setting */}
                                             {setting === 'User Profile' && (
                                                 <a href={`/profile/${userName}`} style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     {setting}
                                                 </a>
                                             )}
-                                            {setting === role + ' Profile' && (
+                                            {setting === `${role} Profile` && (
                                                 <a href={`/profile-role/${userName}`} style={{ color: 'inherit', textDecoration: 'none' }}>
-                                                {setting}
-                                            </a>
+                                                    {setting}
+                                                </a>
                                             )}
-                                            {/* {setting !== 'User Profile' && setting !== role + ' Profile' && (
-                                                setting
-                                            )
-                                            } */}
-                                            {/* <Typography textAlign="center">{setting}</Typography> */}
+                                            {setting === 'Logout' && (
+                                                <a href={`/login`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                                                    {setting}
+                                                </a>
+                                            )}
                                         </MenuItem>
                                     ))}
                                 </Menu>
+
                             </Box>
                         )}
                         {!isLoggedIn && (

@@ -10,14 +10,14 @@ import HospitalDoctorsPage from './pages/HospitalDoctorsPage';
 import ProfilePage from './pages/ProfilePage';
 import RoleProfilePage from './pages/RoleProfilePage';
 import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage'; // Adjust the import based on your project structure
+import RegisterPage from './pages/RegisterPage';
 
 export const AppContext = createContext();
 
 function App() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [role, setRole] = useState('Patient');
-    const [userName, setUserName] = useState('priya_d');
+    const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true' || false);
+    const [role, setRole] = useState(localStorage.getItem('role'));
+    const [userName, setUserName] = useState(localStorage.getItem('userName'));
 
     return (
         <AppContext.Provider value={{ isLoggedIn, setIsLoggedIn, role, setRole, userName, setUserName }}>
