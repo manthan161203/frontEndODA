@@ -98,7 +98,7 @@ const Login = () => {
                                         onClick={handleTogglePasswordVisibility}
                                         tabIndex={-1}
                                     >
-                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        {showPassword ? <Visibility /> : <VisibilityOff />}
                                     </Button>
                                 </InputAdornment>
                             ),
