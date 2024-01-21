@@ -9,11 +9,12 @@ import HospitalPage from './pages/HospitalPage';
 import HospitalDoctorsPage from './pages/HospitalDoctorsPage';
 import ProfilePage from './pages/ProfilePage';
 import RoleProfilePage from './pages/RoleProfilePage';
+import LoginPage from './pages/LoginPage';
 
 export const AppContext = createContext();
 
 function App() {
-    const [isLoggedIn, setIsLoggedIn] = useState(true);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [role, setRole] = useState('Patient');
     const [userName, setUserName] = useState('priya_d');
 
@@ -40,6 +41,7 @@ function App() {
                             <Route path="/doctors/:doctorType" element={<DoctorPage />} />
                             <Route path="/profile/:userName" element={<ProfilePage />} />
                             <Route path="/profile-role/:userName" element={<RoleProfilePage />} />
+                            <Route path="/login" element={<LoginPage />} />
                         </Routes>
                     </GridItem>
 
