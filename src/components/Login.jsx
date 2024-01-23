@@ -69,6 +69,7 @@ const Login = () => {
                 localStorage.setItem('role', response.data.role.charAt(0).toUpperCase() + response.data.role.slice(1));
                 setIsLoggedIn(true);
                 localStorage.setItem('isLoggedIn', true);
+                localStorage.setItem('password', password);
                 Swal.fire('Success', 'OTP and password verified successfully', 'success');
                 window.location.href = '/hospitals';
             }
