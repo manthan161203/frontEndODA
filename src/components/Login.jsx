@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -27,10 +28,12 @@ const Login = () => {
     const handleSendOtp = async () => {
         try {
             setLoading(true); // Set loading to true when sending OTP
+    
             if (otpOption === 'sms' || otpOption === 'email') {
                 await axios.post(`http://localhost:8001/login/send-otp/${otpOption}/${username}`, {
                     password,
                 });
+    
                 Swal.fire('Success', `OTP sent successfully to ${otpOption === 'sms' ? 'your phone' : 'your email'}`, 'success');
             } else {
                 setErrorMessage('Invalid OTP option');
@@ -38,23 +41,28 @@ const Login = () => {
         } catch (error) {
             if (error.response) {
                 const statusCode = error.response.status;
-
+    
                 if (statusCode === 404) {
                     Swal.fire('Error', 'User not found', 'error');
-                } else if (statusCode === 400) {
-                    Swal.fire('Error', 'Invalid OTP or OTP expired', 'error');
                 } else if (statusCode === 401) {
                     Swal.fire('Error', 'Invalid password', 'error');
+                } else if (statusCode === 400) {
+                    Swal.fire('Error', 'Invalid OTP or OTP expired', 'error');
                 } else if (statusCode === 500) {
                     Swal.fire('Error', 'Server Error', 'error');
+                } else {
+                    Swal.fire('Error', 'Unexpected error occurred', 'error');
                 }
             } else {
-                console.error('Error during login:', error.message);
+                console.error('Error during OTP sending:', error.message);
+                Swal.fire('Error', 'Unexpected error occurred', 'error');
             }
         } finally {
             setLoading(false); // Set loading to false after sending OTP
         }
     };
+    
+    
 
     const handleLogin = async () => {
         try {
@@ -88,6 +96,7 @@ const Login = () => {
                 }
             } else {
                 console.error('Error during login:', error.message);
+                Swal.fire('Error', 'Unexpected error occurred', 'error');
             }
         } finally {
             setLoading(false); // Set loading to false after login attempt
@@ -166,12 +175,6 @@ const Login = () => {
                             onChange={(e) => setOtp(e.target.value)}
                             sx={{ mb: 2 }}
                         />
-                    )}
-
-                    {errorMessage && (
-                        <div style={{ color: 'red', marginBottom: '16px' }}>
-                            {errorMessage}
-                        </div>
                     )}
 
                     <Button
