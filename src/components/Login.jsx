@@ -22,30 +22,51 @@ const Login = () => {
     const [otp, setOtp] = useState('');
     const [showPassword, setShowPassword] = useState(true);
     const [errorMessage, setErrorMessage] = useState('');
+    const [loading, setLoading] = useState(false); // Add loading state
 
     const handleSendOtp = async () => {
         try {
+            setLoading(true); // Set loading to true when sending OTP
             if (otpOption === 'sms' || otpOption === 'email') {
-                await axios.post(`http://localhost:8001/login/send-otp/${otpOption}/${username}`);
+                await axios.post(`http://localhost:8001/login/send-otp/${otpOption}/${username}`, {
+                    password,
+                });
                 Swal.fire('Success', `OTP sent successfully to ${otpOption === 'sms' ? 'your phone' : 'your email'}`, 'success');
             } else {
                 setErrorMessage('Invalid OTP option');
             }
         } catch (error) {
-            setErrorMessage('Invalid username');
+            if (error.response) {
+                const statusCode = error.response.status;
+
+                if (statusCode === 404) {
+                    Swal.fire('Error', 'User not found', 'error');
+                } else if (statusCode === 400) {
+                    Swal.fire('Error', 'Invalid OTP or OTP expired', 'error');
+                } else if (statusCode === 401) {
+                    Swal.fire('Error', 'Invalid password', 'error');
+                } else if (statusCode === 500) {
+                    Swal.fire('Error', 'Server Error', 'error');
+                }
+            } else {
+                console.error('Error during login:', error.message);
+            }
+        } finally {
+            setLoading(false); // Set loading to false after sending OTP
         }
     };
 
     const handleLogin = async () => {
         try {
+            setLoading(true); // Set loading to true during login process
+
             const response = await axios.post(`http://localhost:8001/login/verify-otp/${username}`, {
                 otp,
-                password,
             });
-            console.log(response);
+
             if (response.status === 200) {
                 localStorage.setItem('userName', username);
-                localStorage.setItem('role', response.data.role.charAt(0).toUpperCase()+response.data.role.slice(1));
+                localStorage.setItem('role', response.data.role.charAt(0).toUpperCase() + response.data.role.slice(1));
                 setIsLoggedIn(true);
                 localStorage.setItem('isLoggedIn', true);
                 Swal.fire('Success', 'OTP and password verified successfully', 'success');
@@ -67,6 +88,8 @@ const Login = () => {
             } else {
                 console.error('Error during login:', error.message);
             }
+        } finally {
+            setLoading(false); // Set loading to false after login attempt
         }
     };
 
@@ -127,8 +150,9 @@ const Login = () => {
                         color="primary"
                         onClick={handleSendOtp}
                         sx={{ mb: 2 }}
+                        disabled={loading} // Disable the button when loading
                     >
-                        Send OTP
+                        {loading ? 'Sending OTP...' : 'Send OTP'}
                     </Button>
 
                     {otpOption && (
@@ -153,8 +177,9 @@ const Login = () => {
                         variant="contained"
                         color="primary"
                         onClick={handleLogin}
+                        disabled={loading} // Disable the button when loading
                     >
-                        Submit
+                        {loading ? 'Logging in...' : 'Submit'}
                     </Button>
                 </form>
             </div>
