@@ -38,7 +38,7 @@ const RoleProfile = () => {
         };
 
         fetchData();
-    }, [userName]);
+    }, [userName, role]);
 
     const handleEditClick = () => {
         setIsEditing(true);

@@ -31,10 +31,10 @@ const HospitalDoctorsPage = () => {
             <Box sx={{ mb: 4 }} />
             <h2 style={centeredHeadingStyle}>Doctors at {hospitalName}</h2>
             <div className="card-container">
-                {doctorData.map((doctor) => (
-                    doctor.user = doctor.user[0],
-                    <DoctorCard key={doctor._id} doctor={doctor} />
-                ))}
+                {doctorData.map((doctor) => {
+                    doctor.user = doctor.user[0];
+                    return <DoctorCard key={doctor._id} doctor={doctor} />
+                })}
             </div>
         </div>
     );
