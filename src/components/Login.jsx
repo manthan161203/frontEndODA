@@ -24,8 +24,30 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(true);
     const [errorMessage, setErrorMessage] = useState('');
     const [loading, setLoading] = useState(false); // Add loading state
+    const [formSubmitted, setFormSubmitted] = useState(false); // Track form submission
+
+    const validateFields = () => {
+        const requiredFields = ['username', 'password', 'otpOption'];
+        let isValid = true;
+
+        requiredFields.forEach(field => {
+            if (!eval(field)) { // Use eval to dynamically access state variables
+                Swal.fire('Error', 'Please fill in all required fields', 'error');
+                setErrorMessage('Please fill in all required fields');
+                isValid = false;
+            }
+        });
+
+        return isValid;
+    };
 
     const handleSendOtp = async () => {
+        setFormSubmitted(true);
+
+        if (!validateFields()) {
+            return;
+        }
+
         try {
             setLoading(true); // Set loading to true when sending OTP
     
@@ -62,9 +84,13 @@ const Login = () => {
         }
     };
     
-    
-
     const handleLogin = async () => {
+        setFormSubmitted(true);
+
+        if (!validateFields()) {
+            return;
+        }
+
         try {
             setLoading(true); // Set loading to true during login process
 
@@ -107,6 +133,10 @@ const Login = () => {
         setShowPassword(!showPassword);
     };
 
+    const handleForgotPassword = () => {
+        window.location.href = "/forgot-password";
+    };
+
     return (
         <Container maxWidth="sm">
             <div>
@@ -119,6 +149,8 @@ const Login = () => {
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         sx={{ mb: 2 }}
+                        error={formSubmitted && !username}
+                        required
                     />
 
                     <TextField
@@ -129,6 +161,8 @@ const Login = () => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         sx={{ mb: 2 }}
+                        error={formSubmitted && !password}
+                        required
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
@@ -149,6 +183,8 @@ const Login = () => {
                             value={otpOption}
                             onChange={(e) => setOtpOption(e.target.value)}
                             label="Send OTP by"
+                            error={formSubmitted && !otpOption}
+                            required
                         >
                             <MenuItem value="sms">SMS</MenuItem>
                             <MenuItem value="email">Email</MenuItem>
@@ -174,6 +210,8 @@ const Login = () => {
                             value={otp}
                             onChange={(e) => setOtp(e.target.value)}
                             sx={{ mb: 2 }}
+                            error={formSubmitted && !otp}
+                            required
                         />
                     )}
 
@@ -181,9 +219,17 @@ const Login = () => {
                         variant="contained"
                         color="primary"
                         onClick={handleLogin}
-                        disabled={loading} // Disable the button when loading
+                        disabled={loading}
                     >
                         {loading ? 'Logging in...' : 'Submit'}
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleForgotPassword}
+                        disabled={loading}
+                    >
+                        {loading ? 'Logging in...' : 'Forgot Password'}
                     </Button>
                 </form>
             </div>

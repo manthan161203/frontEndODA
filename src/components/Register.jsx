@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -30,9 +31,34 @@ const Register = () => {
     const [otp, setOtp] = useState('');
     const [showPassword, setShowPassword] = useState(true);
     const [errorMessage, setErrorMessage] = useState('');
+    const [loading, setLoading] = useState(false); // Add loading state
+    const [formSubmitted, setFormSubmitted] = useState(false); // Track form submission
+
+    const validateFields = () => {
+        const requiredFields = ['userId', 'firstName', 'lastName', 'email', 'userName', 'password', 'dateOfBirth', 'phoneNumber', 'address', 'gender', 'role'];
+        let isValid = true;
+
+        requiredFields.forEach(field => {
+            if (!eval(field)) { // Use eval to dynamically access state variables
+                Swal.fire('Error', 'Please fill in all required fields', 'error');
+                setErrorMessage('Please fill in all required fields');
+                isValid = false;
+            }
+        });
+
+        return isValid;
+    };
 
     const handleSendOtp = async () => {
+        setFormSubmitted(true);
+
+        if (!validateFields()) {
+            return;
+        }
+
         try {
+            setLoading(true);
+
             if (otpOption === 'sms') {
                 await axios.post(`http://localhost:8001/register/submit-info`, {
                     userId,
@@ -54,10 +80,18 @@ const Register = () => {
             }
         } catch (error) {
             setErrorMessage('Error submitting user information');
+        } finally {
+            setLoading(false);
         }
     };
 
     const handleRegister = async () => {
+        setFormSubmitted(true);
+
+        if (!validateFields()) {
+            return;
+        }
+
         try {
             await axios.post(`http://localhost:8001/register/verify-and-register`, {
                 phoneNumber,
@@ -100,6 +134,8 @@ const Register = () => {
                         value={userId}
                         onChange={(e) => setUserId(e.target.value)}
                         sx={{ mb: 2 }}
+                        error={formSubmitted && !userId}
+                        required
                     />
                     <TextField
                         fullWidth
@@ -109,6 +145,8 @@ const Register = () => {
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
                         sx={{ mb: 2 }}
+                        error={formSubmitted && !firstName}
+                        required
                     />
 
                     <TextField
@@ -119,6 +157,8 @@ const Register = () => {
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
                         sx={{ mb: 2 }}
+                        error={formSubmitted && !lastName}
+                        required
                     />
 
                     <TextField
@@ -129,6 +169,8 @@ const Register = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         sx={{ mb: 2 }}
+                        error={formSubmitted && !email}
+                        required
                     />
 
                     <TextField
@@ -139,6 +181,8 @@ const Register = () => {
                         value={userName}
                         onChange={(e) => setUserName(e.target.value)}
                         sx={{ mb: 2 }}
+                        error={formSubmitted && !userName}
+                        required
                     />
 
                     <TextField
@@ -149,6 +193,8 @@ const Register = () => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         sx={{ mb: 2 }}
+                        error={formSubmitted && !password}
+                        required
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
@@ -172,6 +218,8 @@ const Register = () => {
                         value={dateOfBirth}
                         onChange={(e) => setDateOfBirth(e.target.value)}
                         sx={{ mb: 2 }}
+                        error={formSubmitted && !dateOfBirth}
+                        required
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
@@ -191,6 +239,8 @@ const Register = () => {
                         value={phoneNumber}
                         onChange={(e) => setPhoneNumber(e.target.value)}
                         sx={{ mb: 2 }}
+                        error={formSubmitted && !phoneNumber}
+                        required
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
@@ -210,6 +260,8 @@ const Register = () => {
                         value={address}
                         onChange={(e) => setAddress(e.target.value)}
                         sx={{ mb: 2 }}
+                        error={formSubmitted && !address}
+                        required
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
@@ -227,6 +279,8 @@ const Register = () => {
                             value={gender}
                             onChange={(e) => setGender(e.target.value)}
                             label="Gender"
+                            error={formSubmitted && !gender}
+                            required
                         >
                             <MenuItem value="Male">Male</MenuItem>
                             <MenuItem value="Female">Female</MenuItem>
@@ -240,6 +294,8 @@ const Register = () => {
                             value={role}
                             onChange={(e) => setRole(e.target.value)}
                             label="Role"
+                            error={formSubmitted && !role}
+                            required
                         >
                             <MenuItem value="patient">Patient</MenuItem>
                             <MenuItem value="doctor">Doctor</MenuItem>
@@ -254,6 +310,8 @@ const Register = () => {
                             value={otpOption}
                             onChange={(e) => setOtpOption(e.target.value)}
                             label="Send OTP by"
+                            error={formSubmitted && !otpOption}
+                            required
                         >
                             <MenuItem value="sms">SMS</MenuItem>
                         </Select>
@@ -264,8 +322,9 @@ const Register = () => {
                         color="primary"
                         onClick={handleSendOtp}
                         sx={{ mb: 2 }}
+                        disabled={loading}
                     >
-                        Send OTP
+                        {loading ? 'Sending OTP...' : 'Send OTP'}
                     </Button>
 
                     {otpOption && (
@@ -277,6 +336,8 @@ const Register = () => {
                             value={otp}
                             onChange={(e) => setOtp(e.target.value)}
                             sx={{ mb: 2 }}
+                            error={formSubmitted && !otp}
+                            required
                         />
                     )}
 
@@ -290,8 +351,9 @@ const Register = () => {
                         variant="contained"
                         color="primary"
                         onClick={handleRegister}
+                        disabled={loading}
                     >
-                        Register
+                        {loading ? 'Registering...' : 'Register'}
                     </Button>
                 </form>
             </div>
