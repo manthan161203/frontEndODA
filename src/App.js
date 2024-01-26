@@ -11,6 +11,7 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import HomePage from './pages/HomePage';
 import ErrorPage from './pages/ErrorPage';
 import Loading from './components/Loading';
+import EmptyPage from './pages/EmptyPage';
 import { ProtectedRoute } from './middleware';
 
 export const AppContext = createContext();
@@ -39,6 +40,7 @@ function App() {
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/register" element={<RegisterPage />} />
                         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                        <Route path="/empty" element={<EmptyPage />} />
                         <Route path="/" element={<HomePage />} />
                         <Route path="*" element={<ErrorPage />} />
                     </Routes>

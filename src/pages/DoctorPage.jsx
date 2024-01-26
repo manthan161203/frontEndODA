@@ -9,6 +9,7 @@ import Box from '@mui/material/Box';
 import DoctorCard from '../components/DoctorCard';
 import NavBar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { Navigate } from 'react-router-dom';
 
 const SearchInput = styled.input`
     width: 400px;
@@ -29,7 +30,10 @@ const DoctorPage = () => {
             try {
                 const response = await axios.get(`http://localhost:8001/doctor/getDoctorsByType/${doctorType}`);
                 setDoctorData(response.data);
-                // console.log(response.data);
+                // console.log(response.data[0]);
+                if(response.data[0] === undefined) {
+                    window.location.href = '/empty';
+                }
             } catch (error) {
                 console.error('Error fetching doctor data:', error);
             }
