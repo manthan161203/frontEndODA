@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Box from '@mui/material/Box';
 import DoctorCard from '../components/DoctorCard';
+import NavBar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 const HospitalDoctorsPage = () => {
     const { hospitalName } = useParams();
@@ -28,6 +30,7 @@ const HospitalDoctorsPage = () => {
 
     return (
         <div>
+            <NavBar />
             <Box sx={{ mb: 4 }} />
             <h2 style={centeredHeadingStyle}>Doctors at {hospitalName}</h2>
             <div className="card-container">
@@ -36,6 +39,7 @@ const HospitalDoctorsPage = () => {
                     return <DoctorCard key={doctor._id} doctor={doctor} />
                 })}
             </div>
+            <Footer />
         </div>
     );
 };

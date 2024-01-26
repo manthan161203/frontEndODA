@@ -10,7 +10,9 @@ import {
     InputLabel,
     Select,
     Button,
+    InputAdornment,
 } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const ForgotPassword = () => {
     const [username, setUsername] = useState('');
@@ -19,11 +21,17 @@ const ForgotPassword = () => {
     const [otp, setOtp] = useState('');
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [otpSent, setOtpSent] = useState(false);
+    const [otpVerified, setOtpVerified] = useState(false);
+    const [loading, setLoading] = useState(false); // Loading state for sending OTP
+    const [showPassword, setShowPassword] = useState(false);
 
     const validateFields = () => {
         const requiredFields = ['username', 'otpOption'];
         if (otpSent) {
-            requiredFields.push('newPassword', 'otp');
+            requiredFields.push('otp');
+        }
+        if (otpVerified) {
+            requiredFields.push('newPassword');
         }
 
         let isValid = true;
@@ -46,11 +54,31 @@ const ForgotPassword = () => {
         }
 
         try {
+            setLoading(true); // Set loading to true when sending OTP
+
             await axios.post(`http://localhost:8001/login/forgot-password-send-otp/${otpOption}/${username}`);
             setOtpSent(true);
             Swal.fire('Success', `OTP sent successfully to ${otpOption === 'sms' ? 'your phone' : 'your email'}`, 'success');
         } catch (error) {
             Swal.fire('Error', 'Failed to send OTP. Please try again.', 'error');
+        } finally {
+            setLoading(false); // Set loading to false after sending OTP
+        }
+    };
+
+    const handleVerifyOtp = async () => {
+        setFormSubmitted(true);
+
+        if (!validateFields()) {
+            return;
+        }
+
+        try {
+            await axios.post(`http://localhost:8001/login/verify-otp/${username}`, { otp });
+            setOtpVerified(true);
+            Swal.fire('Success', 'OTP verified successfully', 'success');
+        } catch (error) {
+            Swal.fire('Error', 'Failed to verify OTP. Please try again.', 'error');
         }
     };
 
@@ -66,6 +94,7 @@ const ForgotPassword = () => {
                 password: newPassword,
             });
             Swal.fire('Success', 'Password updated successfully', 'success');
+            window.location.href = '/login';
         } catch (error) {
             Swal.fire('Error', 'Failed to update password. Please try again.', 'error');
         }
@@ -105,18 +134,6 @@ const ForgotPassword = () => {
                         <>
                             <TextField
                                 fullWidth
-                                label="New Password"
-                                variant="outlined"
-                                type="password"
-                                value={newPassword}
-                                onChange={(e) => setNewPassword(e.target.value)}
-                                sx={{ mb: 2 }}
-                                required
-                                error={formSubmitted && !newPassword}
-                            />
-
-                            <TextField
-                                fullWidth
                                 label="Enter OTP"
                                 variant="outlined"
                                 type="text"
@@ -125,6 +142,44 @@ const ForgotPassword = () => {
                                 sx={{ mb: 2 }}
                                 required
                                 error={formSubmitted && !otp}
+                            />
+
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={handleVerifyOtp}
+                                sx={{ mb: 2 }}
+                                disabled={loading} // Disable the button when loading
+                            >
+                                {loading ? 'Verifying OTP...' : 'Verify OTP'}
+                            </Button>
+                        </>
+                    )}
+
+                    {otpVerified && (
+                        <>
+                            <TextField
+                                fullWidth
+                                label="New Password"
+                                variant="outlined"
+                                type={showPassword ? 'text' : 'password'}
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                sx={{ mb: 2 }}
+                                required
+                                error={formSubmitted && !newPassword}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <Button
+                                                onClick={() => setShowPassword(!showPassword)}
+                                                tabIndex={-1}
+                                            >
+                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </Button>
+                                        </InputAdornment>
+                                    ),
+                                }}
                             />
 
                             <Button
@@ -143,8 +198,9 @@ const ForgotPassword = () => {
                             color="primary"
                             onClick={handleSendOtp}
                             sx={{ mb: 2 }}
+                            disabled={loading} // Disable the button when loading
                         >
-                            Send OTP
+                            {loading ? 'Sending OTP...' : 'Send OTP'}
                         </Button>
                     )}
                 </form>

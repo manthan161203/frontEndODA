@@ -16,11 +16,11 @@ import {
 import { Visibility, VisibilityOff, DateRange, Phone, LocationOn } from '@mui/icons-material';
 
 const Register = () => {
+    const [userId, setUserId] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [userName, setUserName] = useState('');
-    const [userId, setUserId] = useState('');
     const [password, setPassword] = useState('');
     const [dateOfBirth, setDateOfBirth] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -31,15 +31,16 @@ const Register = () => {
     const [otp, setOtp] = useState('');
     const [showPassword, setShowPassword] = useState(true);
     const [errorMessage, setErrorMessage] = useState('');
-    const [loading, setLoading] = useState(false); // Add loading state
-    const [formSubmitted, setFormSubmitted] = useState(false); // Track form submission
+    const [loading, setLoading] = useState(false);
+    const [formSubmitted, setFormSubmitted] = useState(false);
+    const [otpSent, setOtpSent] = useState(false);
 
     const validateFields = () => {
         const requiredFields = ['userId', 'firstName', 'lastName', 'email', 'userName', 'password', 'dateOfBirth', 'phoneNumber', 'address', 'gender', 'role'];
         let isValid = true;
 
         requiredFields.forEach(field => {
-            if (!eval(field)) { // Use eval to dynamically access state variables
+            if (!eval(field)) {
                 Swal.fire('Error', 'Please fill in all required fields', 'error');
                 setErrorMessage('Please fill in all required fields');
                 isValid = false;
@@ -59,8 +60,8 @@ const Register = () => {
         try {
             setLoading(true);
 
-            if (otpOption === 'sms') {
-                await axios.post(`http://localhost:8001/register/submit-info`, {
+            if (otpOption === 'sms' || otpOption === 'email') {
+                await axios.post(`http://localhost:8001/register/submit-info/${otpOption}`, {
                     userId,
                     firstName,
                     lastName,
@@ -74,6 +75,7 @@ const Register = () => {
                     role,
                 });
 
+                setOtpSent(true);
                 Swal.fire('Success', `User information submitted successfully. Check your phone for OTP.`, 'success');
             } else {
                 setErrorMessage('Invalid OTP option');
@@ -125,7 +127,6 @@ const Register = () => {
         <Container maxWidth="sm">
             <div>
                 <form>
-
                     <TextField
                         fullWidth
                         label="user ID"
@@ -136,6 +137,7 @@ const Register = () => {
                         sx={{ mb: 2 }}
                         error={formSubmitted && !userId}
                         required
+                        disabled={otpSent}
                     />
                     <TextField
                         fullWidth
@@ -147,8 +149,8 @@ const Register = () => {
                         sx={{ mb: 2 }}
                         error={formSubmitted && !firstName}
                         required
+                        disabled={otpSent}
                     />
-
                     <TextField
                         fullWidth
                         label="Last Name"
@@ -159,8 +161,8 @@ const Register = () => {
                         sx={{ mb: 2 }}
                         error={formSubmitted && !lastName}
                         required
+                        disabled={otpSent}
                     />
-
                     <TextField
                         fullWidth
                         label="Email"
@@ -171,8 +173,8 @@ const Register = () => {
                         sx={{ mb: 2 }}
                         error={formSubmitted && !email}
                         required
+                        disabled={otpSent}
                     />
-
                     <TextField
                         fullWidth
                         label="Username"
@@ -183,8 +185,8 @@ const Register = () => {
                         sx={{ mb: 2 }}
                         error={formSubmitted && !userName}
                         required
+                        disabled={otpSent}
                     />
-
                     <TextField
                         fullWidth
                         label="Password"
@@ -208,8 +210,8 @@ const Register = () => {
                                 </InputAdornment>
                             ),
                         }}
+                        disabled={otpSent}
                     />
-
                     <TextField
                         fullWidth
                         label=""
@@ -229,8 +231,8 @@ const Register = () => {
                                 </InputAdornment>
                             ),
                         }}
+                        disabled={otpSent}
                     />
-
                     <TextField
                         fullWidth
                         label="Phone Number"
@@ -250,8 +252,8 @@ const Register = () => {
                                 </InputAdornment>
                             ),
                         }}
+                        disabled={otpSent}
                     />
-
                     <TextField
                         fullWidth
                         label="Address"
@@ -271,8 +273,8 @@ const Register = () => {
                                 </InputAdornment>
                             ),
                         }}
+                        disabled={otpSent}
                     />
-
                     <FormControl fullWidth variant="outlined" sx={{ mb: 2 }}>
                         <InputLabel>Gender</InputLabel>
                         <Select
@@ -281,13 +283,13 @@ const Register = () => {
                             label="Gender"
                             error={formSubmitted && !gender}
                             required
+                            disabled={otpSent}
                         >
                             <MenuItem value="Male">Male</MenuItem>
                             <MenuItem value="Female">Female</MenuItem>
                             <MenuItem value="Other">Other</MenuItem>
                         </Select>
                     </FormControl>
-
                     <FormControl fullWidth variant="outlined" sx={{ mb: 2 }}>
                         <InputLabel>Role</InputLabel>
                         <Select
@@ -296,6 +298,7 @@ const Register = () => {
                             label="Role"
                             error={formSubmitted && !role}
                             required
+                            disabled={otpSent}
                         >
                             <MenuItem value="patient">Patient</MenuItem>
                             <MenuItem value="doctor">Doctor</MenuItem>
@@ -303,7 +306,6 @@ const Register = () => {
                             <MenuItem value="therapist">Therapist</MenuItem>
                         </Select>
                     </FormControl>
-
                     <FormControl fullWidth variant="outlined" sx={{ mb: 2 }}>
                         <InputLabel>Send OTP by</InputLabel>
                         <Select
@@ -312,49 +314,51 @@ const Register = () => {
                             label="Send OTP by"
                             error={formSubmitted && !otpOption}
                             required
+                            disabled={otpSent}
                         >
                             <MenuItem value="sms">SMS</MenuItem>
+                            <MenuItem value="email">Email</MenuItem>
                         </Select>
                     </FormControl>
-
                     <Button
                         variant="contained"
                         color="primary"
                         onClick={handleSendOtp}
                         sx={{ mb: 2 }}
-                        disabled={loading}
+                        disabled={loading || otpSent}
                     >
                         {loading ? 'Sending OTP...' : 'Send OTP'}
                     </Button>
+                    {otpSent && (
+                        <>
+                            <TextField
+                                fullWidth
+                                label="Enter OTP"
+                                variant="outlined"
+                                type="text"
+                                value={otp}
+                                onChange={(e) => setOtp(e.target.value)}
+                                sx={{ mb: 2 }}
+                                error={formSubmitted && !otp}
+                                required
+                            />
+                            
+                            {errorMessage && (
+                                <div style={{ color: 'red', marginBottom: '16px' }}>
+                                    {errorMessage}
+                                </div>
+                            )}
 
-                    {otpOption && (
-                        <TextField
-                            fullWidth
-                            label="Enter OTP"
-                            variant="outlined"
-                            type="text"
-                            value={otp}
-                            onChange={(e) => setOtp(e.target.value)}
-                            sx={{ mb: 2 }}
-                            error={formSubmitted && !otp}
-                            required
-                        />
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={handleRegister}
+                                disabled={loading}
+                            >
+                                {loading ? 'Registering...' : 'Register'}
+                            </Button>
+                        </>
                     )}
-
-                    {errorMessage && (
-                        <div style={{ color: 'red', marginBottom: '16px' }}>
-                            {errorMessage}
-                        </div>
-                    )}
-
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handleRegister}
-                        disabled={loading}
-                    >
-                        {loading ? 'Registering...' : 'Register'}
-                    </Button>
                 </form>
             </div>
         </Container>

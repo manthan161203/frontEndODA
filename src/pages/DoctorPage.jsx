@@ -7,6 +7,8 @@ import axios from 'axios';
 import styled from 'styled-components';
 import Box from '@mui/material/Box';
 import DoctorCard from '../components/DoctorCard';
+import NavBar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 const SearchInput = styled.input`
     width: 400px;
@@ -44,6 +46,7 @@ const DoctorPage = () => {
 
     return (
         <div>
+            <NavBar />
             <Box sx={{ mb: 4 }} />
             <div className="search-bar">
                 <h1 className='h2-tag'>Our Doctors</h1>
@@ -60,6 +63,7 @@ const DoctorPage = () => {
                     <DoctorCard key={doctor._id} doctor={doctor} />
                 ))}
             </div>
+            <Footer />
         </div>
     );
 };

@@ -4,6 +4,8 @@ import Box from '@mui/material/Box';
 import HospitalCard from '../components/HospitalCard';
 import styled from 'styled-components';
 import '../assets/styles/hospitalcard.css';
+import NavBar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 const SearchInput = styled.input`
     width: 400px;
@@ -39,6 +41,7 @@ const HospitalPage = () => {
 
     return (
         <div>
+            <NavBar />
             <Box sx={{ mb: 4 }} />
             <div className="search-bar">
                 <h1 className='h2-tag'>Our Hospitals</h1>
@@ -55,6 +58,7 @@ const HospitalPage = () => {
                     <HospitalCard key={hospital._id} hospital={hospital} />
                 ))}
             </div>
+            <Footer />
         </div>
     );
 };

@@ -12,6 +12,7 @@ import {
     InputLabel,
     Select,
     InputAdornment,
+    Box
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
@@ -223,14 +224,16 @@ const Login = () => {
                     >
                         {loading ? 'Logging in...' : 'Submit'}
                     </Button>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handleForgotPassword}
-                        disabled={loading}
-                    >
-                        {loading ? 'Logging in...' : 'Forgot Password'}
-                    </Button>
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+                        <Button
+                            variant="text"
+                            color="primary"
+                            onClick={handleForgotPassword}
+                            disabled={loading}
+                        >
+                            {loading ? 'Logging in...' : 'Forgot Password ?'}
+                        </Button>
+                    </Box>
                 </form>
             </div>
         </Container>
