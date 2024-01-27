@@ -12,6 +12,7 @@ import HomePage from './pages/HomePage';
 import ErrorPage from './pages/ErrorPage';
 import Loading from './components/Loading';
 import EmptyPage from './pages/EmptyPage';
+import AppointmentPage from './pages/AppointmentPage';
 import { ProtectedRoute } from './middleware';
 
 export const AppContext = createContext();
@@ -33,6 +34,7 @@ function App() {
                         />
                         <Route path="/doctors/:doctorType" element={<ProtectedRoute element={<DoctorPage />} />} />
                         <Route path="/profile/:userName" element={<ProtectedRoute element={<ProfilePage />} />} />
+                        <Route path="/my-appointments/:userName" element={<ProtectedRoute element={<AppointmentPage />} />} />
                         <Route
                             path="/profile-role/:userName"
                             element={<ProtectedRoute element={<RoleProfilePage />} />}

@@ -301,6 +301,11 @@ const ResponsiveAppBar = () => {
                                                     {setting}
                                                 </a>
                                             )}
+                                            {setting === 'Your Appointments' && (
+                                                <a href={`/my-appointments/${userName}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                                                    {setting}
+                                                </a>
+                                            )}
                                             {setting === 'Logout' && (
                                                 <a href={`/login`} style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     {setting}

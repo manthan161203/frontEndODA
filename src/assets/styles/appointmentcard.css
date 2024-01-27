@@ -1,0 +1,62 @@
+.search-bar {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-top: 20px;
+    flex-direction: row;
+    margin-right: 12px;
+}
+
+.search-bar .h2-tag {
+    text-align: start;
+    margin-right: auto;
+    margin-left: 20px;
+}
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 23px;
+    overflow-x: auto;
+    margin-top: 20px;
+    padding: 10px;
+}
+
+.card {
+    flex: 0 0 calc(33% - 20px);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border-radius: 10px;
+    padding: 1.5rem 2rem;
+    box-shadow: 0 0 10px 0 rgb(188, 188, 188);
+    border: 2px solid #ccc;
+}
+
+.card-img {
+    margin: 0 auto;
+}
+
+.card-img img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+.card-name {
+    margin: 0 auto;
+    font-size: 1.2rem;
+}
+
+.card button.btn-warning {
+    background-color: #ffc107;
+}
+
+.card button.btn-success {
+    background-color: #28a745;
+}
+
+.card button.btn-danger {
+    background-color: #dc3545;
+}
