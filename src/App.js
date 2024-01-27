@@ -21,9 +21,10 @@ function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true' || false);
     const [role, setRole] = useState(localStorage.getItem('role'));
     const [userName, setUserName] = useState(localStorage.getItem('userName'));
+    const [doctorID, setDoctorID] = useState('');
 
     return (
-        <AppContext.Provider value={{ isLoggedIn, setIsLoggedIn, role, setRole, userName, setUserName }}>
+        <AppContext.Provider value={{ isLoggedIn, setIsLoggedIn, role, setRole, userName, setUserName, doctorID, setDoctorID }}>
             <Router>
                 <Suspense fallback={<Loading />}>
                     <Routes>
@@ -35,6 +36,7 @@ function App() {
                         <Route path="/doctors/:doctorType" element={<ProtectedRoute element={<DoctorPage />} />} />
                         <Route path="/profile/:userName" element={<ProtectedRoute element={<ProfilePage />} />} />
                         <Route path="/my-appointments/:userName" element={<ProtectedRoute element={<AppointmentPage />} />} />
+                        {/* <Route path="/book-appointment" element={<ProtectedRoute element={<BookAppointmentPage />} />} /> */}
                         <Route
                             path="/profile-role/:userName"
                             element={<ProtectedRoute element={<RoleProfilePage />} />}

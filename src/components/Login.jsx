@@ -81,7 +81,7 @@ const Login = () => {
                 Swal.fire('Error', 'Unexpected error occurred', 'error');
             }
         } finally {
-            setLoading(false); // Set loading to false after sending OTP
+            setLoading(false);
         }
     };
     
@@ -103,6 +103,7 @@ const Login = () => {
                 localStorage.setItem('userName', username);
                 localStorage.setItem('role', response.data.role.charAt(0).toUpperCase() + response.data.role.slice(1));
                 setIsLoggedIn(true);
+                localStorage.setItem('email', response.data.email);
                 localStorage.setItem('isLoggedIn', true);
                 localStorage.setItem('password', password);
                 Swal.fire('Success', 'OTP and password verified successfully', 'success');

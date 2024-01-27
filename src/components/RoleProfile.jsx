@@ -31,6 +31,7 @@ const RoleProfile = () => {
                 setUserDetails(response.data[0]);
                 setIsLoading(false);
                 console.log(response.data);
+                localStorage.setItem('roleID', userDetails._id);
             } catch (error) {
                 console.error('Error fetching user details:', error);
                 setIsLoading(false);

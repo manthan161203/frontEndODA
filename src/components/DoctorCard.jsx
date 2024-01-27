@@ -1,9 +1,23 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import '../assets/styles/doctorcard.css';
+import BookAppointmentForm from "../components/BookAppointment";
+import { AppContext } from '../App';
 
 const DoctorCard = ({ doctor }) => {
+    const { setDoctorID } = useContext(AppContext);
+    const [modalOpen, setModalOpen] = useState(false);
+    const handleModal = () => {
+        setDoctorID(doctor?._id);
+        setModalOpen(true);
+    };
     const defaultProfilePic = "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg";
+
+    // const handleBookAppointment = () => {
+    //     setDoctorID(doctor?._id);
+    //     window.location.href = '/book-appointment';
+    // };
+
     return (
         <div className="card">
             <div className="card-img flex-center">
@@ -24,9 +38,15 @@ const DoctorCard = ({ doctor }) => {
             <p className="description">
                 <strong>Description: </strong>{doctor?.doctorBio}
             </p>
-            <button className="btn appointment-btn">
+            <button className="btn appointment-btn" onClick={handleModal}>
                 Book Appointment
             </button>
+            {modalOpen && (
+                <BookAppointmentForm
+                    setModalOpen={setModalOpen}
+                    doctor={doctor}
+                />
+            )}
         </div>
     );
 };

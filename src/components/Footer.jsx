@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import "../assets/styles/footer.css";
 import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
 import YouTubeIcon from '@mui/icons-material/YouTube';
@@ -7,8 +7,11 @@ import XIcon from '@mui/icons-material/X';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { HashLink } from "react-router-hash-link";
 import { NavLink } from "react-router-dom";
+import { AppContext } from '../App';
+import React, { useContext } from 'react';
 
 const Footer = () => {
+    const { userName } = useContext(AppContext);
     return (
         <>
             <footer>
@@ -20,10 +23,7 @@ const Footer = () => {
                                 <NavLink to={"/"}>Home</NavLink>
                             </li>
                             <li>
-                                <NavLink to={"/doctors"}>Doctors</NavLink>
-                            </li>
-                            <li>
-                                <NavLink to={"/appointments"}>Appointments</NavLink>
+                                <NavLink to={`/my-appointments/${userName}`}>Appointments</NavLink>
                             </li>
                             <li>
                                 <NavLink to={"/notifications"}>Notifications</NavLink>
@@ -32,7 +32,7 @@ const Footer = () => {
                                 <HashLink to={"/#contact"}>Contact Us</HashLink>
                             </li>
                             <li>
-                                <NavLink to={"/profile"}>Profile</NavLink>
+                                <NavLink to={`/profile/${userName}`}>Profile</NavLink>
                             </li>
                         </ul>
                     </div>
