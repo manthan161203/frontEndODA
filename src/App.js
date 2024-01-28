@@ -14,6 +14,8 @@ import Loading from './components/Loading';
 import EmptyPage from './pages/EmptyPage';
 import AppointmentPage from './pages/AppointmentPage';
 import { ProtectedRoute } from './middleware';
+import AdminPage from './pages/AdminPage';
+
 
 export const AppContext = createContext();
 
@@ -44,6 +46,7 @@ function App() {
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/register" element={<RegisterPage />} />
                         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                        <Route path="/admin-page" element={<AdminPage />} />
                         <Route path="/empty" element={<EmptyPage />} />
                         <Route path="/" element={<HomePage />} />
                         <Route path="*" element={<ErrorPage />} />
