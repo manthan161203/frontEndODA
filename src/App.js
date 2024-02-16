@@ -16,6 +16,7 @@ import AppointmentPage from './pages/AppointmentPage';
 import { ProtectedRoute } from './middleware';
 import AdminPage from './pages/AdminPage';
 import RoleBasedDetailsPage from './pages/RoleBasedDetailsPage';
+import ViewAppointmene from './pages/ViewAppointment'
 
 
 export const AppContext = createContext();
@@ -55,6 +56,7 @@ function App() {
                         <Route path="/empty" element={<EmptyPage />} />
                         <Route path="/" element={<HomePage />} />
                         <Route path="/role-based-details" element={<RoleBasedDetailsPage />} />
+                        <Route path="/view-appointment" element={<ViewAppointmene />} />
                         <Route path="*" element={<ErrorPage />} />
                     </Routes>
                 </Suspense>

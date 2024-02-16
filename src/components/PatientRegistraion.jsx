@@ -127,18 +127,6 @@ const PatientRegistraion = () => {
         <Container maxWidth="sm">
             <div>
                 <form>
-                    {/* <TextField
-                        fullWidth
-                        label="user ID"
-                        variant="outlined"
-                        type="text"
-                        value={userId}
-                        onChange={(e) => setUserId(e.target.value)}
-                        sx={{ mb: 2 }}
-                        error={formSubmitted && !userId}
-                        required
-                        disabled={otpSent}
-                    /> */}
                     <TextField
                         fullWidth
                         label="First Name"
