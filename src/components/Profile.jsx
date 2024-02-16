@@ -16,9 +16,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import CancelIcon from '@mui/icons-material/Cancel';
 import SaveIcon from '@mui/icons-material/Save';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { useParams } from 'react-router-dom';
 
 const Profile = () => {
-    const { userName } = useContext(AppContext);
+    const { userName } = useParams();
     const [userDetails, setUserDetails] = useState({});
     const [isEditing, setIsEditing] = useState(false);
     const [imageFile, setImageFile] = useState(null);
