@@ -1,20 +1,20 @@
-import { styled, alpha } from '@mui/material/styles';
+// import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import InputBase from '@mui/material/InputBase';
+// import InputBase from '@mui/material/InputBase';
 import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
+// import SearchIcon from '@mui/icons-material/Search';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
-import AdbIcon from '@mui/icons-material/Adb';
+// import AdbIcon from '@mui/icons-material/Adb';
 import { AppContext } from '../App';
 import { useState, useContext } from 'react';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -24,56 +24,60 @@ const pages = [
     { name: "Doctor", path: "/doctors/doctor" },
     { name: "Therapist", path: "/doctors/therapist" },
     { name: "Clinical Doctor", path: "/doctors/clinicaldoctor" },
+
 ];
-const settings = ["Profile", "Your Appointments", "Logout"];
 
-const Search = styled('div')(({ theme }) => ({
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    '&:hover': {
-        backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    width: 'auto',
-    [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(1),
-        width: 'auto',
-    },
-}));
 
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-}));
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'inherit',
-    width: '100%',
-    '& .MuiInputBase-input': {
-        padding: theme.spacing(1, 1, 1, 0),
-        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-        transition: theme.transitions.create('width'),
-        [theme.breakpoints.up('sm')]: {
-            width: '12ch',
-            '&:focus': {
-                width: '20ch',
-            },
-        },
-    },
-}));
+// const Search = styled('div')(({ theme }) => ({
+//     position: 'relative',
+//     borderRadius: theme.shape.borderRadius,
+//     backgroundColor: alpha(theme.palette.common.white, 0.15),
+//     '&:hover': {
+//         backgroundColor: alpha(theme.palette.common.white, 0.25),
+//     },
+//     marginRight: theme.spacing(2),
+//     width: 'auto',
+//     [theme.breakpoints.up('sm')]: {
+//         marginLeft: theme.spacing(1),
+//         width: 'auto',
+//     },
+// }));
+
+// const SearchIconWrapper = styled('div')(({ theme }) => ({
+//     padding: theme.spacing(0, 2),
+//     height: '100%',
+//     position: 'absolute',
+//     pointerEvents: 'none',
+//     display: 'flex',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+// }));
+
+// const StyledInputBase = styled(InputBase)(({ theme }) => ({
+//     color: 'inherit',
+//     width: '100%',
+//     '& .MuiInputBase-input': {
+//         padding: theme.spacing(1, 1, 1, 0),
+//         paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+//         transition: theme.transitions.create('width'),
+//         [theme.breakpoints.up('sm')]: {
+//             width: '12ch',
+//             '&:focus': {
+//                 width: '20ch',
+//             },
+//         },
+//     },
+// }));
 
 const ResponsiveAppBar = () => {
-    const { isLoggedIn } = useContext(AppContext);
+    const role = localStorage.getItem('role');
+    const { setIsLoggedIn, setRole, setUserName, isLoggedIn, userName } = useContext(AppContext);
+    const settings = ["User Profile", role + " Profile", "Your Appointments", "Logout"];
+    // const { isLoggedIn, userName } = useContext(AppContext);
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
     const [anchorElNotifications, setAnchorElNotifications] = useState(null);
-
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -94,9 +98,24 @@ const ResponsiveAppBar = () => {
         }
     };
 
-    const handleCloseUserMenu = () => {
+    const handleCloseUserMenu = (setting) => {
         setAnchorElUser(null);
+
+        if (setting === 'User Profile') {
+            window.location.href = `/profile/${userName}`;
+        } else if (setting === `${role} Profile`) {
+            window.location.href = `/profile-role/${userName}`;
+        } else if (setting === 'Logout') {
+            localStorage.removeItem('userName');
+            localStorage.removeItem('role');
+            localStorage.removeItem('isLoggedIn');
+            setUserName(null);
+            setRole('Patient');
+            setIsLoggedIn(false);
+            window.location.href = '/login';
+        }
     };
+
 
     const handleCloseNotifications = () => {
         setAnchorElNotifications(null);
@@ -107,7 +126,7 @@ const ResponsiveAppBar = () => {
     };
 
     const handleSignUp = () => {
-        window.location.href = "/signup";
+        window.location.href = "/register";
     };
 
     return (
@@ -120,7 +139,7 @@ const ResponsiveAppBar = () => {
                             variant="h6"
                             noWrap
                             component="a"
-                            href="#app-bar-with-responsive-menu"
+                            href="/"
                             sx={{
                                 mr: { xs: 1, md: 2 },
                                 display: { xs: 'none', md: 'flex' },
@@ -169,7 +188,7 @@ const ResponsiveAppBar = () => {
                                 ))}
                             </Menu>
                         </Box>
-                        <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+                        {/* <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} /> */}
                         <Typography
                             variant="h6"
                             noWrap
@@ -186,7 +205,7 @@ const ResponsiveAppBar = () => {
                                 textDecoration: 'none',
                             }}
                         >
-                            LOGO
+                            EazyHealthCare
                         </Typography>
                         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                             {pages.map((page) => (
@@ -201,7 +220,7 @@ const ResponsiveAppBar = () => {
                         </Box>
 
                         {/* Search Bar */}
-                        <Search>
+                        {/* <Search>
                             <SearchIconWrapper>
                                 <SearchIcon />
                             </SearchIconWrapper>
@@ -209,7 +228,7 @@ const ResponsiveAppBar = () => {
                                 placeholder="Search…"
                                 inputProps={{ 'aria-label': 'search' }}
                             />
-                        </Search>
+                        </Search> */}
 
                         {isLoggedIn && (
                             <Box sx={{ flexGrow: 0, marginLeft: { xs: 0, md: 2 }, marginRight: 4 }}>
@@ -267,14 +286,35 @@ const ResponsiveAppBar = () => {
                                         horizontal: 'right',
                                     }}
                                     open={Boolean(anchorElUser)}
-                                    onClose={handleCloseUserMenu}
+                                    onClose={() => handleCloseUserMenu()}
                                 >
                                     {settings.map((setting) => (
-                                        <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                            <Typography textAlign="center">{setting}</Typography>
+                                        <MenuItem key={setting} onClick={() => handleCloseUserMenu(setting)}>
+                                            {/* Use a conditional rendering approach based on the selected setting */}
+                                            {setting === 'User Profile' && (
+                                                <a href={`/profile/${userName}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                                                    {setting}
+                                                </a>
+                                            )}
+                                            {setting === `${role} Profile` && (
+                                                <a href={`/profile-role/${userName}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                                                    {setting}
+                                                </a>
+                                            )}
+                                            {setting === 'Your Appointments' && (
+                                                <a href={`/my-appointments/${userName}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                                                    {setting}
+                                                </a>
+                                            )}
+                                            {setting === 'Logout' && (
+                                                <a href={`/login`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                                                    {setting}
+                                                </a>
+                                            )}
                                         </MenuItem>
                                     ))}
                                 </Menu>
+
                             </Box>
                         )}
                         {!isLoggedIn && (
@@ -290,7 +330,7 @@ const ResponsiveAppBar = () => {
                     </Toolbar>
                 </Container>
             </AppBar>
-            <Box sx={{ mb : 10 }} />
+            <Box sx={{ mb: 10 }} />
         </>
     );
 };
