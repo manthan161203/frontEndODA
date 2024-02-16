@@ -18,6 +18,9 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import Collapse from '@mui/material/Collapse';
 
 const drawerWidth = 240;
 
@@ -68,6 +71,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export default function Sidebar() {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
+    const [doctorOpen, setDoctorOpen] = React.useState(false);
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -75,6 +79,10 @@ export default function Sidebar() {
 
     const handleDrawerClose = () => {
         setOpen(false);
+    };
+
+    const handleDoctorClick = () => {
+        setDoctorOpen(!doctorOpen);
     };
 
     return (
@@ -114,7 +122,7 @@ export default function Sidebar() {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    {['Users', 'Doctors', 'Appointments'].map((text, index) => (
+                    {['Patient', 'Hospital', 'Appointments'].map((text, index) => (
                         <ListItem key={text} disablePadding>
                             <ListItemButton>
                                 <ListItemIcon>
@@ -124,7 +132,29 @@ export default function Sidebar() {
                             </ListItemButton>
                         </ListItem>
                     ))}
+                    <ListItemButton onClick={handleDoctorClick}>
+                        <ListItemIcon>
+                            <InboxIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Doctors" />
+                        {doctorOpen ? <ExpandLess /> : <ExpandMore />}
+                    </ListItemButton>
+                    <Collapse in={doctorOpen} timeout="auto" unmountOnExit>
+                        <List component="div" disablePadding>
+                            {['Clinical Doctor', 'Therapist', 'Hospital Doctor'].map((text, index) => (
+                                <ListItem key={text} disablePadding>
+                                    <ListItemButton>
+                                        <ListItemIcon>
+                                            {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                                        </ListItemIcon>
+                                        <ListItemText primary={text} />
+                                    </ListItemButton>
+                                </ListItem>
+                            ))}
+                        </List>
+                    </Collapse>
                 </List>
+                <Divider />
                 <List>
                     {[].map((text, index) => (
                         <ListItem key={text} disablePadding>
