@@ -5,12 +5,13 @@ import { AppContext } from '../App';
 import toast from 'react-hot-toast';
 import { IoMdClose } from 'react-icons/io';
 
-const BookAppointmentForm = ({ setModalOpen, ele }) => {
-    const { doctorID, userName } = useContext(AppContext);
+const BookAppointmentForm = ({ setModalOpen }) => {
+    const { doctorID, userName, incrementAppointmentCounter, appointmentCounter } = useContext(AppContext);
     const [formData, setFormData] = useState({
         date: '',
         time: '',
     });
+    // console.log("Book Appointment: ");
     const email = localStorage.getItem('email');
     const inputChange = (e) => {
         const { name, value } = e.target;
@@ -25,11 +26,12 @@ const BookAppointmentForm = ({ setModalOpen, ele }) => {
 
         try {
             // console.log('Hii');
+            // const appointmentId = `APPT${appointmentCounter + 1}`;
             await toast.promise(
                 axios.post(
                     `http://localhost:8001/patient/bookAppointment/${email}`,
                     {
-                        appointmentId: '1234',
+                        appointmentId: '1235',
                         patient: await getPatientId(),
                         doctor: doctorID,
                         date: formData.date,
@@ -51,6 +53,7 @@ const BookAppointmentForm = ({ setModalOpen, ele }) => {
             );
             // console.log('Appointment');
             setModalOpen(false);
+            incrementAppointmentCounter();
         } catch (error) {
             console.error('Error booking appointment:', error);
         }

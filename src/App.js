@@ -1,4 +1,4 @@
-import React, { createContext, useState, Suspense } from 'react';
+import React, { createContext, useState, Suspense, useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import DoctorPage from './pages/DoctorPage';
 import HospitalPage from './pages/HospitalPage';
@@ -24,9 +24,13 @@ function App() {
     const [role, setRole] = useState(localStorage.getItem('role'));
     const [userName, setUserName] = useState(localStorage.getItem('userName'));
     const [doctorID, setDoctorID] = useState('');
+    const [appointmentCounter, setAppointmentCounter] = useState(0);
+    const incrementAppointmentCounter = useCallback(() => {
+        setAppointmentCounter(prevCounter => prevCounter + 1);
+    }, []);
 
     return (
-        <AppContext.Provider value={{ isLoggedIn, setIsLoggedIn, role, setRole, userName, setUserName, doctorID, setDoctorID }}>
+        <AppContext.Provider value={{ isLoggedIn, setIsLoggedIn, role, setRole, userName, setUserName, doctorID, setDoctorID, appointmentCounter, incrementAppointmentCounter }}>
             <Router>
                 <Suspense fallback={<Loading />}>
                     <Routes>

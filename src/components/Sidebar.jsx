@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -61,7 +61,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
     padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
 }));
@@ -92,8 +91,7 @@ export default function Sidebar() {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" noWrap component="div">Eazy Health Care (Admin Panel)
-                    </Typography>
+                    <Typography variant="h6" noWrap component="div">Eazy Health Care (Admin Panel)</Typography>
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -127,7 +125,6 @@ export default function Sidebar() {
                         </ListItem>
                     ))}
                 </List>
-                {/* <Divider /> */}
                 <List>
                     {[].map((text, index) => (
                         <ListItem key={text} disablePadding>
@@ -143,7 +140,6 @@ export default function Sidebar() {
             </Drawer>
             <Main open={open}>
                 <DrawerHeader />
-
             </Main>
         </Box>
     );

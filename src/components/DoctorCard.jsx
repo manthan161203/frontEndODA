@@ -1,54 +1,57 @@
 /* eslint-disable no-unused-vars */
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import '../assets/styles/doctorcard.css';
-import BookAppointmentForm from "../components/BookAppointment";
+import BookAppointmentForm from '../components/BookAppointment';
 import { AppContext } from '../App';
 
 const DoctorCard = ({ doctor }) => {
     const { setDoctorID } = useContext(AppContext);
     const [modalOpen, setModalOpen] = useState(false);
-    const handleModal = () => {
-        setDoctorID(doctor?._id);
-        setModalOpen(true);
-    };
-    const defaultProfilePic = "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg";
+    const [currentDoctor, setCurrentDoctor] = useState(null);
 
-    // const handleBookAppointment = () => {
-    //     setDoctorID(doctor?._id);
-    //     window.location.href = '/book-appointment';
-    // };
+    useEffect(() => {
+        setCurrentDoctor(doctor);
+    }, [doctor]);
+
+    const handleModal = () => {
+        if (currentDoctor?._id) {
+            setDoctorID((prevDoctorID) =>
+                prevDoctorID !== currentDoctor._id ? currentDoctor._id : prevDoctorID
+            );
+            setModalOpen(true);
+        }
+    };
+
+    const defaultProfilePic =
+        'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg';
 
     return (
         <div className="card">
             <div className="card-img flex-center">
-                <img
-                    src={doctor?.user?.pic || defaultProfilePic}
-                    alt="profile"
-                />
+                <img src={currentDoctor?.user?.pic || defaultProfilePic} alt="profile" />
             </div>
             <h3 className="card-name">
-                Dr. {doctor?.user?.firstName} {doctor?.user?.lastName}
+                Dr. {currentDoctor?.user?.firstName} {currentDoctor?.user?.lastName}
             </h3>
             <p className="specialization">
-                <strong>Specialization: </strong>{doctor?.doctorSpecialization}
+                <strong>Specialization: </strong>
+                {currentDoctor?.doctorSpecialization}
             </p>
             <p className="fees">
-                <strong>Fees per consultation: </strong>${doctor?.fee}
+                <strong>Fees per consultation: </strong>${currentDoctor?.fee}
             </p>
             <p className="description">
-                <strong>Description: </strong>{doctor?.doctorBio}
+                <strong>Description: </strong>
+                {currentDoctor?.doctorBio}
             </p>
             <button className="btn appointment-btn" onClick={handleModal}>
                 Book Appointment
             </button>
-            {modalOpen && (
-                <BookAppointmentForm
-                    setModalOpen={setModalOpen}
-                    doctor={doctor}
-                />
+            {modalOpen && currentDoctor && currentDoctor._id && (
+                <BookAppointmentForm setModalOpen={setModalOpen} doctor={currentDoctor} />
             )}
         </div>
     );
 };
 
-export default DoctorCard;
+export default React.memo(DoctorCard);
