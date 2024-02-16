@@ -51,7 +51,7 @@ function App() {
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/register" element={<RegisterPage />} />
                         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-                        <Route path="/admin-page" element={<AdminPage />} />
+                        <Route path="/admin-page/:role" element={<AdminPage />} />
                         <Route path="/empty" element={<EmptyPage />} />
                         <Route path="/" element={<HomePage />} />
                         <Route path="/role-based-details" element={<RoleBasedDetailsPage />} />
