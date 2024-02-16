@@ -28,8 +28,8 @@ const UserList = () => {
         const fetchUsers = async () => {
             try {
                 const response = await axios.get(`http://localhost:8001/superAdmin/getAllPatient`);
-                console.log(response.data);
                 setUsers(response.data);
+                // console.log(response.data);
             } catch (error) {
                 console.error('Error fetching user list:', error);
             }

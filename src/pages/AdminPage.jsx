@@ -11,7 +11,7 @@ const AdminPage = () => {
             <Sidebar />
             <main style={{ flexGrow: 1, padding: '20px', marginTop: '60px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 {role === "patient" && <UserList />}
-                {/* <DoctorList /> */}
+                {["doctor", "therapist", "clinicaldoctor"].includes(role) && <DoctorList role={role} />}
             </main>
         </div>
     );
