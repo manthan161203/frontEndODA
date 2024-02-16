@@ -3,7 +3,9 @@ import "../assets/styles/bookappointment.css";
 import axios from 'axios';
 import { AppContext } from '../App';
 import toast from 'react-hot-toast';
+
 import { IoMdClose } from 'react-icons/io';
+import Swal from 'sweetalert2';
 
 const BookAppointmentForm = ({ setModalOpen }) => {
     const { doctorID, userName, incrementAppointmentCounter, appointmentCounter } = useContext(AppContext);
@@ -46,11 +48,12 @@ const BookAppointmentForm = ({ setModalOpen }) => {
                     }
                 ),
                 {
-                    success: 'Appointment booked successfully',
+                    success: Swal.fire('Done', 'Appointment booked successfully', 'success'),
                     error: 'Unable to book appointment',
                     loading: 'Booking appointment...',
                 }
             );
+            
             // console.log('Appointment');
             setModalOpen(false);
             incrementAppointmentCounter();

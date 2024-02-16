@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { Visibility, VisibilityOff, DateRange, Phone, LocationOn } from '@mui/icons-material';
 
-const Register = () => {
+const TherapiestRegistration = () => {
     // const [userId, setUserId] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -365,4 +365,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default TherapiestRegistration;

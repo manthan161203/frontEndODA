@@ -38,7 +38,7 @@ const DoctorCard = ({ doctor }) => {
                 {currentDoctor?.doctorSpecialization}
             </p>
             <p className="fees">
-                <strong>Fees per consultation: </strong>${currentDoctor?.fee}
+                <strong>Fees per consultation: </strong>₹{currentDoctor?.fee}
             </p>
             <p className="description">
                 <strong>Description: </strong>

@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { Visibility, VisibilityOff, DateRange, Phone, LocationOn } from '@mui/icons-material';
 
-const Register = () => {
+const DoctorRegistation = () => {
     // const [userId, setUserId] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -122,9 +122,13 @@ const Register = () => {
     const handleTogglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
-
+    const centeredHeadingStyle = {
+        textAlign: 'center',
+        marginBottom: '20px',
+    };
     return (
         <Container maxWidth="sm">
+            <h2 style={centeredHeadingStyle}>Doctor Details</h2>
             <div>
                 <form>
                     {/* <TextField
@@ -141,7 +145,7 @@ const Register = () => {
                     /> */}
                     <TextField
                         fullWidth
-                        label="First Name"
+                        label="Doctor Specialization"
                         variant="outlined"
                         type="text"
                         value={firstName}
@@ -365,4 +369,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default DoctorRegistation;
