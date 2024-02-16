@@ -10,7 +10,7 @@ const AdminPage = () => {
         <div style={{ display: 'flex' }}>
             <Sidebar />
             <main style={{ flexGrow: 1, padding: '20px', marginTop: '60px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                {role === "Patient" && <UserList />}
+                {role === "patient" && <UserList />}
                 {/* <DoctorList /> */}
             </main>
         </div>
