@@ -24,7 +24,7 @@ import { Delete, Visibility } from '@mui/icons-material';
 const DoctorList = (props) => {
     const [users, setUsers] = useState([]);
     const doctorType = props.role;
-    console.log(props);
+    // console.log(props);
     useEffect(() => {
         const fetchUsers = async () => {
             try {
@@ -75,7 +75,7 @@ const DoctorList = (props) => {
                                     <TableCell align="center">{data.user.userName}</TableCell>
                                     <TableCell align="center">{data.user.role}</TableCell>
                                     <TableCell align="center">
-                                        <Link to={`/profile/${data.user?.userName}`}>
+                                        <Link to={`/admin-page/profile/${data.user?.userName}`}>
                                             <IconButton color="info" aria-label="View">
                                                 <Visibility />
                                             </IconButton>

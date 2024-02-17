@@ -70,7 +70,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export default function Sidebar() {
     const theme = useTheme();
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(true);
     const [doctorOpen, setDoctorOpen] = React.useState(false);
 
     const handleDrawerOpen = () => {
@@ -83,6 +83,23 @@ export default function Sidebar() {
 
     const handleDoctorClick = () => {
         setDoctorOpen(!doctorOpen);
+    };
+
+    const mainLinks = [
+        { text: 'Patient', route: '/admin-page/patient' },
+        { text: 'Hospital', route: '/admin-page/hospital' },
+        { text: 'Appointments', route: '/admin-page/appointments' }
+    ];
+
+    const subLinks = [
+        { text: 'Clinical Doctor', route: '/admin-page/clinicaldoctor' },
+        { text: 'Therapist', route: '/admin-page/therapist' },
+        { text: 'Hospital Doctor', route: '/admin-page/doctor' }
+    ];
+
+    const handleItemClick = (route) => {
+        // Redirect to the specified route
+        window.location.href = route;
     };
 
     return (
@@ -122,13 +139,13 @@ export default function Sidebar() {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    {['Patient', 'Hospital', 'Appointments'].map((text, index) => (
-                        <ListItem key={text} disablePadding>
+                    {mainLinks.map((link) => (
+                        <ListItem key={link.text} disablePadding onClick={() => handleItemClick(link.route)}>
                             <ListItemButton>
                                 <ListItemIcon>
-                                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                                    <InboxIcon />
                                 </ListItemIcon>
-                                <ListItemText primary={text} />
+                                <ListItemText primary={link.text} />
                             </ListItemButton>
                         </ListItem>
                     ))}
@@ -141,31 +158,18 @@ export default function Sidebar() {
                     </ListItemButton>
                     <Collapse in={doctorOpen} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding>
-                            {['Clinical Doctor', 'Therapist', 'Hospital Doctor'].map((text, index) => (
-                                <ListItem key={text} disablePadding>
+                            {subLinks.map((link) => (
+                                <ListItem key={link.text} disablePadding onClick={() => handleItemClick(link.route)}>
                                     <ListItemButton>
                                         <ListItemIcon>
-                                            {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                                            <InboxIcon />
                                         </ListItemIcon>
-                                        <ListItemText primary={text} />
+                                        <ListItemText primary={link.text} />
                                     </ListItemButton>
                                 </ListItem>
                             ))}
                         </List>
                     </Collapse>
-                </List>
-                <Divider />
-                <List>
-                    {[].map((text, index) => (
-                        <ListItem key={text} disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                                </ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
                 </List>
             </Drawer>
             <Main open={open}>
