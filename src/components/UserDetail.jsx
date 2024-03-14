@@ -74,7 +74,7 @@ const UserList = () => {
                                     <TableCell align="center">{data.user.userName}</TableCell>
                                     <TableCell align="center">{data.user.role}</TableCell>
                                     <TableCell align="center">
-                                        <Link to={`/profile/${data.user?.userName}`}>
+                                        <Link to={`/admin-page/profile/${data.user?.userName}`}>
                                             <IconButton color="info" aria-label="View">
                                                 <Visibility />
                                             </IconButton>

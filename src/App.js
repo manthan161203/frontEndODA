@@ -4,6 +4,7 @@ import DoctorPage from './pages/DoctorPage';
 import HospitalPage from './pages/HospitalPage';
 import HospitalDoctorsPage from './pages/HospitalDoctorsPage';
 import ProfilePage from './pages/ProfilePage';
+import Profile from './components/Profile';
 import RoleProfilePage from './pages/RoleProfilePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -53,6 +54,7 @@ function App() {
                         <Route path="/register" element={<RegisterPage />} />
                         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                         <Route path="/admin-page/:role" element={<AdminPage />} />
+                        <Route path="/admin-page/profile/:userName" element={<Profile />} />
                         <Route path="/empty" element={<EmptyPage />} />
                         <Route path="/" element={<HomePage />} />
                         <Route path="/role-based-details" element={<RoleBasedDetailsPage />} />
