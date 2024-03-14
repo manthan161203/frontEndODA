@@ -13,8 +13,37 @@ const BookAppointmentForm = ({ setModalOpen }) => {
         date: '',
         time: '',
     });
-    // console.log("Book Appointment: ");
+    const [timeOptions, setTimeOptions] = useState([]);
+    const [currentDateTime, setCurrentDateTime] = useState(new Date());
+
+    useEffect(() => {
+        generateTimeOptions();
+    }, []); // Generate options when component mounts
+
+    useEffect(() => {
+        const interval = setInterval(() => setCurrentDateTime(new Date()), 1000); // Update current date and time every second
+        return () => clearInterval(interval);
+    }, []);
+
+    const generateTimeOptions = () => {
+        const options = [];
+        for (let hour = 9; hour < 17; hour++) { // Restrict hours from 9 to 16 (5 PM)
+            for (let minute = 0; minute < 60; minute += 30) {
+                const formattedHour = hour.toString().padStart(2, '0');
+                const formattedMinute = minute.toString().padStart(2, '0');
+                const startTime = `${formattedHour}:${formattedMinute}`;
+                const endTime = new Date(`1970-01-01T${startTime}:00`);
+                endTime.setMinutes(endTime.getMinutes() + 15); // Add 15 minutes to the start time
+                const formattedEndTime = `${endTime.getHours().toString().padStart(2, '0')}:${endTime.getMinutes().toString().padStart(2, '0')}`;
+                options.push(`${startTime} - ${formattedEndTime}`);
+            }
+        }
+        setTimeOptions(options);
+    };
+    
+
     const email = localStorage.getItem('email');
+    
     const inputChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -22,13 +51,11 @@ const BookAppointmentForm = ({ setModalOpen }) => {
             [name]: value,
         });
     };
-    // console.log(email);
+    
     const bookAppointment = async (e) => {
         e.preventDefault();
 
         try {
-            // console.log('Hii');
-            // const appointmentId = `APPT${appointmentCounter + 1}`;
             await toast.promise(
                 axios.post(
                     `http://localhost:8001/patient/bookAppointment/${email}`,
@@ -39,7 +66,7 @@ const BookAppointmentForm = ({ setModalOpen }) => {
                         date: formData.date,
                         slot: {
                             startTime: formData.time,
-                            endTime: formData.time,
+                            endTime: formData.time, // Assuming appointment is of 30 minutes
                         },
                         status: 'Pending',
                         prerequisite: '',
@@ -54,7 +81,6 @@ const BookAppointmentForm = ({ setModalOpen }) => {
                 }
             );
             
-            // console.log('Appointment');
             setModalOpen(false);
             incrementAppointmentCounter();
         } catch (error) {
@@ -86,26 +112,39 @@ const BookAppointmentForm = ({ setModalOpen }) => {
                     />
                     <div className="register-container flex-center book">
                         <form className="register-form">
-                            <input
-                                type="date"
-                                name="date"
-                                className="form-input"
-                                value={formData.date}
-                                onChange={inputChange}
-                            />
-                            <input
-                                type="time"
-                                name="time"
-                                className="form-input"
-                                value={formData.time}
-                                onChange={inputChange}
-                            />
-                            <button
+                            <div className="form-group">
+                                <label>Date:<span style={{marginLeft:"20px"}}></span></label>
+                                <input
+                                    type="date"
+                                    name="date"
+                                    className="form-input"
+                                    value={formData.date}
+                                    onChange={inputChange}
+                                    min={currentDateTime.toISOString().split('T')[0]} // Prevent selecting past dates
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Time: <span style={{marginLeft:"15px"}}></span></label>
+                                <select
+                                    name="time"
+                                    className="form-input"
+                                    value={formData.time}
+                                    onChange={inputChange}
+                                    disabled={!formData.date} // Disable time selection until date is selected
+                                >
+                                    <option value="">Select Time</option>
+                                    {timeOptions.map((option, index) => (
+                                        <option key={index} value={option} disabled={formData.date && new Date(formData.date + 'T' + option + ':00') < currentDateTime}>{option}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <button 
                                 type="submit"
                                 className="btn form-btn"
                                 onClick={bookAppointment}
+                                disabled={!formData.date || !formData.time} // Disable button until both date and time are selected
                             >
-                                book
+                                Book
                             </button>
                         </form>
                     </div>

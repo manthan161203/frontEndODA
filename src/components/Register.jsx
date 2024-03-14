@@ -36,7 +36,7 @@ const Register = () => {
     const [otpSent, setOtpSent] = useState(false);
 
     const validateFields = () => {
-        const requiredFields = ['userId', 'firstName', 'lastName', 'email', 'userName', 'password', 'dateOfBirth', 'phoneNumber', 'address', 'gender', 'role'];
+        const requiredFields = ['firstName', 'lastName', 'email', 'userName', 'password', 'dateOfBirth', 'phoneNumber', 'address', 'gender', 'role'];
         let isValid = true;
 
         requiredFields.forEach(field => {
@@ -81,7 +81,7 @@ const Register = () => {
                 setErrorMessage('Invalid OTP option');
             }
         } catch (error) {
-            setErrorMessage('Error submitting user information');
+            // setErrorMessage('Error submitting user information');
         } finally {
             setLoading(false);
         }

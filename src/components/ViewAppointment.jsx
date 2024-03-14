@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import AppointmentDialog from './AppointmentDialog';
-
-const DoctorDashboard = () => {
+import AppointmentDialog from '../pages/AppointmentDialog';
+// import SelectedAppointmentCard from './SelectedAppointmentCard';
+import ActiveAppointmentCard from './ActiveAppointmentCard';
+const ViewAppointment = () => {
     const [appointments, setAppointments] = useState([]);
     const [selectedAppointment, setSelectedAppointment] = useState(null);
 
@@ -36,18 +37,15 @@ const DoctorDashboard = () => {
 
     return (
         <div>
-            <h2>Doctor Dashboard</h2>
             <FullCalendar
                 plugins={[dayGridPlugin]}
                 initialView="dayGridMonth"
                 events={events}
                 eventClick={handleSlotClick}
             />
-            {selectedAppointment && (
-                <AppointmentDialog appointment={selectedAppointment} onClose={() => setSelectedAppointment(null)} />
-            )}
         </div>
     );
 };
 
-export default DoctorDashboard;
+export default ViewAppointment;
+

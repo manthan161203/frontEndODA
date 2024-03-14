@@ -16,8 +16,8 @@ import AppointmentPage from './pages/AppointmentPage';
 import { ProtectedRoute } from './middleware';
 import AdminPage from './pages/AdminPage';
 import RoleBasedDetailsPage from './pages/RoleBasedDetailsPage';
-import ViewAppointmene from './pages/ViewAppointment'
-
+import DoctorDashBoardPage from './pages/DoctorDashBoardPage'
+import PendingAppointments from './components/PendingAppointments';
 
 export const AppContext = createContext();
 
@@ -56,7 +56,8 @@ function App() {
                         <Route path="/empty" element={<EmptyPage />} />
                         <Route path="/" element={<HomePage />} />
                         <Route path="/role-based-details" element={<RoleBasedDetailsPage />} />
-                        <Route path="/view-appointment" element={<ViewAppointmene />} />
+                        <Route path="/doctor" element={<DoctorDashBoardPage />} />
+                        <Route path="/doctor/review-appointments" element={<PendingAppointments />} />
                         <Route path="*" element={<ErrorPage />} />
                     </Routes>
                 </Suspense>

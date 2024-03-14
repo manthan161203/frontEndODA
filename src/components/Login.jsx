@@ -14,7 +14,7 @@ import {
     InputAdornment,
     Box
 } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { LocalLaundryService, Visibility, VisibilityOff } from '@mui/icons-material';
 
 const Login = () => {
     const { setIsLoggedIn } = useContext(AppContext);
@@ -98,16 +98,28 @@ const Login = () => {
             const response = await axios.post(`http://localhost:8001/login/verify-otp/${username}`, {
                 otp,
             });
-
+            console.log(response)
             if (response.status === 200) {
                 localStorage.setItem('userName', username);
-                localStorage.setItem('role', response.data.role.charAt(0).toUpperCase() + response.data.role.slice(1));
+                localStorage.setItem('role', response.data.role.toUpperCase());
                 setIsLoggedIn(true);
                 localStorage.setItem('email', response.data.email);
                 localStorage.setItem('isLoggedIn', true);
-                localStorage.setItem('password', password);
+                localStorage.setItem('userId', response.data._id);
                 Swal.fire('Success', 'OTP and password verified successfully', 'success');
-                window.location.href = '/hospitals';
+                localStorage.setItem('isSubProfileSet',response.data.isSubProfileSet);
+                
+                if(localStorage.getItem('isSubProfileSet') === "false"){
+                    window.location.href = `/profile-role/${response.data.userName}`;
+                }
+                else{
+                    if(localStorage.getItem('role') === "PATIENT"){
+                        window.location.href = '/hospitals';
+                    }else if(localStorage.getItem('role') === "DOCTOR"){
+                        window.location.href = '/doctor';
+                    }
+                }
+                
             }
         } catch (error) {
             if (error.response) {

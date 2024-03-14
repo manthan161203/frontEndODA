@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import ActiveAppointment from './ActiveAppointmentCard'; // Import the ActiveAppointment component
 
-const AppointmentDialog = ({ appointment, onClose }) => {
-    const handleClose = () => {
-        onClose();
+const SelectedAppointmentCard = ({ appointment }) => {
+    const [selectedAppointment, setSelectedAppointment] = useState(null);
+
+    const handleDateClick = (appointment) => {
+        setSelectedAppointment(appointment);
     };
 
     return (
@@ -17,22 +20,23 @@ const AppointmentDialog = ({ appointment, onClose }) => {
                         <CardContent>
                             <h2 style={{ textAlign: "center", marginTop: 2, backgroundColor: '#d0d9eb' }}>Active Appointment</h2>
 
-                            <h2 style={{ marginBottom: '1rem', marginTop: 3, color: '#333' }}>Appointment ID: {appointment.appointmentId}</h2>
+                            <h2 style={{ marginBottom: '1rem', marginTop: 3, color: '#333', cursor: 'pointer' }} onClick={() => handleDateClick(appointment)}>Date: {appointment.date}</h2>
+                            <h4 style={{ marginBottom: '1rem', color: '#333' }}>Appointment ID: {appointment.appointmentId}</h4>
                             <h4 style={{ marginBottom: '1rem', color: '#333' }}>Doctor: {appointment.doctor}</h4>
-                            <h4 style={{ marginBottom: '1rem', color: '#333' }}>Date: {appointment.date}</h4>
                             <h4 style={{ marginBottom: '1rem', color: '#333' }}>Slot: {appointment.slot.startTime} - {appointment.slot.endTime}</h4>
                             <h4 style={{ marginBottom: '1rem', color: '#333' }}>Status: {appointment.status}</h4>
                             <h4 style={{ marginBottom: '1rem', color: '#333' }}>Prerequisite: {appointment.prerequisite}</h4>
                             <h4 style={{ marginBottom: '1rem', color: '#333' }}>Notes: {appointment.notes}</h4>
-                            <Button variant="contained" color="primary" onClick={handleClose}>
-                                Close
+                            <Button variant="contained" color="primary" onClick={() => console.log('View More clicked')}>
+                                View More
                             </Button>
                         </CardContent>
                     </Card>
                 </Card>
             </div>
+            {selectedAppointment && <ActiveAppointment appointment={selectedAppointment} />}
         </div>
     );
 };
 
-export default AppointmentDialog;
+export default SelectedAppointmentCard;
