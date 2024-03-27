@@ -59,6 +59,7 @@ const HospitalList = (props) => {
                                 <TableCell align="center">Name</TableCell>
                                 <TableCell align="center">Location</TableCell>
                                 <TableCell align="center">Has Ambulance</TableCell>
+                                <TableCell align="center">Actions</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>

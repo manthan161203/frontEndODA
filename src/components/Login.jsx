@@ -93,7 +93,7 @@ const Login = () => {
         }
 
         try {
-            setLoading(true); // Set loading to true during login process
+            setLoading(true);
 
             const response = await axios.post(`http://localhost:8001/login/verify-otp/${username}`, {
                 otp,
@@ -117,6 +117,8 @@ const Login = () => {
                         window.location.href = '/hospitals';
                     }else if(localStorage.getItem('role') === "DOCTOR"){
                         window.location.href = '/doctor';
+                    }else if(localStorage.getItem('role') === "ADMIN"){
+                        window.location.href = '/admin-page/patient';
                     }
                 }
                 
@@ -139,7 +141,7 @@ const Login = () => {
                 Swal.fire('Error', 'Unexpected error occurred', 'error');
             }
         } finally {
-            setLoading(false); // Set loading to false after login attempt
+            setLoading(false);
         }
     };
 

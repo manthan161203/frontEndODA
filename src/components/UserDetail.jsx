@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import {
@@ -29,7 +29,6 @@ const UserList = () => {
             try {
                 const response = await axios.get(`http://localhost:8001/superAdmin/getAllPatient`);
                 setUsers(response.data);
-                // console.log(response.data);
             } catch (error) {
                 console.error('Error fetching user list:', error);
             }
@@ -38,14 +37,14 @@ const UserList = () => {
         fetchUsers();
     }, []);
 
-    const handleDeleteUser = async (userName) => {
+    const handleDeleteUser = useCallback(async (userName) => {
         try {
             await axios.delete(`http://localhost:8001/superAdmin/deleteAdmin/${userName}`);
             setUsers((prevUsers) => prevUsers.filter((user) => user.userName !== userName));
         } catch (error) {
             console.error('Error deleting user:', error);
         }
-    };
+    }, []);
 
     return (
         <Container maxWidth="md">
@@ -57,7 +56,6 @@ const UserList = () => {
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell align="center">User ID</TableCell>
                                 <TableCell align="center">Name</TableCell>
                                 <TableCell align="center">Email</TableCell>
                                 <TableCell align="center">Username</TableCell>
@@ -67,12 +65,11 @@ const UserList = () => {
                         </TableHead>
                         <TableBody>
                             {users.map((data) => (
-                                <TableRow key={data.user.userId}>
-                                    <TableCell align="center">{data.user.userId}</TableCell>
-                                    <TableCell align="center">{`${data.user.firstName} ${data.user.lastName}`}</TableCell>
-                                    <TableCell align="center">{data.user.email}</TableCell>
-                                    <TableCell align="center">{data.user.userName}</TableCell>
-                                    <TableCell align="center">{data.user.role}</TableCell>
+                                <TableRow key={data.user?.userName}>
+                                    <TableCell align="center">{data.user?.firstName || 'N/A'} {data.user?.lastName || 'N/A'}</TableCell>
+                                    <TableCell align="center">{data.user?.email || 'N/A'}</TableCell>
+                                    <TableCell align="center">{data.user?.userName || 'N/A'}</TableCell>
+                                    <TableCell align="center">{data.user?.role || 'N/A'}</TableCell>
                                     <TableCell align="center">
                                         <Link to={`/admin-page/profile/${data.user?.userName}`}>
                                             <IconButton color="info" aria-label="View">
@@ -82,7 +79,7 @@ const UserList = () => {
                                         <IconButton
                                             color="error"
                                             aria-label="Delete"
-                                            onClick={() => handleDeleteUser(data.user.userName)}
+                                            onClick={() => handleDeleteUser(data.user?.userName)}
                                         >
                                             <Delete />
                                         </IconButton>
