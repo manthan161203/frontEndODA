@@ -304,6 +304,7 @@ const Register = () => {
                             <MenuItem value="doctor">Doctor</MenuItem>
                             <MenuItem value="clinical doctor">Clinical Doctor</MenuItem>
                             <MenuItem value="therapist">Therapist</MenuItem>
+                            <MenuItem value="admin">Admin</MenuItem>
                         </Select>
                     </FormControl>
                     <FormControl fullWidth variant="outlined" sx={{ mb: 2 }}>

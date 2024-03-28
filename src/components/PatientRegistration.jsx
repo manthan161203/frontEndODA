@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button, TextField } from '@mui/material';
 
 const PatientForm = () => {
-    const [medicalHistory, setMedicalHistory] = useState('');
-    const [allergies, setAllergies] = useState('');
+    const [user, setUser] = useState('');
+    const [medicalHistory, setMedicalHistory] = useState([]);
+    const [allergies, setAllergies] = useState([]);
     const [emergencyContact, setEmergencyContact] = useState({
         name: '',
         relationship: '',
@@ -16,10 +17,26 @@ const PatientForm = () => {
         bloodGroup: ''
     });
 
+    useEffect(() => {
+        // Fetch the user ID based on the username
+        const fetchUser = async () => {
+            const userName = localStorage.getItem('userName');
+            try {
+                const response = await axios.get(`http://localhost:8001/user/getUserDetails/${userName}`);
+                setUser(response.data._id);
+            } catch (error) {
+                console.error('Error fetching user ID:', error.message);
+            }
+        };
+
+        fetchUser();
+    }, []);
+
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-        const userName = localStorage.getItem('userName'); // Get the userName from localStorage
+
         const updatedData = {
+            user,  // Include the fetched user ID
             medicalHistory,
             allergies,
             emergencyContact,
@@ -27,30 +44,38 @@ const PatientForm = () => {
         };
 
         try {
-            const response = await axios.put(`http://localhost:8001/patient/updatePatientData/${userName}`, updatedData);
+            const response = await axios.post(`http://localhost:8001/patient/createPatient`, updatedData);
             console.log(response.data);
-            // Handle success, maybe show a success message to the user
-            window.location.href = '/doctors';
+            window.location.href = '/';
         } catch (error) {
             console.error('Error updating patient data:', error.message);
-            // Handle error, maybe show an error message to the user
         }
+    };
+
+    const handleMedicalHistoryChange = (e) => {
+        const value = e.target.value;
+        setMedicalHistory(value.split(',').map(item => item.trim()));
+    };
+
+    const handleAllergiesChange = (e) => {
+        const value = e.target.value;
+        setAllergies(value.split(',').map(item => item.trim()));
     };
 
     return (
         <form onSubmit={handleFormSubmit}>
             <TextField
                 label="Medical History"
-                value={medicalHistory}
-                onChange={(e) => setMedicalHistory(e.target.value)}
+                value={medicalHistory.join(',')}
+                onChange={handleMedicalHistoryChange}
                 fullWidth
                 margin="normal"
                 variant="outlined"
             />
             <TextField
                 label="Allergies"
-                value={allergies}
-                onChange={(e) => setAllergies(e.target.value)}
+                value={allergies.join(',')}
+                onChange={handleAllergiesChange}
                 fullWidth
                 margin="normal"
                 variant="outlined"
