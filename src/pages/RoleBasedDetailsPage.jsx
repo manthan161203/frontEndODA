@@ -19,10 +19,10 @@ const RoleBasedDetailsPage = () => {
             <NavBar />
             <Box sx={{ mb: 4 }} />
             {/* <h2 style={centeredHeadingStyle}>Register</h2> */}
-            {role === 'patient' && <PatientForm />}
-            {role === 'doctor' && <DoctorForm />}
-            {role === 'therapist' && <TherapistForm />}
-            {role === 'clinical doctor' && <ClinicalDoctorForm />}
+            {role === 'PATIENT' && <PatientForm />}
+            {role === 'DOCTOR' && <DoctorForm />}
+            {role === 'THERAPIST' && <TherapistForm />}
+            {role === 'CLINICAL DOCTOR' && <ClinicalDoctorForm />}
             <Footer />
         </div>
     );

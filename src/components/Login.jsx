@@ -110,7 +110,7 @@ const Login = () => {
                 localStorage.setItem('isSubProfileSet',response.data.isSubProfileSet);
                 
                 if(localStorage.getItem('isSubProfileSet') === "false"){
-                    window.location.href = 'role-based-details';
+                    window.location.href = '/role-based-details';
                 }
                 // else{
                 //     if(localStorage.getItem('role') === "PATIENT"){
