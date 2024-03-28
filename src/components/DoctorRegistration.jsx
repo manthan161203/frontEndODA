@@ -1,3 +1,4 @@
+/* eslint-disable no-eval */
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import axios from 'axios';
@@ -15,7 +16,7 @@ import {
 } from '@mui/material';
 import { Visibility, VisibilityOff, DateRange, Phone, LocationOn } from '@mui/icons-material';
 
-const PatientRegistraion = () => {
+const DoctorRegistration = () => {
     // const [userId, setUserId] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -122,14 +123,30 @@ const PatientRegistraion = () => {
     const handleTogglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
-
+    const centeredHeadingStyle = {
+        textAlign: 'center',
+        marginBottom: '20px',
+    };
     return (
         <Container maxWidth="sm">
+            <h2 style={centeredHeadingStyle}>Doctor Details</h2>
             <div>
                 <form>
+                    {/* <TextField
+                        fullWidth
+                        label="user ID"
+                        variant="outlined"
+                        type="text"
+                        value={userId}
+                        onChange={(e) => setUserId(e.target.value)}
+                        sx={{ mb: 2 }}
+                        error={formSubmitted && !userId}
+                        required
+                        disabled={otpSent}
+                    /> */}
                     <TextField
                         fullWidth
-                        label="First Name"
+                        label="Doctor Specialization"
                         variant="outlined"
                         type="text"
                         value={firstName}
@@ -353,4 +370,4 @@ const PatientRegistraion = () => {
     );
 };
 
-export default PatientRegistraion;
+export default DoctorRegistration;

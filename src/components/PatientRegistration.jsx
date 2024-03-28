@@ -1,3 +1,4 @@
+/* eslint-disable no-eval */
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import axios from 'axios';
@@ -15,7 +16,7 @@ import {
 } from '@mui/material';
 import { Visibility, VisibilityOff, DateRange, Phone, LocationOn } from '@mui/icons-material';
 
-const TherapiestRegistration = () => {
+const PatientRegistration = () => {
     // const [userId, setUserId] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -127,18 +128,6 @@ const TherapiestRegistration = () => {
         <Container maxWidth="sm">
             <div>
                 <form>
-                    {/* <TextField
-                        fullWidth
-                        label="user ID"
-                        variant="outlined"
-                        type="text"
-                        value={userId}
-                        onChange={(e) => setUserId(e.target.value)}
-                        sx={{ mb: 2 }}
-                        error={formSubmitted && !userId}
-                        required
-                        disabled={otpSent}
-                    /> */}
                     <TextField
                         fullWidth
                         label="First Name"
@@ -365,4 +354,4 @@ const TherapiestRegistration = () => {
     );
 };
 
-export default TherapiestRegistration;
+export default PatientRegistration;
