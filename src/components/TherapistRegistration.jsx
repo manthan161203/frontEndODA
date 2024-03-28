@@ -1,3 +1,4 @@
+/* eslint-disable no-eval */
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import axios from 'axios';
@@ -15,7 +16,7 @@ import {
 } from '@mui/material';
 import { Visibility, VisibilityOff, DateRange, Phone, LocationOn } from '@mui/icons-material';
 
-const TherapiestRegistration = () => {
+const TherapistRegistration = () => {
     // const [userId, setUserId] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -365,4 +366,4 @@ const TherapiestRegistration = () => {
     );
 };
 
-export default TherapiestRegistration;
+export default TherapistRegistration;

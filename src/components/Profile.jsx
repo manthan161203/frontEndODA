@@ -69,7 +69,7 @@ const Profile = () => {
         setImageFile(file);
     };
 
-    const ignoredFields = ['_id', 'otp', 'invalidOTPAttempts', 'updatedAt', '__v'];
+    const ignoredFields = ['_id', 'otp', 'invalidOTPAttempts', 'updatedAt', '__v', 'password', 'createdAt', 'isSubProfileSet'];
 
     return (
         <Container maxWidth="sm">

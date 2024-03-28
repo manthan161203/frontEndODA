@@ -1,9 +1,9 @@
 import React from 'react';
 import Box from '@mui/system/Box';
-import PatientForm from '../components/PatientRegistraion';
-import DoctorForm from '../components/DoctorRegistation';
+import PatientForm from '../components/PatientRegistration';
+import DoctorForm from '../components/DoctorRegistration';
 import ClinicalDoctorForm from '../components/ClinicalDoctorRegistration';
-import TherapistForm from '../components/TherapiestRegistration';
+import TherapistForm from '../components/TherapistRegistration';
 import NavBar from '../components/Navbar';
 import Footer from '../components/Footer';
 
@@ -19,10 +19,10 @@ const RoleBasedDetailsPage = () => {
             <NavBar />
             <Box sx={{ mb: 4 }} />
             {/* <h2 style={centeredHeadingStyle}>Register</h2> */}
-            {role == 'Patient' && <PatientForm />}
-            {role == 'Doctor' && <DoctorForm />}
-            {role == 'Therapist' && <TherapistForm />}
-            {role == 'Clinical Doctor' && <ClinicalDoctorForm />}
+            {role === 'PATIENT' && <PatientForm />}
+            {role === 'DOCTOR' && <DoctorForm />}
+            {role === 'THERAPIST' && <TherapistForm />}
+            {role === 'CLINICAL DOCTOR' && <ClinicalDoctorForm />}
             <Footer />
         </div>
     );
