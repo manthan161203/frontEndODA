@@ -40,11 +40,11 @@ const ResponsiveAppBar = () => {
     role === "Therapist"
   ) {
     pages.push(
-        { name: "Home", path: "/doctor" },
-        { name: "Review Requests", path: "/doctor/review-appointments" },
-        { name: "View History", path: "/doctors/history" },
-        { name: "View Active Appointment", path: "/doctors/active-appointment" }
-      );
+      { name: "Home", path: "/doctor" },
+      { name: "Review Requests", path: "/doctor/review-appointments" },
+      { name: "View History", path: "/doctor/history" },
+      { name: "View Active Appointment", path: "/doctor/active-appointment" }
+    );
   }
   const { setIsLoggedIn, setRole, setUserName, isLoggedIn, userName } =
     useContext(AppContext);

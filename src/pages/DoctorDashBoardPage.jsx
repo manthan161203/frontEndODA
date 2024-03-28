@@ -37,18 +37,27 @@ const DoctorDashboardPage = () => {
                 const todayCountRes = await axios.get(`http://localhost:8001/doctor/getTodayAppointmentsCount/${doctorId}`);
                 const upcomingCountRes = await axios.get(`http://localhost:8001/doctor/getUpComingAppointmentsCount/${doctorId}`);
                 const pendingCountRes = await axios.get(`http://localhost:8001/doctor/getPendingAppointmentsCount/${doctorId}`);
-                // console.log(response.data)
+                if(activeApp.data[0]??0 === 0){
+                    for(const app of response.data){
+                        if(app.status==="Pending" || app.status==="Accepted"){
+                            setSelectedAppointment(app);        
+                            setappointmentLabel("Appointment Details");
+                            break;
+                        }
+                    }
+                }else{
+                    setSelectedAppointment(activeApp.data[0]);
+                    setappointmentLabel("Active Appointment");
+                }
                 console.log(todayCountRes)
                 setTodayCount(todayCountRes.data)
                 setUpcomingCount(upcomingCountRes.data)
                 setPendingCount(pendingCountRes.data)
-                console.log(activeApp)
-                console.log("JOD")
-                console.log(activeApp.data[0])
-                setSelectedAppointment(activeApp.data[0]);
-                setappointmentLabel("Active Appointment");
-                console.log("JODD")
-                console.log(selectedAppointment)
+                // console.log(activeApp)
+                // console.log("JOD")
+                // console.log(activeApp.data[0])
+                // console.log("JODD")
+                // console.log(selectedAppointment)
                 
             } catch (error) {
                 console.error('Error fetching appointments:', error);
@@ -69,7 +78,7 @@ const DoctorDashboardPage = () => {
         start: appointment.date,
         end: appointment.date,
         data: appointment,
-        backgroundColor: appointment.status === 'Rejected' ? '#c43c33' : '#9fc5fd'
+        backgroundColor: appointment.status === 'Rejected' ? '#c43c33' : appointment.status === "Accepted"? '#00FF00' :'#9fc5fd'
     }));
 
     return (

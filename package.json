@@ -32,7 +32,8 @@
     "react-scripts": "5.0.1",
     "react-time-picker": "^6.6.0",
     "styled-components": "^6.1.8",
-    "sweetalert2": "^11.10.3",
+    "sweetalert": "^2.1.2",
+    "sweetalert2": "^11.10.6",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

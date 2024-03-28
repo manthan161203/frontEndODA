@@ -19,6 +19,7 @@ import AdminPage from './pages/AdminPage';
 import RoleBasedDetailsPage from './pages/RoleBasedDetailsPage';
 import DoctorDashBoardPage from './pages/DoctorDashBoardPage'
 import PendingAppointments from './components/PendingAppointments';
+import HistoryAppointments from './components/HistoryDoctorPanel';
 
 export const AppContext = createContext();
 
@@ -60,6 +61,7 @@ function App() {
                         <Route path="/role-based-details" element={<RoleBasedDetailsPage />} />
                         <Route path="/doctor" element={<DoctorDashBoardPage />} />
                         <Route path="/doctor/review-appointments" element={<PendingAppointments />} />
+                        <Route path="/doctor/history" element={<HistoryAppointments />} />
                         <Route path="*" element={<ErrorPage />} />
                     </Routes>
                 </Suspense>

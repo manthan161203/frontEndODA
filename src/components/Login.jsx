@@ -115,7 +115,8 @@ const Login = () => {
                 else{
                     if(localStorage.getItem('role') === "PATIENT"){
                         window.location.href = '/hospitals';
-                    }else if(localStorage.getItem('role') === "DOCTOR"){
+                    }else 
+                    {
                         window.location.href = '/doctor';
                     }
                 }
