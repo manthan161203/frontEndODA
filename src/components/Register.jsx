@@ -52,14 +52,36 @@ const Register = () => {
 
     const handleSendOtp = async () => {
         setFormSubmitted(true);
-
+    
         if (!validateFields()) {
             return;
         }
-
+    
         try {
             setLoading(true);
-
+    
+            // Check if username already exists
+            const usernameExists = await axios.post('http://localhost:8001/user/checkUsername', { userName });
+            if (usernameExists.data.exists) {
+                Swal.fire('Error', 'Username already exists', 'error');
+                return;
+            }
+    
+            // Check if email already exists
+            const emailExists = await axios.post('http://localhost:8001/user/checkEmail', { email });
+            if (emailExists.data.exists) {
+                Swal.fire('Error', 'Email already exists', 'error');
+                return;
+            }
+    
+            // Check if phone number already exists
+            const phoneNumberExists = await axios.post('http://localhost:8001/user/checkPhoneNumber', { phoneNumber });
+            if (phoneNumberExists.data.exists) {
+                Swal.fire('Error', 'Phone number already exists', 'error');
+                return;
+            }
+    
+            // Send OTP
             if (otpOption === 'sms' || otpOption === 'email') {
                 await axios.post(`http://localhost:8001/register/submit-info/${otpOption}`, {
                     // userId,
@@ -74,18 +96,20 @@ const Register = () => {
                     gender,
                     role,
                 });
-
+    
                 setOtpSent(true);
                 Swal.fire('Success', `User information submitted successfully. Check your phone for OTP.`, 'success');
             } else {
                 setErrorMessage('Invalid OTP option');
             }
         } catch (error) {
-            // setErrorMessage('Error submitting user information');
+            console.error('Error sending OTP:', error);
+            setErrorMessage('Error sending OTP');
         } finally {
             setLoading(false);
         }
     };
+    
 
     const handleRegister = async () => {
         setFormSubmitted(true);
