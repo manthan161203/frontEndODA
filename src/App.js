@@ -20,6 +20,7 @@ import RoleBasedDetailsPage from './pages/RoleBasedDetailsPage';
 import DoctorDashBoardPage from './pages/DoctorDashBoardPage'
 import PendingAppointments from './components/PendingAppointments';
 import HistoryAppointments from './components/HistoryDoctorPanel';
+import AdminDashboardPage from './components/AdminDashBoard';
 
 export const AppContext = createContext();
 
@@ -53,6 +54,7 @@ function App() {
                         />
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/register" element={<RegisterPage />} />
+                        <Route path="/admin" element={<AdminDashboardPage />} />
                         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                         <Route path="/admin-page/:role" element={<AdminPage />} />
                         <Route path="/admin-page/profile/:userName" element={<Profile />} />
