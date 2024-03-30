@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { AppContext } from '../App';
+import { useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import {
     Avatar,
     Box,
@@ -16,7 +17,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import CancelIcon from '@mui/icons-material/Cancel';
 import SaveIcon from '@mui/icons-material/Save';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { useParams } from 'react-router-dom';
 
 const Profile = () => {
     const { userName } = useParams();
@@ -51,25 +51,50 @@ const Profile = () => {
 
     const handleSaveChanges = async () => {
         try {
+            // Check email existence
+            const emailExistsResponse = await axios.post(`http://localhost:8001/user/checkEmail`, { email: userDetails.email });
+            if (emailExistsResponse.data.exists) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Email already exists!',
+                });
+                return;
+            }
+    
+            // Check phone number existence
+            const phoneNumberExistsResponse = await axios.post(`http://localhost:8001/user/checkPhoneNumber`, { phoneNumber: userDetails.phoneNumber });
+            if (phoneNumberExistsResponse.data.exists) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Phone number already exists!',
+                });
+                return;
+            }
+    
+            // Proceed with saving changes
             if (imageFile) {
                 const formData = new FormData();
                 formData.append('image', imageFile);
                 await axios.post(`http://localhost:8001/user/uploadImage/${userName}`, formData);
             }
-
+    
             await axios.put(`http://localhost:8001/user/updateUserDetails/${userName}`, userDetails);
             setIsEditing(false);
         } catch (error) {
             console.error('Error saving user details:', error);
         }
     };
+    
+
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
         setImageFile(file);
     };
 
-    const ignoredFields = ['_id', 'otp', 'invalidOTPAttempts', 'updatedAt', '__v', 'password', 'createdAt', 'isSubProfileSet'];
+    const ignoredFields = ['_id', 'otp', 'userId', 'invalidOTPAttempts', 'updatedAt', '__v', 'password', 'createdAt', 'isSubProfileSet', 'role'];
 
     return (
         <Container maxWidth="sm">
@@ -112,7 +137,7 @@ const Profile = () => {
                                                     variant="outlined"
                                                     name={key}
                                                     value={userDetails[key]}
-                                                    disabled={!isEditing}
+                                                    disabled={!isEditing || key === 'userName'} // Disable userName field
                                                     onChange={(e) => setUserDetails({ ...userDetails, [key]: e.target.value })}
                                                     sx={{ mb: 1 }}
                                                 />

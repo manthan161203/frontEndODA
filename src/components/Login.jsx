@@ -133,6 +133,9 @@ const Login = () => {
         if (localStorage.getItem("isSubProfileSet") === "false") {
           window.location.href = "/role-based-details";
         }
+        if(localStorage.getItem("isSubProfileSet") === "true") {
+          window.location.href = "/";
+        }
         // else{
         //     if(localStorage.getItem('role') === "PATIENT"){
         //         window.location.href = '/hospitals';
