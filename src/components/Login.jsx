@@ -132,16 +132,15 @@ const Login = () => {
 
         if (localStorage.getItem("isSubProfileSet") === "false") {
           window.location.href = "/role-based-details";
+        } else {
+          if (localStorage.getItem("role") === "PATIENT") {
+            window.location.href = "/hospitals";
+          } else if (localStorage.getItem("role") === "DOCTOR") {
+            window.location.href = "/doctor";
+          } else if (localStorage.getItem("role") === "ADMIN") {
+            window.location.href = "/admin-page/patient";
+          }
         }
-        // else{
-        //     if(localStorage.getItem('role') === "PATIENT"){
-        //         window.location.href = '/hospitals';
-        //     }else if(localStorage.getItem('role') === "DOCTOR"){
-        //         window.location.href = '/doctor';
-        //     }else if(localStorage.getItem('role') === "ADMIN"){
-        //         window.location.href = '/admin-page/patient';
-        //     }
-        // }
       }
     } catch (error) {
       if (error.response) {

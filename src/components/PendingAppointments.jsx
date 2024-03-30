@@ -24,7 +24,7 @@ const PendingAppointments = () => {
           (appointment) => appointment.status === "Pending"
         );
         setAppointments(filteredAppointments);
-        if (response.data[0] === 0) {
+        if (response.data[0] !== 0) {
           for (const app of response.data) {
             if (app.status === "Pending") {
               setSelectedAppointment(app);
@@ -47,6 +47,7 @@ const PendingAppointments = () => {
   const handleSlotClick = (info) => {
     const appointment = info.event.extendedProps.data;
     console.log(appointment);
+    setAppointmentLabel("Appointmnet Preview");
     setSelectedAppointment(appointment);
   };
 
@@ -97,7 +98,23 @@ const PendingAppointments = () => {
   };
 
   const handleReject = (appointment) => {
-    console.log("Rejecting appointment:", appointment);
+    Swal.fire({
+      title: "Select Action",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: `Reject`,
+      denyButtonText: `Recommend and Reject`,
+      cancelButtonText: `Cancel`,
+      icon: "warning",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Handle Reject action here
+        console.log("Appointment rejected.");
+      } else if (result.isDenied) {
+        // Handle Reject and Recommend action here
+        console.log("Appointment rejected and recommended.");
+      }
+    });
   };
   return (
     <div className="dashboard-container">
