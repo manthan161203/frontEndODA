@@ -15,7 +15,6 @@ const RoleProfilePage = () => {
             <Box sx={{ mb: 4 }} />
             <h2 style={centeredHeadingStyle}>Your Details</h2>
             <RoleProfile />
-            <Footer />
         </div>
     );
 };
