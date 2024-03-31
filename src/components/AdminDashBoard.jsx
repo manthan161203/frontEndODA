@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import NavBar from '../components/Navbar';
-import Footer from '../components/Footer';
-import axios from 'axios';
+import Typography from '@mui/material/Typography';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import { Bar } from 'react-chartjs-2';
 import { Chart, CategoryScale, LinearScale, Title, Tooltip } from 'chart.js/auto';
+
+import axios from 'axios';
 
 const AdminDashboardPage = () => {
     const [appointmentsData, setAppointmentsData] = useState([]);
@@ -63,9 +65,6 @@ const AdminDashboardPage = () => {
             }
         ]
     });
-    
-    
-    
 
     const chartOptions = {
         plugins: {
@@ -86,69 +85,82 @@ const AdminDashboardPage = () => {
         }
     };
 
+    const CountCard = ({ title, count }) => (
+        <Card variant="outlined" sx={{ height: '100%' }}>
+            <CardContent>
+                <Typography variant="h6" component="div" gutterBottom>
+                    {title}
+                </Typography>
+                <Typography variant="h4" component="div" color="primary" sx={{ mt: 1 }}>
+                    {count}
+                </Typography>
+            </CardContent>
+        </Card>
+    );
+
     return (
         <div>
-            <NavBar />
             <Box sx={{ mb: 4 }} />
             <Grid container spacing={3}>
                 <Grid item xs={12} md={6}>
-                    <div className="panel">
-                        <h2 style={{ textAlign: "center" }}>Dashboard Overview</h2>
-                        <div className="panel-content">
-                            <div className="card-group">
-                                <div className="card inline">
-                                    <h3>Appointments</h3>
-                                    <p>Total: {appointmentsData.length}</p>
-                                </div>
-                                <div className="card inline">
-                                    <h3>Doctors</h3>
-                                    <p>Total: {doctorsData.length}</p>
-                                </div>
-                                <div className="card inline">
-                                    <h3>Patients</h3>
-                                    <p>Total: {patientsData.length}</p>
-                                </div>
-                                <div className="card inline">
-                                    <h3>Hospitals</h3>
-                                    <p>Total: {hospitalsData.length}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <CountCard title="Appointments" count={appointmentsData.length} />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                    <div className="panel">
-                        <h2 style={{ textAlign: "center" }}>Graphs</h2>
-                        <div className="panel-content">
-                            <div className="chart-container">
-                                <Bar
-                                    data={createChartData(appointmentsData, 'Appointments')}
-                                    options={chartOptions}
-                                />
-                            </div>
-                            <div className="chart-container">
-                                <Bar
-                                    data={createChartData(doctorsData, 'Doctors')}
-                                    options={chartOptions}
-                                />
-                            </div>
-                            <div className="chart-container">
-                                <Bar
-                                    data={createChartData(patientsData, 'Patients')}
-                                    options={chartOptions}
-                                />
-                            </div>
-                            <div className="chart-container">
-                                <Bar
-                                    data={createChartData(hospitalsData, 'Hospitals')}
-                                    options={chartOptions}
-                                />
-                            </div>
-                        </div>
-                    </div>
+                    <CountCard title="Doctors" count={doctorsData.length} />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <CountCard title="Patients" count={patientsData.length} />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <CountCard title="Hospitals" count={hospitalsData.length} />
                 </Grid>
             </Grid>
-            <Footer />
+            <Box sx={{ mb: 4 }} />
+            <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    <Card>
+                        <CardContent>
+                            <Typography variant="h5" component="div" gutterBottom>
+                                Graphs
+                            </Typography>
+                            <Grid container spacing={3}>
+                                <Grid item xs={12} md={6}>
+                                    <div className="chart-container">
+                                        <Bar
+                                            data={createChartData(appointmentsData, 'Appointments')}
+                                            options={chartOptions}
+                                        />
+                                    </div>
+                                </Grid>
+                                <Grid item xs={12} md={6}>
+                                    <div className="chart-container">
+                                        <Bar
+                                            data={createChartData(doctorsData, 'Doctors')}
+                                            options={chartOptions}
+                                        />
+                                    </div>
+                                </Grid>
+                                <Grid item xs={12} md={6}>
+                                    <div className="chart-container">
+                                        <Bar
+                                            data={createChartData(patientsData, 'Patients')}
+                                            options={chartOptions}
+                                        />
+                                    </div>
+                                </Grid>
+                                <Grid item xs={12} md={6}>
+                                    <div className="chart-container">
+                                        <Bar
+                                            data={createChartData(hospitalsData, 'Hospitals')}
+                                            options={chartOptions}
+                                        />
+                                    </div>
+                                </Grid>
+                            </Grid>
+                        </CardContent>
+                    </Card>
+                </Grid>
+            </Grid>
         </div>
     );
 };

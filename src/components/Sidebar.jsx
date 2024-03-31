@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -17,10 +17,16 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import Collapse from '@mui/material/Collapse';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+
+import { AppContext } from '../App';
 
 const drawerWidth = 240;
 
@@ -72,6 +78,8 @@ export default function Sidebar() {
     const theme = useTheme();
     const [open, setOpen] = React.useState(true);
     const [doctorOpen, setDoctorOpen] = React.useState(false);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const { userName, setUserName, setRole, setIsLoggedIn } = useContext(AppContext);
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -86,9 +94,16 @@ export default function Sidebar() {
     };
 
     const mainLinks = [
+        { text: 'Dashboard', route: '/admin' },
         { text: 'Patient', route: '/admin-page/patient' },
-        { text: 'Hospital', route: '/admin-page/hospital' },
-        { text: 'Appointments', route: '/admin-page/appointments' }
+        { text: 'Manage Hospital', route: '/admin-page/hospital' },
+        { text: 'Add Hospital', route: '/create-hospital' }
+    ];
+
+    const settings = [
+        { text: 'Your Profile', icon: <AccountCircleIcon />, route: '/your-profile' },
+        { text: 'Admin Profile', icon: <AdminPanelSettingsIcon />, route: '/admin-profile' },
+        { text: 'Logout', icon: <ExitToAppIcon />, route: '/logout' }
     ];
 
     const subLinks = [
@@ -97,9 +112,31 @@ export default function Sidebar() {
         { text: 'Hospital Doctor', route: '/admin-page/doctor' }
     ];
 
+    const handleMenuOpen = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
+
     const handleItemClick = (route) => {
-        // Redirect to the specified route
-        window.location.href = route;
+        if (route === '/your-profile') {
+            window.location.href = `/profile-admin/${userName}`;
+        } else if (route === '/admin-profile') {
+            window.location.href = `/profile-role-admin/${userName}`;
+        } else if (route === '/logout') {
+            localStorage.removeItem("userName");
+            localStorage.removeItem("role");
+            localStorage.removeItem("isLoggedIn");
+            setUserName(null);
+            setRole("Patient");
+            setIsLoggedIn(false);
+            window.location.href = "/login";
+        } else {
+            // Handle other links
+            window.location.href = route;
+        }
     };
 
     return (
@@ -117,6 +154,45 @@ export default function Sidebar() {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div">Eazy Health Care (Admin Panel)</Typography>
+                    <Box sx={{ flexGrow: 1 }} />
+                    {/* <img src="https://via.placeholder.com/40" alt="Logo" style={{ width: 40, height: 40, marginRight: theme.spacing(2) }} /> */}
+                    <IconButton
+                        size="large"
+                        edge="end"
+                        aria-label="account of current user"
+                        aria-controls="menu-appbar"
+                        aria-haspopup="true"
+                        onClick={handleMenuOpen}
+                        color="inherit"
+                    >
+                        <AccountCircleIcon />
+                    </IconButton>
+                    <Menu
+                        id="menu-appbar"
+                        anchorEl={anchorEl}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        keepMounted
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        open={Boolean(anchorEl)}
+                        onClose={handleMenuClose}
+                    >
+                        {settings.map((item) => (
+                            <MenuItem key={item.text} onClick={() => handleItemClick(item.route)}>
+                                <ListItemIcon>
+                                    {item.icon}
+                                </ListItemIcon>
+                                <Typography variant="inherit" noWrap>
+                                    {item.text}
+                                </Typography>
+                            </MenuItem>
+                        ))}
+                    </Menu>
                 </Toolbar>
             </AppBar>
             <Drawer

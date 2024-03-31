@@ -20,7 +20,11 @@ import RoleBasedDetailsPage from './pages/RoleBasedDetailsPage';
 import DoctorDashBoardPage from './pages/DoctorDashBoardPage'
 import PendingAppointments from './components/PendingAppointments';
 import HistoryAppointments from './components/HistoryDoctorPanel';
-import AdminDashboardPage from './components/AdminDashBoard';
+import RegisterHospital from './pages/CreateHospital';
+import AdminDashboard from './pages/AdminDashBoardPage';
+import AdminProfilePage from './pages/AdminProfilePage';
+import AdminRoleProfilePage from './pages/AdminRoleProfilePage';
+import AdminViewProfile from './pages/AdminViewProfile';
 
 export const AppContext = createContext();
 
@@ -48,16 +52,16 @@ function App() {
                         <Route path="/profile/:userName" element={<ProtectedRoute element={<ProfilePage />} />} />
                         <Route path="/my-appointments/:userName" element={<ProtectedRoute element={<AppointmentPage />} />} />
                         {/* <Route path="/book-appointment" element={<ProtectedRoute element={<BookAppointmentPage />} />} /> */}
-                        <Route
-                            path="/profile-role/:userName"
-                            element={<ProtectedRoute element={<RoleProfilePage />} />}
-                        />
+                        <Route path="/profile-role/:userName" element={<ProtectedRoute element={<RoleProfilePage />} />} />
+                        <Route path="/profile-role-admin/:userName" element={<ProtectedRoute element={<AdminRoleProfilePage />} />} />
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/register" element={<RegisterPage />} />
-                        <Route path="/admin" element={<AdminDashboardPage />} />
+                        <Route path="/admin" element={<AdminDashboard />} />
                         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                        <Route path="create-hospital" element={<RegisterHospital/>} />
                         <Route path="/admin-page/:role" element={<AdminPage />} />
-                        <Route path="/admin-page/profile/:userName" element={<Profile />} />
+                        <Route path="/profile-admin/:userName" element={<AdminProfilePage />} />
+                        <Route path="/admin-page/profile/:userName" element={<AdminViewProfile />} />
                         <Route path="/empty" element={<EmptyPage />} />
                         <Route path="/" element={<HomePage />} />
                         <Route path="/role-based-details" element={<RoleBasedDetailsPage />} />

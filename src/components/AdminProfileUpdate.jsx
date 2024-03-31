@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { AppContext } from '../App';
 import {
     Avatar,
     Box,
@@ -17,23 +16,21 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import SaveIcon from '@mui/icons-material/Save';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
-const AdminRoleProfile = () => {
-    const { userName, role } = useContext(AppContext);
-    const lowercaseRole = role.toLowerCase();
+const AdminProfileForm = () => {
+    const userName = localStorage.getItem('userName');
     const [adminData, setAdminData] = useState({
+        user: '',
         assignedDepartments: [],
     });
     const [isEditing, setIsEditing] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const [imageFile, setImageFile] = useState(null);
 
     useEffect(() => {
         const fetchAdminData = async () => {
             try {
                 const response = await axios.get(`http://localhost:8001/admin/getRoleBasedDetails/${userName}`);
-                if (response.data) {
-                    setAdminData(response.data[0]);
-                }
+                // console.log(response.data[0])
+                setAdminData(response.data[0]);
                 setIsLoading(false);
             } catch (error) {
                 console.error('Error fetching admin data:', error);
@@ -42,25 +39,31 @@ const AdminRoleProfile = () => {
         };
 
         fetchAdminData();
-    }, [userName, lowercaseRole]);
+    }, [userName]);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-        setAdminData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
+        if (name === 'assignedDepartments') {
+            const arrValue = value.split(',').map((item) => item.trim());
+            setAdminData({
+                ...adminData,
+                [name]: arrValue,
+            });
+        } else {
+            setAdminData({
+                ...adminData,
+                [name]: value,
+            });
+        }
     };
 
     const handleImageChange = async (event) => {
         const file = event.target.files[0];
-        setImageFile(file);
+        const formData = new FormData();
+        formData.append('image', file);
 
         try {
-            const formData = new FormData();
-            formData.append('image', file);
-
-            await axios.post(`http://localhost:8001/user/uploadImage/${userName}`, formData);
+            await axios.post(`http://localhost:8001/admin/uploadImage/${userName}`, formData);
             console.log('Image uploaded successfully');
         } catch (error) {
             console.error('Error uploading image:', error);
@@ -73,7 +76,6 @@ const AdminRoleProfile = () => {
         try {
             const response = await axios.put(`http://localhost:8001/admin/updateAdminData/${userName}`, adminData);
             setIsEditing(false);
-            console.log('Admin data updated successfully:', response.data);
         } catch (error) {
             console.error('Error updating admin data:', error);
         }
@@ -89,7 +91,7 @@ const AdminRoleProfile = () => {
                                 <CircularProgress />
                             ) : (
                                 <>
-                                    <Avatar alt="User Image" src={adminData?.image} sx={{ width: 80, height: 80 }} />
+                                    <Avatar alt="Admin Image" src={adminData.image} sx={{ width: 80, height: 80 }} />
                                     <Box mt={2} mb={1}>
                                         {isEditing && (
                                             <>
@@ -115,13 +117,13 @@ const AdminRoleProfile = () => {
                                             label="Assigned Departments"
                                             variant="outlined"
                                             name="assignedDepartments"
-                                            value={Array.isArray(adminData.assignedDepartments) ? adminData.assignedDepartments.join(', ') : ''}
+                                            value={adminData.assignedDepartments ? adminData.assignedDepartments.join(', ') : ''}
                                             onChange={handleChange}
+                                            multiline
+                                            rows={4}
                                             sx={{ mb: 2 }}
                                             disabled={!isEditing}
                                         />
-
-
                                         {isEditing ? (
                                             <Box mt={2} display="flex" justifyContent="flex-end">
                                                 <Button
@@ -133,23 +135,13 @@ const AdminRoleProfile = () => {
                                                 >
                                                     Cancel
                                                 </Button>
-                                                <Button
-                                                    type="submit"
-                                                    variant="contained"
-                                                    color="primary"
-                                                    startIcon={<SaveIcon />}
-                                                >
+                                                <Button type="submit" variant="contained" color="primary" startIcon={<SaveIcon />}>
                                                     Save Changes
                                                 </Button>
                                             </Box>
                                         ) : (
                                             <Box mt={2} display="flex" justifyContent="flex-end">
-                                                <Button
-                                                    variant="contained"
-                                                    color="primary"
-                                                    startIcon={<EditIcon />}
-                                                    onClick={() => setIsEditing(true)}
-                                                >
+                                                <Button variant="contained" color="primary" startIcon={<EditIcon />} onClick={() => setIsEditing(true)}>
                                                     Edit Profile
                                                 </Button>
                                             </Box>
@@ -165,4 +157,4 @@ const AdminRoleProfile = () => {
     );
 };
 
-export default AdminRoleProfile;
+export default AdminProfileForm;
