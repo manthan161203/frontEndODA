@@ -8,11 +8,20 @@ import { Button, Card, CardContent, Grid, Typography } from "@mui/material";
 import NavBar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Swal from "sweetalert2";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 const PendingAppointments = () => {
   const [appointments, setAppointments] = useState([]);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [appointmentLabel, setAppointmentLabel] = useState(null);
-
+  const [selectedDoctor, setSelectedDoctor] = useState(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [doctorList, setDoctorList] = useState(null);
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
@@ -41,7 +50,19 @@ const PendingAppointments = () => {
         console.error("Error fetching appointments:", error);
       }
     };
+    const getdoctorList = async () => {
+      try {
+        const doctors = await axios.get(
+          `http://localhost:8001/doctor/getAllDoctors`
+        );
+        console.log(doctors);
+        setDoctorList(doctors.data);
+      } catch (error) {
+        console.error("Error fetching appointments:", error);
+      }
+    };
     fetchAppointments();
+    getdoctorList();
   }, []);
 
   const handleSlotClick = (info) => {
@@ -95,26 +116,31 @@ const PendingAppointments = () => {
         "error"
       );
     }
+    window.location.reload();
+  };
+  const handleRecommendReject = async (appointment) => {
+    setDialogOpen(true);
+  };
+  const handleReject = (appointment) => {
+    console.log("Appointment rejected:", appointment);
+    setDialogOpen(true);
   };
 
-  const handleReject = (appointment) => {
-    Swal.fire({
-      title: "Select Action",
-      showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonText: `Reject`,
-      denyButtonText: `Recommend and Reject`,
-      cancelButtonText: `Cancel`,
-      icon: "warning",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // Handle Reject action here
-        console.log("Appointment rejected.");
-      } else if (result.isDenied) {
-        // Handle Reject and Recommend action here
-        console.log("Appointment rejected and recommended.");
-      }
-    });
+  const handleRecommend = async (doctorId) => {
+    console.log("Recommendation sent to doctor:", doctorId);
+    const result = await axios.get(
+      `http://localhost:8001/doctor/recommendDoctor/${selectedAppointment._id}/${doctorId}`
+    );
+    if (result.status == 200) {
+      Swal.fire(
+        "Doctor Recommendation Added",
+        "Email has been sent to patient",
+        "success"
+      );
+      window.location.reload();
+    }
+    setDialogOpen(false);
+    // Handle recommendation logic...
   };
   return (
     <div className="dashboard-container">
@@ -142,6 +168,7 @@ const PendingAppointments = () => {
                       width: "100%",
                       height: "100%",
                       borderRadius: "6px",
+                      marginTop: "20px",
                       boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
                       backgroundColor: "#E9F1FA",
                     }}
@@ -150,7 +177,7 @@ const PendingAppointments = () => {
                       <h2
                         style={{
                           textAlign: "center",
-                          marginTop: 2,
+                          marginTop: "20px",
                           backgroundColor: "#d0d9eb",
                         }}
                       >
@@ -338,8 +365,21 @@ const PendingAppointments = () => {
                           <Button
                             variant="contained"
                             color="error"
-                            onClick={() => handleReject(selectedAppointment)}
+                            onClick={() =>
+                              handleRecommendReject(selectedAppointment)
+                            }
                             style={{ marginBottom: "0.5rem" }}
+                          >
+                            Recommand & Reject
+                          </Button>
+                          <Button
+                            variant="contained"
+                            onClick={() => handleReject(selectedAppointment)}
+                            style={{
+                              marginBottom: "0.5rem",
+                              backgroundColor: "#FFD700",
+                              color: "black",
+                            }}
                           >
                             Reject
                           </Button>
@@ -347,6 +387,7 @@ const PendingAppointments = () => {
                             variant="contained"
                             color="primary"
                             onClick={() => console.log("View More clicked")}
+                            style={{ marginBottom: "0.5rem" }}
                           >
                             View More
                           </Button>
@@ -361,9 +402,18 @@ const PendingAppointments = () => {
           {!selectedAppointment && (
             <div className="panel">
               <div className="panel-content">
-                <Card>
+                <Card
+                  style={{
+                    marginTop: "8.5%",
+                  }}
+                >
                   <CardContent>
-                    <h2 style={{ textAlign: "center", paddingBottom: "5px" }}>
+                    <h2
+                      style={{
+                        textAlign: "center",
+                        paddingBottom: "5px",
+                      }}
+                    >
                       {appointmentLabel}
                     </h2>
                     <img
@@ -407,6 +457,52 @@ const PendingAppointments = () => {
           </div>
         </Grid>
       </Grid>
+      <Dialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        fullWidth={true}
+        maxWidth="md" // Adjust the width as needed
+      >
+        <DialogTitle>Recommend a Doctor</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Please select a doctor to recommend to the patient.
+          </DialogContentText>
+          {doctorList &&
+            doctorList.map((doctor) => (
+              <div
+                key={doctor.id}
+                style={{
+                  padding: "20px",
+                  backgroundColor: "#DCDCDC",
+                  marginBottom: "10px",
+                  borderRadius: "20px",
+                  display: "flex",
+                  justifyContent: "space-between", // Align items to the right
+                  alignItems: "center",
+                }}
+              >
+                <div>
+                  <span style={{ fontWeight: "bold" }}>Doctor Name :</span>
+                  {doctor.user.firstName + " " + doctor.user.lastName}
+                  {doctor.user.address}
+                </div>
+                <Button
+                  onClick={() => handleRecommend(doctor._id)}
+                  variant="contained"
+                  color="primary"
+                >
+                  Recommend
+                </Button>
+              </div>
+            ))}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDialogOpen(false)} color="primary">
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Footer />
     </div>
   );

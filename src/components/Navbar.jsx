@@ -42,8 +42,7 @@ const ResponsiveAppBar = () => {
     pages.push(
       { name: "Home", path: "/doctor" },
       { name: "Review Requests", path: "/doctor/review-appointments" },
-      { name: "View History", path: "/doctor/history" },
-      { name: "View Active Appointment", path: "/doctor/active-appointment" }
+      { name: "View History", path: "/doctor/history" }
     );
   }
   const { setIsLoggedIn, setRole, setUserName, isLoggedIn, userName } =
