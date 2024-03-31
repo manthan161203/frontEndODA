@@ -50,7 +50,7 @@ const PatientList = () => {
         <Container maxWidth="md">
             <Box mt={4}>
                 <Typography variant="h4" color="primary" gutterBottom>
-                    User List
+                    Patient List
                 </Typography>
                 <TableContainer component={Paper}>
                     <Table>
@@ -73,7 +73,7 @@ const PatientList = () => {
                                     <TableCell align="center">{data.user.userName}</TableCell>
                                     <TableCell align="center">{data.user.role}</TableCell>
                                     <TableCell align="center">
-                                        <Link to={`/profile/${data.user?.userName}`}>
+                                        <Link to={`/profile-admin/${data.user?.userName}`}>
                                             <IconButton color="info" aria-label="View">
                                                 <Visibility />
                                             </IconButton>

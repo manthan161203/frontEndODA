@@ -24,6 +24,8 @@ const Profile = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [imageFile, setImageFile] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [originalEmail, setOriginalEmail] = useState('');
+    const [originalPhoneNumber, setOriginalPhoneNumber] = useState('');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -31,6 +33,8 @@ const Profile = () => {
                 const response = await axios.get(`http://localhost:8001/user/getUserDetails/${userName}`);
                 setUserDetails(response.data);
                 setIsLoading(false);
+                setOriginalEmail(response.data.email);
+                setOriginalPhoneNumber(response.data.phoneNumber);
             } catch (error) {
                 console.error('Error fetching user details:', error);
                 setIsLoading(false);
@@ -51,43 +55,43 @@ const Profile = () => {
 
     const handleSaveChanges = async () => {
         try {
-            // Check email existence
-            const emailExistsResponse = await axios.post(`http://localhost:8001/user/checkEmail`, { email: userDetails.email });
-            if (emailExistsResponse.data.exists) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Email already exists!',
-                });
-                return;
-            }
-    
-            // Check phone number existence
-            const phoneNumberExistsResponse = await axios.post(`http://localhost:8001/user/checkPhoneNumber`, { phoneNumber: userDetails.phoneNumber });
-            if (phoneNumberExistsResponse.data.exists) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Phone number already exists!',
-                });
-                return;
-            }
-    
             // Proceed with saving changes
             if (imageFile) {
                 const formData = new FormData();
                 formData.append('image', imageFile);
                 await axios.post(`http://localhost:8001/user/uploadImage/${userName}`, formData);
             }
-    
+
+            if (userDetails.email !== originalEmail) {
+                const emailExistsResponse = await axios.post(`http://localhost:8001/user/checkEmail`, { email: userDetails.email });
+                if (emailExistsResponse.data.exists) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Email already exists!',
+                    });
+                    return;
+                }
+            }
+
+            if (userDetails.phoneNumber !== originalPhoneNumber) {
+                const phoneNumberExistsResponse = await axios.post(`http://localhost:8001/user/checkPhoneNumber`, { phoneNumber: userDetails.phoneNumber });
+                if (phoneNumberExistsResponse.data.exists) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Phone number already exists!',
+                    });
+                    return;
+                }
+            }
+
             await axios.put(`http://localhost:8001/user/updateUserDetails/${userName}`, userDetails);
             setIsEditing(false);
         } catch (error) {
             console.error('Error saving user details:', error);
         }
     };
-    
-
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];

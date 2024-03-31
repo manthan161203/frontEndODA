@@ -67,7 +67,7 @@ const DoctorList = (props) => {
         <Container maxWidth="md">
             <Box mt={4}>
                 <Typography variant="h4" color="primary" gutterBottom>
-                    User List
+                    Doctor List
                 </Typography>
                 <TableContainer component={Paper}>
                     <Table>

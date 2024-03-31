@@ -50,7 +50,7 @@ const UserList = () => {
         <Container maxWidth="md">
             <Box mt={4}>
                 <Typography variant="h4" color="primary" gutterBottom>
-                    User List
+                    Patient List
                 </Typography>
                 <TableContainer component={Paper}>
                     <Table>
