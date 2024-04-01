@@ -156,16 +156,14 @@ const DoctorForm = () => {
                             variant="outlined"
                         />
                     )}
-                    {doctorType !== 'doctor' && (
-                        <TextField
-                            label="Fee"
-                            value={fee}
-                            onChange={(e) => setFee(e.target.value)}
-                            fullWidth
-                            margin="normal"
-                            variant="outlined"
-                        />
-                    )}
+                    <TextField
+                        label="Fee"
+                        value={fee}
+                        onChange={(e) => setFee(e.target.value)}
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                    />
                     <Button
                         type="submit"
                         variant="contained"
