@@ -6,6 +6,7 @@ import ClinicalDoctorForm from '../components/ClinicalDoctorRegistration';
 import TherapistForm from '../components/TherapistRegistration';
 import NavBar from '../components/Navbar';
 import Footer from '../components/Footer';
+import AdminForm from '../components/AdminRegistration';
 
 const RoleBasedDetailsPage = () => {
     const role = localStorage.getItem("role");
@@ -24,7 +25,7 @@ const RoleBasedDetailsPage = () => {
             {role === 'PATIENT' && <PatientForm />}
             {role === 'DOCTOR' && <DoctorForm />}
             {role === 'THERAPIST' && <TherapistForm />}
-            {role === 'CLINICAL DOCTOR' && <ClinicalDoctorForm />}
+            {role === 'ADMIN' && <AdminForm />}
             <Footer />
         </div>
     );
