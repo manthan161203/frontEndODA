@@ -38,6 +38,7 @@ const AdminForm = () => {
                 assignedDepartments,
             });
             console.log('Admin data updated:', response.data);
+            localStorage.setItem('isSubProfileSet', true);
             window.location.href = '/admin';
         } catch (error) {
             console.error('Error updating admin data:', error);

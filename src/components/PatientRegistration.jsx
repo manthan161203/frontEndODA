@@ -51,6 +51,7 @@ const PatientForm = () => {
             const response = await axios.post(`http://localhost:8001/patient/createPatient`, updatedData);
             // console.log(response.data);
             // console.log(updatedData);
+            localStorage.setItem('isSubProfileSet', true);
             window.location.href = '/';
         } catch (error) {
             console.error('Error updating patient data:', error.message);

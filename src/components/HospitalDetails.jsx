@@ -56,6 +56,7 @@ const HospitalList = (props) => {
                     <Table>
                         <TableHead>
                             <TableRow>
+                                <TableCell align="center">Hospital ID</TableCell>
                                 <TableCell align="center">Name</TableCell>
                                 <TableCell align="center">Location</TableCell>
                                 <TableCell align="center">Has Ambulance</TableCell>
@@ -65,6 +66,7 @@ const HospitalList = (props) => {
                         <TableBody>
                             {hospitals.map((data) => (
                                 <TableRow key={data.hospitalId}>
+                                    <TableCell align="center">{data.hospitalId}</TableCell>
                                     <TableCell align="center">{data.hospitalName}</TableCell>
                                     <TableCell align="center">{data.location}</TableCell>
                                     <TableCell align="center">{data.hasAmbulance ? "Available" : "Not Available"}</TableCell>

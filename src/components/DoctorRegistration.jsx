@@ -67,6 +67,7 @@ const DoctorForm = () => {
             setLoading(true);
             const response = await axios.post(`http://localhost:8001/doctor/createDoctor`, updatedData);
             console.log(response.data);
+            localStorage.setItem('isSubProfileSet', true);
             window.location.href = '/doctor';
         } catch (error) {
             console.error('Error creating doctor:', error.message);
