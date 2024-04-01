@@ -41,11 +41,8 @@ const PendingAppointments = () => {
             }
           }
         }
-        if (selectedAppointment == null) {
-          setAppointmentLabel("No Appointments To Preview");
-        } else {
-          setAppointmentLabel("Appointmnet Preview");
-        }
+
+        setAppointmentLabel("Appointment Preview");
       } catch (error) {
         console.error("Error fetching appointments:", error);
       }
@@ -68,7 +65,7 @@ const PendingAppointments = () => {
   const handleSlotClick = (info) => {
     const appointment = info.event.extendedProps.data;
     console.log(appointment);
-    setAppointmentLabel("Appointmnet Preview");
+    setAppointmentLabel("Appointment Preview");
     setSelectedAppointment(appointment);
   };
 
@@ -121,8 +118,20 @@ const PendingAppointments = () => {
   const handleRecommendReject = async (appointment) => {
     setDialogOpen(true);
   };
-  const handleReject = (appointment) => {
-    console.log("Appointment rejected:", appointment);
+  const handleReject = async (appointment) => {
+    // console.log("Recommendation sent to doctor:", doctorId);
+    const result = await axios.get(
+      `http://localhost:8001/doctor/rejectAppointment/${appointment._id}`
+    );
+    if (result.status == 200) {
+      Swal.fire(
+        "Appointment Is Rejected",
+        "Email has been sent to patient",
+        "success"
+      ).then(() => {
+        window.location.reload();
+      });
+    }
   };
 
   const handleRecommend = async (doctorId) => {
@@ -135,8 +144,9 @@ const PendingAppointments = () => {
         "Doctor Recommendation Added",
         "Email has been sent to patient",
         "success"
-      );
-      window.location.reload();
+      ).then(() => {
+        window.location.reload();
+      });
     }
     setDialogOpen(false);
     // Handle recommendation logic...
@@ -413,7 +423,7 @@ const PendingAppointments = () => {
                         paddingBottom: "5px",
                       }}
                     >
-                      {appointmentLabel}
+                      No Appointment To Preview
                     </h2>
                     <img
                       src="http://easy-health-care.infinityfreeapp.com/doctor_chilling.png"
