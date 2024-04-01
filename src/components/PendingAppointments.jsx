@@ -21,6 +21,7 @@ const PendingAppointments = () => {
   const [appointmentLabel, setAppointmentLabel] = useState(null);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
   const [doctorList, setDoctorList] = useState(null);
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -49,8 +50,9 @@ const PendingAppointments = () => {
     };
     const getdoctorList = async () => {
       try {
+        const doctorId = localStorage.getItem("userId");
         const doctors = await axios.get(
-          `http://localhost:8001/doctor/getAllDoctors`
+          `http://localhost:8001/doctor/getAllDoctorsForRecommendation/${doctorId}`
         );
         console.log(doctors);
         setDoctorList(doctors.data);
@@ -61,7 +63,13 @@ const PendingAppointments = () => {
     fetchAppointments();
     getdoctorList();
   }, []);
+  const handleViewMore = () => {
+    setOpenDialog(true);
+  };
 
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
   const handleSlotClick = (info) => {
     const appointment = info.event.extendedProps.data;
     console.log(appointment);
@@ -120,10 +128,17 @@ const PendingAppointments = () => {
   };
   const handleReject = async (appointment) => {
     // console.log("Recommendation sent to doctor:", doctorId);
-    const result = await axios.get(
-      `http://localhost:8001/doctor/rejectAppointment/${appointment._id}`
-    );
-    if (result.status == 200) {
+    const compAppSwal = await Swal.fire({
+      title: "Are you sure you want to reject appointment",
+      showCancelButton: true,
+      confirmButtonText: "Accept",
+      allowOutsideClick: () => !Swal.isLoading(),
+    });
+
+    if (compAppSwal.isConfirmed) {
+      const response = await axios.get(
+        `http://localhost:8001/doctor/rejectAppointment/${appointment._id}`
+      );
       Swal.fire(
         "Appointment Is Rejected",
         "Email has been sent to patient",
@@ -131,6 +146,8 @@ const PendingAppointments = () => {
       ).then(() => {
         window.location.reload();
       });
+    } else {
+      Swal.fire("Cancelled", "Task Cancelled", "error");
     }
   };
 
@@ -395,7 +412,7 @@ const PendingAppointments = () => {
                           <Button
                             variant="contained"
                             color="primary"
-                            onClick={() => console.log("View More clicked")}
+                            onClick={() => handleViewMore()}
                             style={{ marginBottom: "0.5rem" }}
                           >
                             View More
@@ -494,7 +511,7 @@ const PendingAppointments = () => {
                 <div>
                   <span style={{ fontWeight: "bold" }}>Doctor Name :</span>
                   {doctor.user.firstName + " " + doctor.user.lastName}
-                  {doctor.user.address}
+                  {" Address :   " + doctor.user.address}
                 </div>
                 <Button
                   onClick={() => handleRecommend(doctor._id)}
@@ -509,6 +526,140 @@ const PendingAppointments = () => {
         <DialogActions>
           <Button onClick={() => setDialogOpen(false)} color="primary">
             Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle style={{ textAlign: "center" }}>
+          Appointment Details
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText style={{ fontFamily: "inherit" }}>
+            <div
+              style={{
+                backgroundColor: "#1873CC",
+                color: "white",
+                paddingLeft: "2%",
+              }}
+            >
+              <strong>Appointment Details</strong>
+            </div>
+            <div
+              style={{
+                marginTop: "2%",
+                marginBottom: "2%",
+                paddingLeft: "5%",
+                paddingRight: "5%",
+              }}
+            >
+              <strong>Date:</strong>{" "}
+              {selectedAppointment && selectedAppointment?.date}
+              <br />
+              <strong>Time:</strong>{" "}
+              {selectedAppointment &&
+                selectedAppointment?.slot.startTime +
+                  " - " +
+                  selectedAppointment?.slot.endTime}
+              <br />
+              <strong>Prerequisite:</strong>{" "}
+              {selectedAppointment && selectedAppointment?.prerequisite}
+              <br />
+              <strong>Notes:</strong>{" "}
+              {selectedAppointment && selectedAppointment?.notes}
+              <br />
+              <strong>Status:</strong>{" "}
+              {selectedAppointment && selectedAppointment?.status}
+              <br />
+            </div>
+            <div
+              style={{
+                backgroundColor: "#1873CC",
+                color: "white",
+                paddingLeft: "2%",
+              }}
+            >
+              <strong>Personal Details</strong>
+            </div>
+            <div
+              style={{
+                marginTop: "2%",
+                marginBottom: "2%",
+                paddingLeft: "5%",
+                paddingRight: "5%",
+              }}
+            >
+              <strong>Patient Name:</strong>{" "}
+              {selectedAppointment &&
+                selectedAppointment?.patient?.user?.firstName +
+                  " " +
+                  selectedAppointment?.patient?.user?.lastName}
+              <br />
+              <strong>Mobile Numebr:</strong>{" "}
+              {selectedAppointment &&
+                selectedAppointment?.patient?.user?.phoneNumber}
+              <br />
+              <strong>Address:</strong>{" "}
+              {selectedAppointment &&
+                selectedAppointment?.patient?.user?.address}
+              <br />
+              <strong>Gender:</strong>{" "}
+              {selectedAppointment &&
+                selectedAppointment?.patient?.user?.gender}
+              <br />
+            </div>
+            <div
+              style={{
+                backgroundColor: "#1873CC",
+                color: "white",
+                paddingLeft: "2%",
+              }}
+            >
+              <strong>Medical Details</strong>
+            </div>
+            <div
+              style={{
+                marginTop: "2%",
+                marginBottom: "2%",
+                paddingLeft: "5%",
+                paddingRight: "5%",
+              }}
+            >
+              <strong>Medical History:</strong>{" "}
+              {selectedAppointment &&
+                selectedAppointment?.patient?.medicalHistory.join(", ")}
+              <br />
+              <strong>Allergies:</strong>{" "}
+              {selectedAppointment &&
+                selectedAppointment?.patient?.allergies?.join(", ")}
+              <br />
+              <strong>Emergency Contact:</strong>{" "}
+              {selectedAppointment &&
+                selectedAppointment?.patient.emergencyContact.name}
+              <br />
+              <strong>Relationship:</strong>{" "}
+              {selectedAppointment &&
+                selectedAppointment?.patient.emergencyContact.relationship}
+              <br />
+              <strong>Phone Number:</strong>{" "}
+              {selectedAppointment?.patient.emergencyContact.phoneNumber}
+              <br />
+              <strong>Health Metrics:</strong> Height:{" "}
+              {selectedAppointment &&
+                selectedAppointment?.patient?.healthMetrics.height}
+              , Weight:{" "}
+              {selectedAppointment &&
+                selectedAppointment.patient?.healthMetrics.weight}
+              <br></br>
+              <strong>Blood Group:</strong>{" "}
+              {selectedAppointment &&
+                selectedAppointment?.patient?.healthMetrics.bloodGroup}
+              <br />
+            </div>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            Close
           </Button>
         </DialogActions>
       </Dialog>

@@ -204,58 +204,6 @@ const ResponsiveAppBar = () => {
               ))}
             </Box>
 
-            {/* Search Bar */}
-            {/* <Search>
-                            <SearchIconWrapper>
-                                <SearchIcon />
-                            </SearchIconWrapper>
-                            <StyledInputBase
-                                placeholder="Search…"
-                                inputProps={{ 'aria-label': 'search' }}
-                            />
-                        </Search> */}
-
-            {/* {isLoggedIn && (
-              <Box
-                sx={{
-                  flexGrow: 0,
-                  marginLeft: { xs: 0, md: 2 },
-                  marginRight: 4,
-                }}
-              >
-                <Tooltip title="Open notifications">
-                  <IconButton onClick={handleOpenNotifications} sx={{ p: 0 }}>
-                    <Badge badgeContent={4} color="error">
-                      <NotificationsIcon />
-                    </Badge>
-                  </IconButton>
-                </Tooltip>
-                <Menu
-                  sx={{ mt: { xs: 2, md: "45px" } }}
-                  id="menu-notifications"
-                  anchorEl={anchorElNotifications}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={Boolean(anchorElNotifications)}
-                  onClose={handleCloseNotifications}
-                >
-                  <MenuItem>
-                    <Typography textAlign="center">Messages</Typography>
-                  </MenuItem>
-                  <MenuItem>
-                    <Typography textAlign="center">Notifications</Typography>
-                  </MenuItem>
-                </Menu>
-              </Box>
-            )} */}
-
             {isLoggedIn && (
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open settings">

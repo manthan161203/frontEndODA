@@ -9,6 +9,11 @@ import Swal from "sweetalert2";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogActions from "@mui/material/DialogActions";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import ActiveAppointmentCard from "../components/ActiveAppointmentCard";
 import AppointmentPanel from "../components/AppointmentPanel";
@@ -23,6 +28,7 @@ const DoctorDashboardPage = () => {
   const [upcomingCount, setUpcomingCount] = useState(0);
   const [todayCount, setTodayCount] = useState(0);
   const [pendingCount, setPendingCount] = useState(0);
+  const [openDialog, setOpenDialog] = useState(false);
   const [appointmentLabel, setappointmentLabel] = useState(0);
   // const [doctorId, setDoctorId] = useState(0);
   useEffect(() => {
@@ -41,6 +47,8 @@ const DoctorDashboardPage = () => {
         const todayCountRes = await axios.get(
           `http://localhost:8001/doctor/getTodayAppointmentsCount/${doctorId}`
         );
+        console.log("Today count");
+        console.log(todayCountRes.data);
         const upcomingCountRes = await axios.get(
           `http://localhost:8001/doctor/getUpComingAppointmentsCount/${doctorId}`
         );
@@ -74,7 +82,13 @@ const DoctorDashboardPage = () => {
     };
     fetchAppointments();
   }, []);
+  const handleViewMore = () => {
+    setOpenDialog(true);
+  };
 
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
   const handleSlotClick = (info) => {
     const appointment = info.event.extendedProps.data;
     console.log(appointment.doctor);
@@ -126,10 +140,15 @@ const DoctorDashboardPage = () => {
     start: appointment.date,
     end: appointment.date,
     data: appointment,
+    textColor: "black",
+    color: "black",
+    boxShadow: "white",
     backgroundColor:
       appointment.status === "Rejected"
         ? "#c43c33"
         : appointment.status === "Accepted"
+        ? "#FDC521"
+        : appointment.status === "Active"
         ? "#00FF00"
         : "#9fc5fd",
   }));
@@ -141,11 +160,13 @@ const DoctorDashboardPage = () => {
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
           <div className="panel">
-            <h2 style={{ textAlign: "center" }}>Appointments</h2>
+            <h2 style={{ textAlign: "center", marginBottom: "2%" }}>
+              Appointments
+            </h2>
             <div className="panel-content">
               <div className="card-group">
                 <div className="card inline">
-                  <h3>Remaining Appointments</h3>
+                  <h3>Appointments To Review</h3>
                   <p>Total: {pendingCount}</p>
                 </div>
                 <div className="card inline">
@@ -234,7 +255,7 @@ const DoctorDashboardPage = () => {
                             <Button
                               variant="contained"
                               color="primary"
-                              onClick={() => console.log("View More clicked")}
+                              onClick={handleViewMore}
                             >
                               View More
                             </Button>
@@ -272,6 +293,40 @@ const DoctorDashboardPage = () => {
         </Grid>
         <Grid item xs={12} md={6}>
           <div>
+            <div>
+              <div style={{ textAlign: "right", marginBottom: "2%" }}>
+                Active :{" "}
+                <span
+                  style={{
+                    paddingLeft: "20px",
+                    marginLeft: "2%",
+                    marginRight: "2%",
+                    backgroundColor: "#00FF00",
+                    border: "solid 1px",
+                  }}
+                ></span>{" "}
+                Accepted :{" "}
+                <span
+                  style={{
+                    paddingLeft: "20px",
+                    marginLeft: "2%",
+                    marginRight: "2%",
+                    backgroundColor: "#FDC521",
+                    border: "solid 1px",
+                  }}
+                ></span>{" "}
+                Pending :{" "}
+                <span
+                  style={{
+                    paddingLeft: "20px",
+                    marginLeft: "2%",
+                    marginRight: "2%",
+                    backgroundColor: "#9fc5fd",
+                    border: "solid 1px",
+                  }}
+                ></span>{" "}
+              </div>
+            </div>
             <FullCalendar
               plugins={[dayGridPlugin]}
               initialView="dayGridMonth"
@@ -280,7 +335,142 @@ const DoctorDashboardPage = () => {
             />
           </div>
         </Grid>
+        <Dialog open={openDialog} onClose={handleCloseDialog}>
+          <DialogTitle style={{ textAlign: "center" }}>
+            Appointment Details
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText style={{ fontFamily: "inherit" }}>
+              <div
+                style={{
+                  backgroundColor: "#1873CC",
+                  color: "white",
+                  paddingLeft: "2%",
+                }}
+              >
+                <strong>Appointment Details</strong>
+              </div>
+              <div
+                style={{
+                  marginTop: "2%",
+                  marginBottom: "2%",
+                  paddingLeft: "5%",
+                  paddingRight: "5%",
+                }}
+              >
+                <strong>Date:</strong>{" "}
+                {selectedAppointment && selectedAppointment?.date}
+                <br />
+                <strong>Time:</strong>{" "}
+                {selectedAppointment &&
+                  selectedAppointment?.slot.startTime +
+                    " - " +
+                    selectedAppointment?.slot.endTime}
+                <br />
+                <strong>Prerequisite:</strong>{" "}
+                {selectedAppointment && selectedAppointment?.prerequisite}
+                <br />
+                <strong>Notes:</strong>{" "}
+                {selectedAppointment && selectedAppointment?.notes}
+                <br />
+                <strong>Status:</strong>{" "}
+                {selectedAppointment && selectedAppointment?.status}
+                <br />
+              </div>
+              <div
+                style={{
+                  backgroundColor: "#1873CC",
+                  color: "white",
+                  paddingLeft: "2%",
+                }}
+              >
+                <strong>Personal Details</strong>
+              </div>
+              <div
+                style={{
+                  marginTop: "2%",
+                  marginBottom: "2%",
+                  paddingLeft: "5%",
+                  paddingRight: "5%",
+                }}
+              >
+                <strong>Patient Name:</strong>{" "}
+                {selectedAppointment &&
+                  selectedAppointment?.patient?.user?.firstName +
+                    " " +
+                    selectedAppointment?.patient?.user?.lastName}
+                <br />
+                <strong>Mobile Numebr:</strong>{" "}
+                {selectedAppointment &&
+                  selectedAppointment?.patient?.user?.phoneNumber}
+                <br />
+                <strong>Address:</strong>{" "}
+                {selectedAppointment &&
+                  selectedAppointment?.patient?.user?.address}
+                <br />
+                <strong>Gender:</strong>{" "}
+                {selectedAppointment &&
+                  selectedAppointment?.patient?.user?.gender}
+                <br />
+              </div>
+              <div
+                style={{
+                  backgroundColor: "#1873CC",
+                  color: "white",
+                  paddingLeft: "2%",
+                }}
+              >
+                <strong>Medical Details</strong>
+              </div>
+              <div
+                style={{
+                  marginTop: "2%",
+                  marginBottom: "2%",
+                  paddingLeft: "5%",
+                  paddingRight: "5%",
+                }}
+              >
+                <strong>Medical History:</strong>{" "}
+                {selectedAppointment &&
+                  selectedAppointment?.patient?.medicalHistory.join(", ")}
+                <br />
+                <strong>Allergies:</strong>{" "}
+                {selectedAppointment &&
+                  selectedAppointment?.patient?.allergies?.join(", ")}
+                <br />
+                <strong>Emergency Contact:</strong>{" "}
+                {selectedAppointment &&
+                  selectedAppointment?.patient.emergencyContact.name}
+                <br />
+                <strong>Relationship:</strong>{" "}
+                {selectedAppointment &&
+                  selectedAppointment?.patient.emergencyContact.relationship}
+                <br />
+                <strong>Phone Number:</strong>{" "}
+                {selectedAppointment?.patient.emergencyContact.phoneNumber}
+                <br />
+                <strong>Health Metrics:</strong> Height:{" "}
+                {selectedAppointment &&
+                  selectedAppointment?.patient?.healthMetrics.height}
+                , Weight:{" "}
+                {selectedAppointment &&
+                  selectedAppointment.patient?.healthMetrics.weight}
+                <br></br>
+                <strong>Blood Group:</strong>{" "}
+                {selectedAppointment &&
+                  selectedAppointment?.patient?.healthMetrics.bloodGroup}
+                <br />
+              </div>
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseDialog} color="primary">
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Grid>
+
       <Footer />
     </div>
   );
