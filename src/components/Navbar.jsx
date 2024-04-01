@@ -50,7 +50,7 @@ const ResponsiveAppBar = () => {
   const settings = [
     "User Profile",
     role + " Profile",
-    "Your Appointments",
+    role === "Patient" ? "Your Appointments" : "",
     "Logout",
   ];
   // const { isLoggedIn, userName } = useContext(AppContext);
