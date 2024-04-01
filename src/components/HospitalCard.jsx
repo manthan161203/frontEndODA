@@ -18,7 +18,8 @@ const HospitalCard = ({ hospital }) => {
             </p>
             <p className="ambulance">
                 <strong>Ambulance: </strong>
-                {hospital?.hasAmbulance}
+                {hospital?.hasAmbulance && "Available"}
+                {!hospital?.hasAmbulance && "Not Available"}
             </p>
             <p className="address">
                 <strong>Address: </strong>
