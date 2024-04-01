@@ -123,7 +123,6 @@ const PendingAppointments = () => {
   };
   const handleReject = (appointment) => {
     console.log("Appointment rejected:", appointment);
-    setDialogOpen(true);
   };
 
   const handleRecommend = async (doctorId) => {
