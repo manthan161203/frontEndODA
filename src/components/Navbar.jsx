@@ -215,7 +215,7 @@ const ResponsiveAppBar = () => {
                             />
                         </Search> */}
 
-            {isLoggedIn && (
+            {/* {isLoggedIn && (
               <Box
                 sx={{
                   flexGrow: 0,
@@ -254,7 +254,7 @@ const ResponsiveAppBar = () => {
                   </MenuItem>
                 </Menu>
               </Box>
-            )}
+            )} */}
 
             {isLoggedIn && (
               <Box sx={{ flexGrow: 0 }}>
