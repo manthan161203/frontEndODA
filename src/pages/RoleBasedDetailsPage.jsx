@@ -2,10 +2,9 @@ import React, { useEffect } from 'react';
 import Box from '@mui/system/Box';
 import PatientForm from '../components/PatientRegistration';
 import DoctorForm from '../components/DoctorRegistration';
-import ClinicalDoctorForm from '../components/ClinicalDoctorRegistration';
-import TherapistForm from '../components/TherapistRegistration';
 import NavBar from '../components/Navbar';
 import Footer from '../components/Footer';
+import AdminForm from '../components/AdminRegistration';
 
 const RoleBasedDetailsPage = () => {
     const role = localStorage.getItem("role");
@@ -23,8 +22,9 @@ const RoleBasedDetailsPage = () => {
             <Box sx={{ mb: 4 }} />
             {role === 'PATIENT' && <PatientForm />}
             {role === 'DOCTOR' && <DoctorForm />}
-            {role === 'THERAPIST' && <TherapistForm />}
-            {role === 'CLINICAL DOCTOR' && <ClinicalDoctorForm />}
+            {role === 'CLINICAL DOCTOR' && <DoctorForm />}
+            {role === 'THERAPIST' && <DoctorForm />}
+            {role === 'ADMIN' && <AdminForm />}
             <Footer />
         </div>
     );

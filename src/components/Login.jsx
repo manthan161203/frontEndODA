@@ -135,7 +135,7 @@ const Login = () => {
         } else {
           if (localStorage.getItem("role") === "PATIENT") {
             window.location.href = "/hospitals";
-          } else if (localStorage.getItem("role") === "DOCTOR") {
+          } else if (localStorage.getItem("role") === "DOCTOR" || localStorage.getItem("role") === "CLINICAL DOCTOR" || localStorage.getItem("role") === "THERAPIST") {
             window.location.href = "/doctor";
           } else if (localStorage.getItem("role") === "ADMIN") {
             window.location.href = "/admin-page/patient";

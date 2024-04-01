@@ -50,7 +50,7 @@ const ResponsiveAppBar = () => {
   const settings = [
     "User Profile",
     role + " Profile",
-    "Your Appointments",
+    role === "Patient" ? "Your Appointments" : "",
     "Logout",
   ];
   // const { isLoggedIn, userName } = useContext(AppContext);
@@ -215,7 +215,7 @@ const ResponsiveAppBar = () => {
                             />
                         </Search> */}
 
-            {isLoggedIn && (
+            {/* {isLoggedIn && (
               <Box
                 sx={{
                   flexGrow: 0,
@@ -254,7 +254,7 @@ const ResponsiveAppBar = () => {
                   </MenuItem>
                 </Menu>
               </Box>
-            )}
+            )} */}
 
             {isLoggedIn && (
               <Box sx={{ flexGrow: 0 }}>

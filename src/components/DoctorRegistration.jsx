@@ -67,6 +67,7 @@ const DoctorForm = () => {
             setLoading(true);
             const response = await axios.post(`http://localhost:8001/doctor/createDoctor`, updatedData);
             console.log(response.data);
+            localStorage.setItem('isSubProfileSet', true);
             window.location.href = '/doctor';
         } catch (error) {
             console.error('Error creating doctor:', error.message);
@@ -155,16 +156,14 @@ const DoctorForm = () => {
                             variant="outlined"
                         />
                     )}
-                    {doctorType !== 'doctor' && (
-                        <TextField
-                            label="Fee"
-                            value={fee}
-                            onChange={(e) => setFee(e.target.value)}
-                            fullWidth
-                            margin="normal"
-                            variant="outlined"
-                        />
-                    )}
+                    <TextField
+                        label="Fee"
+                        value={fee}
+                        onChange={(e) => setFee(e.target.value)}
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                    />
                     <Button
                         type="submit"
                         variant="contained"
