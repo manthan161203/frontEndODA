@@ -14,6 +14,8 @@ const AdminDashboardPage = () => {
     const [doctorsData, setDoctorsData] = useState([]);
     const [patientsData, setPatientsData] = useState([]);
     const [hospitalsData, setHospitalsData] = useState([]);
+    const [usersData, setUsersData] = useState([]);
+    const [userDataByYear, setUsersDataByYear] = useState({});
 
     useEffect(() => {
         const fetchData = async () => {
@@ -44,6 +46,47 @@ const AdminDashboardPage = () => {
     useEffect(() => {
         Chart.register(CategoryScale, LinearScale, Title, Tooltip);
     }, []);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                // Fetch all users
+                const response = await axios.get('http://localhost:8001/user/getAllUsers');
+                setUsersData(response.data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        if (usersData.length > 0) {
+            // Initialize counts for all years and roles
+            const usersCountByYearAndRole = {};
+
+            // Count users by year and role
+            usersData.forEach(item => {
+                const year = item.createdAt.toString().substring(0, 4);
+                const role = item.role === "clinical doctor" ? "clinicaldoctor": item.role;
+                
+                if (!usersCountByYearAndRole[role]) {
+                    usersCountByYearAndRole[role] = {};
+                }
+                
+                if (!usersCountByYearAndRole[role][year]) {
+                    usersCountByYearAndRole[role][year] = 0;
+                }
+                
+                usersCountByYearAndRole[role][year]++;
+            });
+            setUsersDataByYear(usersCountByYearAndRole);
+            console.log(usersCountByYearAndRole);
+            console.log(Object.entries(usersCountByYearAndRole?.doctor).forEach(user => console.log(user)));
+            console.log(Object.entries(usersCountByYearAndRole?.doctor).forEach(user => user[1]))
+        }
+    }, [usersData]);
 
     const createChartData = (data, label, field) => ({
         labels: data.map(item => {
@@ -124,38 +167,78 @@ const AdminDashboardPage = () => {
                                 Graphs
                             </Typography>
                             <Grid container spacing={3}>
-                                <Grid item xs={12} md={6}>
+                                {/* <Grid item xs={12} md={6}>
                                     <div className="chart-container">
                                         <Bar
                                             data={createChartData(appointmentsData, 'Appointments')}
                                             options={chartOptions}
                                         />
                                     </div>
-                                </Grid>
+                                </Grid> */}
                                 <Grid item xs={12} md={6}>
                                     <div className="chart-container">
                                         <Bar
-                                            data={createChartData(doctorsData, 'Doctors')}
-                                            options={chartOptions}
+                                            // data={{dataSet : userDataByYear.doctor}}
+                                            // options={chartOptions}
+                                            data={{
+                                                labels: userDataByYear?.doctor ? Object.keys(userDataByYear?.doctor): [], datasets: [{
+                                                label: "No. of Doctors", data:userDataByYear?.doctor ? Object.values(userDataByYear?.doctor): [] , backgroundColor: "rgba(74,144,226,0.3)",
+                                                borderColor: "rgba(74,144,226,1)", borderWidth: 1
+                                                }]
+                                            }}
                                         />
                                     </div>
                                 </Grid>
                                 <Grid item xs={12} md={6}>
                                     <div className="chart-container">
                                         <Bar
-                                            data={createChartData(patientsData, 'Patients')}
-                                            options={chartOptions}
+                                            // data={{dataSet : userDataByYear.doctor}}
+                                            // options={chartOptions}
+                                            data={{
+                                                labels: userDataByYear?.patient ? Object.keys(userDataByYear?.patient): [], datasets: [{
+                                                label: "No. of Patient", data:userDataByYear?.patient ? Object.values(userDataByYear?.patient): [] , backgroundColor: "rgba(74,144,226,0.3)",
+                                                borderColor: "rgba(74,144,226,1)", borderWidth: 1
+                                                }]
+                                            }}
                                         />
                                     </div>
                                 </Grid>
                                 <Grid item xs={12} md={6}>
+                                    <div className="chart-container">
+                                        <Bar
+                                            // data={{dataSet : userDataByYear.doctor}}
+                                            // options={chartOptions}
+                                            data={{
+                                                labels: userDataByYear?.therapist ? Object.keys(userDataByYear?.therapist): [], datasets: [{
+                                                label: "No. of Therapist", data:userDataByYear?.therapist ? Object.values(userDataByYear?.therapist): [] , backgroundColor: "rgba(74,144,226,0.3)",
+                                                borderColor: "rgba(74,144,226,1)", borderWidth: 1
+                                                }]
+                                            }}
+                                        />
+                                    </div>
+                                </Grid>
+                                <Grid item xs={12} md={6}>
+                                    <div className="chart-container">
+                                        <Bar
+                                            // data={{dataSet : userDataByYear.doctor}}
+                                            // options={chartOptions}
+                                            data={{
+                                                labels: userDataByYear?.clinicaldoctor ? Object.keys(userDataByYear?.clinicaldoctor): [], datasets: [{
+                                                label: "No. of Clinical Doctors", data:userDataByYear?.clinicaldoctor ? Object.values(userDataByYear?.clinicaldoctor): [] , backgroundColor: "rgba(74,144,226,0.3)",
+                                                borderColor: "rgba(74,144,226,1)", borderWidth: 1
+                                                }]
+                                            }}
+                                        />
+                                    </div>
+                                </Grid>
+                                {/* <Grid item xs={12} md={6}>
                                     <div className="chart-container">
                                         <Bar
                                             data={createChartData(hospitalsData, 'Hospitals')}
                                             options={chartOptions}
                                         />
                                     </div>
-                                </Grid>
+                                </Grid> */}
                             </Grid>
                         </CardContent>
                     </Card>
