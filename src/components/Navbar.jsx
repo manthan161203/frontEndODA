@@ -252,6 +252,14 @@ const ResponsiveAppBar = () => {
                           {setting}
                         </a>
                       )}
+                      {setting === `${role} Profile` && (
+                        <a
+                          href={`/profile-role/${userName}`}
+                          style={{ color: "inherit", textDecoration: "none" }}
+                        >
+                          {setting}
+                        </a>
+                      )}
                       {setting === "Your Appointments" && (
                         <a
                           href={`/my-appointments/${userName}`}

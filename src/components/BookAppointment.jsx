@@ -97,6 +97,8 @@ const BookAppointmentForm = ({ setModalOpen }) => {
           icon: "success",
           title: "Appointment booked successfully",
           text: "Done",
+        }).then(() => {
+          window.location.href = "/";
         });
 
         setModalOpen(false);

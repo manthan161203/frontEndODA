@@ -1,52 +1,53 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
-import Box from '@mui/material/Box';
-import DoctorCard from '../components/DoctorCard';
-import NavBar from '../components/Navbar';
-import Footer from '../components/Footer';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import Box from "@mui/material/Box";
+import DoctorCard from "../components/DoctorCard";
+import NavBar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const HospitalDoctorsPage = () => {
-    const { hospitalName } = useParams();
-    const [doctorData, setDoctorData] = useState([]);
+  const { hospitalName } = useParams();
+  const [doctorData, setDoctorData] = useState([]);
 
-    const centeredHeadingStyle = {
-        textAlign: 'center',
+  const centeredHeadingStyle = {
+    textAlign: "center",
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8001/doctor/getDoctorsByHospital/${hospitalName}`
+        );
+        setDoctorData(response.data);
+        // console.log("In Hospital Doctor Page");
+        if (response.data[0] === undefined) {
+          window.location.href = "/empty";
+        }
+      } catch (error) {
+        console.error("Error fetching doctors:", error);
+      }
     };
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(`http://localhost:8001/doctor/getDoctorsByHospital/${hospitalName}`);
-                setDoctorData(response.data);
-                // console.log("In Hospital Doctor Page");
-                if(response.data[0] === undefined) {
-                    window.location.href = '/empty';
-                }
-            } catch (error) {
-                console.error('Error fetching doctors:', error);
-            }
-        };
-    
-        fetchData();
-    }, [hospitalName]);
-    
+    fetchData();
+  }, [hospitalName]);
 
-    return (
-        <div>
-            <NavBar />
-            <Box sx={{ mb: 4 }} />
-            <h2 style={centeredHeadingStyle}>Doctors at {hospitalName}</h2>
-            <div className="card-container">
-                {doctorData.map((doctor) => {
-                    // console.log(doctor);
-                    doctor.user = doctor.user[0];
-                    return <DoctorCard key={doctor._id} doctor={doctor} />
-                })}
-            </div>
-            <Footer />
-        </div>
-    );
+  return (
+    <div>
+      <NavBar />
+      <Box sx={{ mb: 4 }} />
+      <h2 style={centeredHeadingStyle}>Doctors at {hospitalName}</h2>
+      <div className="card-container">
+        {doctorData.map((doctor) => {
+          console.log(doctor);
+          //   doctor.user = doctor.user[0];
+          return <DoctorCard key={doctor._id} doctor={doctor} />;
+        })}
+      </div>
+      <Footer />
+    </div>
+  );
 };
 
 export default HospitalDoctorsPage;
