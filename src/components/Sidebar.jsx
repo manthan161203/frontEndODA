@@ -79,7 +79,9 @@ export default function Sidebar() {
     const [open, setOpen] = React.useState(true);
     const [doctorOpen, setDoctorOpen] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const { userName, setUserName, setRole, setIsLoggedIn } = useContext(AppContext);
+    const { setUserName, setRole, setIsLoggedIn } = useContext(AppContext);
+    const userName = localStorage.getItem('userName');
+
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -129,9 +131,9 @@ export default function Sidebar() {
             localStorage.removeItem("userName");
             localStorage.removeItem("role");
             localStorage.removeItem("isLoggedIn");
-            setUserName(null);
-            setRole("Patient");
-            setIsLoggedIn(false);
+            // setUserName(null);
+            // setRole("");
+            // setIsLoggedIn(false);
             window.location.href = "/login";
         } else {
             // Handle other links

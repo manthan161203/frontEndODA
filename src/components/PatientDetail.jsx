@@ -56,7 +56,7 @@ const PatientList = () => {
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell align="center">User ID</TableCell>
+                                {/* <TableCell align="center">User ID</TableCell> */}
                                 <TableCell align="center">Name</TableCell>
                                 <TableCell align="center">Email</TableCell>
                                 <TableCell align="center">Username</TableCell>
@@ -66,8 +66,8 @@ const PatientList = () => {
                         </TableHead>
                         <TableBody>
                             {users.map((data) => (
-                                <TableRow key={data.user.userId}>
-                                    <TableCell align="center">{data.user.userId}</TableCell>
+                                <TableRow key={data.user.userName}>
+                                    {/* <TableCell align="center">{data.user.userId}</TableCell> */}
                                     <TableCell align="center">{`${data.user.firstName} ${data.user.lastName}`}</TableCell>
                                     <TableCell align="center">{data.user.email}</TableCell>
                                     <TableCell align="center">{data.user.userName}</TableCell>

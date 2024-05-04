@@ -1,76 +1,55 @@
-import React, { createContext, useState, Suspense, useCallback } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { createContext, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import LoginPage from './pages/LoginPage';
 import DoctorPage from './pages/DoctorPage';
 import HospitalPage from './pages/HospitalPage';
 import HospitalDoctorsPage from './pages/HospitalDoctorsPage';
 import ProfilePage from './pages/ProfilePage';
-import Profile from './components/Profile';
 import RoleProfilePage from './pages/RoleProfilePage';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import ForgotPasswordPage from './pages/ForgotPasswordPage';
-import HomePage from './pages/HomePage';
 import ErrorPage from './pages/ErrorPage';
-import Loading from './components/Loading';
-import EmptyPage from './pages/EmptyPage';
-import AppointmentPage from './pages/AppointmentPage';
-import { ProtectedRoute } from './middleware';
-import AdminPage from './pages/AdminPage';
-import RoleBasedDetailsPage from './pages/RoleBasedDetailsPage';
-import DoctorDashBoardPage from './pages/DoctorDashBoardPage'
-import PendingAppointments from './components/PendingAppointments';
-import HistoryAppointments from './components/HistoryDoctorPanel';
 import RegisterHospital from './pages/CreateHospital';
 import AdminDashboard from './pages/AdminDashBoardPage';
+import AdminPage from './pages/AdminPage';
 import AdminProfilePage from './pages/AdminProfilePage';
 import AdminRoleProfilePage from './pages/AdminRoleProfilePage';
 import AdminViewProfile from './pages/AdminViewProfile';
+import HomePage from './pages/HomePage';
+import AppointmentPage from './pages/AppointmentPage';
+import DoctorDashBoardPage from './pages/DoctorDashBoardPage';
+import PendingAppointments from './components/PendingAppointments';
+import HistoryAppointments from './components/HistoryDoctorPanel';
+import EmptyPage from './pages/EmptyPage';
+import RoleBasedDetailsPage from './pages/RoleBasedDetailsPage';
 
 export const AppContext = createContext();
 
 function App() {
-    const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true' || false);
+    const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');
     const [role, setRole] = useState(localStorage.getItem('role'));
-    const [userName, setUserName] = useState(localStorage.getItem('userName'));
-    const [doctorID, setDoctorID] = useState('');
-    const [appointmentCounter, setAppointmentCounter] = useState(0);
-    const incrementAppointmentCounter = useCallback(() => {
-        setAppointmentCounter(prevCounter => prevCounter + 1);
-    }, []);
 
     return (
-        <AppContext.Provider value={{ isLoggedIn, setIsLoggedIn, role, setRole, userName, setUserName, doctorID, setDoctorID, appointmentCounter, incrementAppointmentCounter }}>
+        <AppContext.Provider value={{ isLoggedIn, setIsLoggedIn, role, setRole }}>
             <Router>
-                <Suspense fallback={<Loading />}>
-                    <Routes>
-                        <Route path="/hospitals" element={<ProtectedRoute element={<HospitalPage />} />} />
-                        <Route
-                            path="/hospitals/doctors/:hospitalName"
-                            element={<ProtectedRoute element={<HospitalDoctorsPage />} />}
-                        />
-                        <Route path="/doctors/:doctorType" element={<ProtectedRoute element={<DoctorPage />} />} />
-                        <Route path="/profile/:userName" element={<ProtectedRoute element={<ProfilePage />} />} />
-                        <Route path="/my-appointments/:userName" element={<ProtectedRoute element={<AppointmentPage />} />} />
-                        {/* <Route path="/book-appointment" element={<ProtectedRoute element={<BookAppointmentPage />} />} /> */}
-                        <Route path="/profile-role/:userName" element={<ProtectedRoute element={<RoleProfilePage />} />} />
-                        <Route path="/profile-role-admin/:userName" element={<ProtectedRoute element={<AdminRoleProfilePage />} />} />
-                        <Route path="/login" element={<LoginPage />} />
-                        <Route path="/register" element={<RegisterPage />} />
-                        <Route path="/admin" element={<AdminDashboard />} />
-                        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-                        <Route path="create-hospital" element={<RegisterHospital/>} />
-                        <Route path="/admin-page/:role" element={<AdminPage />} />
-                        <Route path="/profile-admin/:userName" element={<AdminProfilePage />} />
-                        <Route path="/admin-page/profile/:userName" element={<AdminViewProfile />} />
-                        <Route path="/empty" element={<EmptyPage />} />
-                        <Route path="/" element={<HomePage />} />
-                        <Route path="/role-based-details" element={<RoleBasedDetailsPage />} />
-                        <Route path="/doctor" element={<DoctorDashBoardPage />} />
-                        <Route path="/doctor/review-appointments" element={<PendingAppointments />} />
-                        <Route path="/doctor/history" element={<HistoryAppointments />} />
-                        <Route path="*" element={<ErrorPage />} />
-                    </Routes>
-                </Suspense>
+                <Routes>
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/" element={isLoggedIn ? <HomePage /> : <Navigate to="/login" />} />
+                    <Route path="/doctor" element={isLoggedIn && role === 'DOCTOR' ? <DoctorDashBoardPage /> : <Navigate to="/login" />} />
+                    <Route path="/doctor/review-appointments" element={isLoggedIn && (role === 'DOCTOR' || role === 'CLINICAL DOCTOR' || role === 'THERAPIST') ? <PendingAppointments /> : <Navigate to="/login" />} />
+                    <Route path="/doctor/history" element={isLoggedIn && (role === 'DOCTOR' || role === 'CLINICAL DOCTOR' || role === 'THERAPIST') ? <HistoryAppointments /> : <Navigate to="/login" />} />
+                    <Route path="/hospitals" element={isLoggedIn ? <HospitalPage /> : <Navigate to="/login" />} />
+                    <Route path="/hospitals/doctors/:hospitalName" element={isLoggedIn ? <HospitalDoctorsPage /> : <Navigate to="/login" />} />
+                    <Route path="/profile/:userName" element={isLoggedIn ? <ProfilePage /> : <Navigate to="/login" />} />
+                    <Route path="/my-appointments/:userName" element={isLoggedIn ? <AppointmentPage /> : <Navigate to="/login" />} />
+                    <Route path="/profile-role/:userName" element={isLoggedIn ? <RoleProfilePage /> : <Navigate to="/login" />} />
+                    <Route path="/profile-role-admin/:userName" element={isLoggedIn && role === 'ADMIN' ? <AdminRoleProfilePage /> : <Navigate to="/login" />} />
+                    <Route path="/admin/*" element={isLoggedIn && role === 'ADMIN' ? <AdminDashboard /> : <Navigate to="/login" />} />
+                    <Route path="/admin-page/:role/*" element={isLoggedIn && role === 'ADMIN' ? <AdminPage /> : <Navigate to="/login" />} />
+                    <Route path="/profile-admin/:userName" element={isLoggedIn && role === 'ADMIN' ? <AdminProfilePage /> : <Navigate to="/login" />} />
+                    <Route path="/admin-page/profile/:userName" element={isLoggedIn && role === 'ADMIN' ? <AdminViewProfile /> : <Navigate to="/login" />} />
+                    <Route path="/empty" element={<EmptyPage />} />
+                    <Route path="/role-based-details" element={<RoleBasedDetailsPage />} />
+                    <Route path="*" element={<ErrorPage />} />
+                </Routes>
             </Router>
         </AppContext.Provider>
     );
